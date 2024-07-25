@@ -12,7 +12,7 @@ build:
   commands:
     - git submodule update --init
     - pip3 install -r ./requirements.txt
-    - python3 -m sphinx.cmd.build -M html "source" "_build"
+   - python3 -m sphinx.cmd.build -M html "source" "_build"
     - python3 -m sphinx.cmd.build -M latexpdf "source" "_build"
     - mv _build/html _readthedocs
     - mv _build/latexpdf _readthedocs_pdf

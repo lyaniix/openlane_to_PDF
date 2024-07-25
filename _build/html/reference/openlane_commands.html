@@ -1,0 +1,1521 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Interactive Mode" href="interactive_mode.html" /><link rel="prev" title="PDK Configuration Variables" href="pdk_configuration.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.07.18 -->
+        <title>Tcl Commands - OpenLane Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=613ab9ff" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">OpenLane Documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">OpenLane Documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting_started/installation/index.html">Installation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_ubuntu.html">Ubuntu 20.04+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_macos.html">macOS 11+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_win.html">Windows 10+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_linux.html">Other Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/updating.html">Updating OpenLane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/quickstart.html">Quick-Start Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../flow_overview.html">OpenLane Architecture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../usage/index.html">Usage guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Usage guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../usage/designs.html">Adding Your Designs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/exploration_script.html">Regression &amp; Exploration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/hardening_macros.html">Hardening Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/chip_integration.html">Chip Level Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/advanced_power_grid_control.html">Power Grid/Power Distribution Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/custom_pdk_builds.html">Custom-Building PDKs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/digital_guide.html">Hierarchical chip design (with macros)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/openram.html">Designing a chip with an OpenRAM (sky130)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Reference Manual</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Reference Manual</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command-Line Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_files.html">Design Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Flow Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdk_configuration.html">PDK Configuration Variables</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Tcl Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive_mode.html">Interactive Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datapoint_definitions.html">Datapoint Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html">Viewing layouts graphically</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../additional_material.html">Additional Material</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../for_developers/index.html">Developer’s Guide</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Developer’s Guide</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/docs_contribution.html">Contributing Docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/pdk_structure.html">Porting a PDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/using_or_issue.html"><code class="docutils literal notranslate"><span class="pre">or_issue.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/gha_workflow.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/issue_regression_tests.html">Issue regression tests</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/blob/master/docs/source/reference/openlane_commands.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/edit/master/docs/source/reference/openlane_commands.md" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="tcl-commands">
+<h1>Tcl Commands<a class="headerlink" href="#tcl-commands" title="Link to this heading">¶</a></h1>
+<p>This page describes the list of commands available in OpenLane, their functionality, and their expected inputs and outputs.</p>
+<p><strong>NOTE:</strong> You must run the <code class="docutils literal notranslate"><span class="pre">prep</span></code> command before running any of the other commands, in order to have the necessary files and configurations loaded.</p>
+<p>The following commands are available in the interactive mode: <code class="docutils literal notranslate"><span class="pre">./flow.tcl</span> <span class="pre">-interactive</span></code>, or in Tclsh using <code class="docutils literal notranslate"><span class="pre">%</span> <span class="pre">package</span> <span class="pre">require</span> <span class="pre">openlane</span> <span class="pre">0.9</span></code>.</p>
+<section id="general-commands">
+<h2>General Commands<a class="headerlink" href="#general-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/all.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set_netlist</span> <span class="pre">&lt;netlist&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Sets the current netlist used by the flow to <code class="docutils literal notranslate"><span class="pre">&lt;netlist&gt;</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set_def</span> <span class="pre">&lt;def&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Sets the current def file used by the flow to <code class="docutils literal notranslate"><span class="pre">&lt;def&gt;</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">prep_lefs</span></code></p></td>
+<td><p></p></td>
+<td><p>prepares the used lef files by the flow. This process includes merging the techlef and cells lef, generating a merged.lef.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">trim_lib</span></code></p></td>
+<td><p></p></td>
+<td><p>prepares a liberty file (i.e. <code class="docutils literal notranslate"><span class="pre">LIB_SYNTH</span></code>) by trimming the <code class="docutils literal notranslate"><span class="pre">NO_SYNTH_CELL_LIST</span></code> and <code class="docutils literal notranslate"><span class="pre">DRC_EXCLUDE_CELL_LIST</span></code> from another input liberty file (i.e. <code class="docutils literal notranslate"><span class="pre">$::env(LIB_SYNTH_COMPLETE)</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-output</span> <span class="pre">&lt;lib_file&gt;]</span></code></p></td>
+<td><p>The lib file to output the trimmed liberty into. Required.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-input</span> <span class="pre">&lt;lib_file&gt;]</span></code></p></td>
+<td><p>The input liberty file to trim the cells from. Required.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-drc_exclude_only]</span></code></p></td>
+<td><p>If provided, it will only use <code class="docutils literal notranslate"><span class="pre">DRC_EXCLUDE_CELL_LIST</span></code> to create the exclude list. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gen_exclude_list</span></code></p></td>
+<td><p></p></td>
+<td><p>generates an exclude list file for a liberty file (i.e. <code class="docutils literal notranslate"><span class="pre">LIB_SYNTH</span></code>) by concatenating the <code class="docutils literal notranslate"><span class="pre">NO_SYNTH_CELL_LIST</span></code> and <code class="docutils literal notranslate"><span class="pre">DRC_EXCLUDE_CELL_LIST</span></code> into the output file.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-lib</span> <span class="pre">&lt;lib_file_path&gt;</span></code></p></td>
+<td><p>The lib file that the list will be trimmed from. This will general a <code class="docutils literal notranslate"><span class="pre">&lt;-lib&gt;.exclude.list</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-drc_exclude_only]</span></code></p></td>
+<td><p>If provided, it will only use <code class="docutils literal notranslate"><span class="pre">DRC_EXCLUDE_CELL_LIST</span></code> to create the exclude list. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-create_dont_use_list]</span></code></p></td>
+<td><p>If provided, it will create an environment variable with the file content. The variable will be named <code class="docutils literal notranslate"><span class="pre">DONT_USE_CELLS</span></code>. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prep</span></code></p></td>
+<td><p></p></td>
+<td><p>Prepares a run in openlane or loads a previously stopped run in order to proceed with it. It calls <code class="docutils literal notranslate"><span class="pre">trim_lib</span></code>, <code class="docutils literal notranslate"><span class="pre">prep_lefs</span></code>, <code class="docutils literal notranslate"><span class="pre">source_config</span></code>, and other procs to set all the needed environment variables.<br> It has similar flags to ./flow.tcl.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-design</span> <span class="pre">&lt;design_name&gt;</span></code></p></td>
+<td><p>Specifies the design folder. A design folder should contain a <code class="docutils literal notranslate"><span class="pre">config.tcl</span></code> or <code class="docutils literal notranslate"><span class="pre">config.json</span></code> file defining the design parameters. <br> If the folder is not found, the ./designs directory is searched for said file.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-override_env</span></code></p></td>
+<td><p>Allows you to override certain configuration environment variables for this run. Format: <code class="docutils literal notranslate"><span class="pre">-override_env</span> <span class="pre">KEY1=VALUE1,KEY2=VALUE2</span></code> <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-expose_env</span></code></p></td>
+<td><p>Expose the following environment variables to <code class="docutils literal notranslate"><span class="pre">config.json</span></code> as configuration variables. Has no effect on config.tcl sourcing, which already has access to all environment variables. Format: <code class="docutils literal notranslate"><span class="pre">-expose</span> <span class="pre">KEY1,KEY2</span></code> <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-overwrite]</span></code></p></td>
+<td><p>Flag to overwirte an existing run with the same tag. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-run_path</span> <span class="pre">&lt;path&gt;]</span></code></p></td>
+<td><p>Specifies a <code>path</code> to save the run in. By default the run is in <code>design_path/</code>, where the design path is the one passed to <code>-design</code> <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-tag</span> <span class="pre">&lt;tag&gt;]</span></code></p></td>
+<td><p>Specifies a <code>name</code> for a specific run. If the tag is not specified, a timestamp is generated for identification of that run. <br> Can Specify the configuration file name in case of using <code>-init_design_config</code>. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-init_design_config]</span></code></p></td>
+<td><p>Creates a tcl configuration file for a design. <code>-tag &lt;name&gt;</code> can be added to rename the config file to <code>&lt;name&gt;.tcl</code>. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-src</span> <span class="pre">&lt;verilog_source&gt;]</span></code></p></td>
+<td><p>Sets the verilog source code file(s) in case of using <code class="docutils literal notranslate"><span class="pre">-init_design_config</span></code>. The default is that the source code files are under <code>design_path/src/</code>, where the design path is the one passed to <code>-design</code>. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-config_file</span> <span class="pre">&lt;config_file&gt;]</span></code></p></td>
+<td><p>Specifies the design’s configuration file for running the flow. <br> For example, to run the flow using <code>/spm/config2.tcl</code> <br> Use run <code>./flow.tcl -design /spm -config_file /spm/config2.tcl</code> <br> By default <code>config.tcl</code> is used. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-verbose</span> <span class="pre">&lt;level&gt;]</span></code></p></td>
+<td><p>Sets a verbose output level. 0 disables verbose information and tool outputs. 1 enables verbose information but disables tool outputs. 2 and greater outputs everything. More verbose levels may be added over time, so if you want absolutely all output, set it to something like 99.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-disable_output]</span></code></p></td>
+<td><p><strong>Removed: Default Behavior</strong> Disables outputing to the terminal. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">padframe_gen</span></code></p></td>
+<td><p></p></td>
+<td><p>Generates the padframe for a design based on the files and configurations under <code class="docutils literal notranslate"><span class="pre">padframe_folder</span></code>. Also, it generates a padframe.cfg if it’s not present. The padframe.cfg is a file that describes the order of the pads and their relative location on the chip.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-folder</span> <span class="pre">&lt;padframe_folder&gt;</span></code></p></td>
+<td><p>specifies the <code class="docutils literal notranslate"><span class="pre">&lt;padframe_folder&gt;</span></code> for the padframe generator. The folder should contain the following: <code class="docutils literal notranslate"><span class="pre">./mag/&lt;mag</span> <span class="pre">files&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">./verilog/&lt;verilog</span> <span class="pre">files&gt;</span></code>, and optionally <code class="docutils literal notranslate"><span class="pre">./mag/padframe.cfg</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">save_views</span></code></p></td>
+<td><p></p></td>
+<td><p>Saves the views of a given <code class="docutils literal notranslate"><span class="pre">run_tag</span></code> into the specifies <code class="docutils literal notranslate"><span class="pre">path</span></code>(s).</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-lef_path</span> <span class="pre">&lt;path&gt;]</span></code></p></td>
+<td><p>Changes the save path for the lef files to <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code>. <br> The default is the <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;</span></code> under the <code class="docutils literal notranslate"><span class="pre">&lt;design_path&gt;</span></code> specified by the <code class="docutils literal notranslate"><span class="pre">&lt;run_tag&gt;</span></code> and the processed <code class="docutils literal notranslate"><span class="pre">design</span></code> <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-mag_path</span> <span class="pre">&lt;path&gt;]</span></code></p></td>
+<td><p>Changes the save path for the mag files to <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code>. <br> The default is the <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;</span></code> under the <code class="docutils literal notranslate"><span class="pre">&lt;design_path&gt;</span></code> specified by the <code class="docutils literal notranslate"><span class="pre">&lt;run_tag&gt;</span></code> and the processed <code class="docutils literal notranslate"><span class="pre">design</span></code> <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-def_path</span> <span class="pre">&lt;path&gt;]</span></code></p></td>
+<td><p>Changes the save path for the def files to <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code>. <br> The default is the <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;</span></code> under the <code class="docutils literal notranslate"><span class="pre">&lt;design_path&gt;</span></code> specified by the <code class="docutils literal notranslate"><span class="pre">&lt;run_tag&gt;</span></code> and the processed <code class="docutils literal notranslate"><span class="pre">design</span></code> <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-gds_path</span> <span class="pre">&lt;path&gt;]</span></code></p></td>
+<td><p>Changes the save path for the gds files to <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code>. <br> The default is the <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;</span></code> under the <code class="docutils literal notranslate"><span class="pre">&lt;design_path&gt;</span></code> specified by the <code class="docutils literal notranslate"><span class="pre">&lt;run_tag&gt;</span></code> and the processed <code class="docutils literal notranslate"><span class="pre">design</span></code> <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-verilog_path</span> <span class="pre">&lt;path&gt;]</span></code></p></td>
+<td><p>Changes the save path for the verilog files to <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code>. <br> The default is the <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;</span></code> under the <code class="docutils literal notranslate"><span class="pre">&lt;design_path&gt;</span></code> specified by the <code class="docutils literal notranslate"><span class="pre">&lt;run_tag&gt;</span></code> and the processed <code class="docutils literal notranslate"><span class="pre">design</span></code> <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-spice_path</span> <span class="pre">&lt;path&gt;]</span></code></p></td>
+<td><p>Changes the save path for the spice files to <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code>. <br> The default is the <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;</span></code> under the <code class="docutils literal notranslate"><span class="pre">&lt;design_path&gt;</span></code> specified by the <code class="docutils literal notranslate"><span class="pre">&lt;run_tag&gt;</span></code> and the processed <code class="docutils literal notranslate"><span class="pre">design</span></code> <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-save_path</span> <span class="pre">&lt;path&gt;]</span></code></p></td>
+<td><p>Changes the save path for the save path for all the types of files to <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code>. <br> The default is the <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/results/final</span></code>.<br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-tag</span> <span class="pre">&lt;run_tag&gt;</span></code></p></td>
+<td><p><strong>Removed:</strong> Specifies the <code class="docutils literal notranslate"><span class="pre">&lt;run_tag&gt;</span></code> from which the views were generated.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">label_macro_pins</span> </code></p></td>
+<td><p></p></td>
+<td><p>Labels the pins of a given macro def according to the netlist for lvs.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-lef</span> <span class="pre">&lt;lef_file&gt;</span></code></p></td>
+<td><p>LEF file needed to have a proper view of the netlist AND the input DEF.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-netlist_def</span> <span class="pre">&lt;def_file&gt;</span></code></p></td>
+<td><p>DEF view of the design that has the connectivity information.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-pad_pin_name</span> <span class="pre">&lt;pad_pin_name&gt;</span></code></p></td>
+<td><p>Name of the pin of the pad as it appears in the netlist def.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-output</span> <span class="pre">&lt;output_def&gt;]</span></code></p></td>
+<td><p>Output labeled def file. <br> Defaults to the <code class="docutils literal notranslate"><span class="pre">CURRENT_DEF</span></code>. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-extra_args</span> <span class="pre">&lt;extra_args&gt;]</span></code></p></td>
+<td><p>Gives extra control on the rest of the flags of the labeling script. For more information on the other args that the script supports, run: <code class="docutils literal notranslate"><span class="pre">openroad</span> <span class="pre">-python</span> <span class="pre">$OPENLANE_ROOT/scripts/odbpy/label_macro_pins.py</span> <span class="pre">-h</span></code>. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">write_verilog</span> <span class="pre">&lt;filename&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Generates a verilog netlist from a given def file. Stores the resulting netlist in <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> and updates <code class="docutils literal notranslate"><span class="pre">CURRENT_NETLIST</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-def</span> <span class="pre">&lt;def_file&gt;]</span></code></p></td>
+<td><p>The def file to write a verilog netlist from. <br> Defaults to the <code class="docutils literal notranslate"><span class="pre">CURRENT_DEF</span></code>. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-log</span> <span class="pre">&lt;log_file&gt;]</span></code></p></td>
+<td><p>A file to which the output of OpenROAD is logged. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">/dev/null</span></code>. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-powered]</span></code></p></td>
+<td><p>Add power and ground pins, and save to <code class="docutils literal notranslate"><span class="pre">CURRENT_POWERED_NETLIST</span></code> instead. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">add_macro_obs</span></code></p></td>
+<td><p></p></td>
+<td><p>Creates obstructions in def and lef files.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-defFile</span> <span class="pre">&lt;def_file&gt;</span></code></p></td>
+<td><p>DEF view of the design to write the obstruction into.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-lefFile</span> <span class="pre">&lt;lef_file&gt;</span></code></p></td>
+<td><p>LEF file of the design to write the obstruction into.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-obstruction</span> <span class="pre">&lt;obstruction_name&gt;</span></code></p></td>
+<td><p>Name of obstruction.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-placementX</span> <span class="pre">&lt;base_x_coordinate&gt;]</span></code></p></td>
+<td><p>X coordinate to place the obstruction. <br> Defaults to 0. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-placementY</span> <span class="pre">&lt;base_y_coordinate&gt;]</span></code></p></td>
+<td><p>Y coordinate to place the obstruction. <br> Defaults to 0. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-sizeWidth</span> <span class="pre">&lt;width&gt;</span></code></p></td>
+<td><p>The width of the obstruction.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-sizeHeight</span> <span class="pre">&lt;height&gt;</span></code></p></td>
+<td><p>The height of the macro obstruction.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-fixed</span> <span class="pre">&lt;val&gt;</span></code></p></td>
+<td><p>if <code class="docutils literal notranslate"><span class="pre">&lt;val&gt;</span></code> is 1, then the macro is set as FIXED, else it’s set as PLACED in the def file.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-dbunit</span> <span class="pre">&lt;val&gt;]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&lt;val&gt;</span></code> reflects the value of the data base unit. <br> Defaults to 1000. <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-layerNames</span> <span class="pre">&lt;list_of_layer_names&gt;</span></code></p></td>
+<td><p>the list of layer names on which to place the obstruction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">extract_core_dims</span></code></p></td>
+<td><p></p></td>
+<td><p>Extracts the core dimensions based on the existing set environment variables. The results are set into <code class="docutils literal notranslate"><span class="pre">CORE_WIDTH</span></code> and <code class="docutils literal notranslate"><span class="pre">CORE_HEIGHT</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-log_path</span> <span class="pre">&lt;path&gt;</span></code></p></td>
+<td><p>The path to write the logs into.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_spef_extraction</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs SPEF extraction on the <code class="docutils literal notranslate"><span class="pre">::env(CURRENT_DEF)</span></code> file followed by Static Timing Analysis using OpenSTA. The results are reported under <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/reports/&lt;step&gt;/opensta_spef_*</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_antenna_check</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs antenna checks based on the value of <code class="docutils literal notranslate"><span class="pre">::env(USE_ARC_ANTENNA_CHECK)</span></code>, either calling <code class="docutils literal notranslate"><span class="pre">run_or_antenna_check</span></code> or <code class="docutils literal notranslate"><span class="pre">run_magic_antenna_check</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_or_antenna_check</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs antenna checks using OpenROAD’s Antenna Rule Checker on the <code class="docutils literal notranslate"><span class="pre">::env(CURRENT_DEF)</span></code>, the result is saved in <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/reports/signoff/antenna_violators.rpt</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">save_state</span></code></p></td>
+<td><p></p></td>
+<td><p>Saves environment variables to  <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/config.tcl</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_sta</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs OpenSTA timing analysis on the current design, and produces a log under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/logs/&lt;step&gt;/</span></code> and timing reports under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/reports/&lt;step&gt;/</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">set_layer_tracks</span>&#160; </code></p></td>
+<td><p></p></td>
+<td><p><strong>Removed:</strong> sets the tracks on a layer to specific value.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-defFile</span> <span class="pre">&lt;def_file&gt;</span></code></p></td>
+<td><p>DEF view of the design in which to edit the tracks values.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-layer</span> <span class="pre">&lt;layer_name&gt;</span></code></p></td>
+<td><p>layer to change.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-valuesFile</span> <span class="pre">&lt;file&gt;</span></code></p></td>
+<td><p>tmp file to read the new track values from.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-originalFile</span> <span class="pre">&lt;file&gt;</span></code></p></td>
+<td><p>tmp file to store the original value.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="checker-commands">
+<h2>Checker Commands<a class="headerlink" href="#checker-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/checkers.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">check_synthesis_failure</span></code></p></td>
+<td><p></p></td>
+<td><p>Checks if any cells were unmapped or any latches were produced in the generated netlist by yosys.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">check_assign_statements</span></code></p></td>
+<td><p></p></td>
+<td><p>Checks if the netlist generated by yosys contains any assign statements.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">check_floorplan_missing_lef</span></code></p></td>
+<td><p></p></td>
+<td><p>Checks if the LEF was properly read in the floorplan stage. This is to detect if EXTRA_LEFS isn’t set correctly.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">check_floorplan_missing_pins</span></code></p></td>
+<td><p></p></td>
+<td><p>Checks if the LEF contains all pins, and that EXTRA_LEFS was set correctly.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">check_cts_clock_nets</span></code></p></td>
+<td><p></p></td>
+<td><p>Checks if clock tree synthesis was successful and clock nets were added.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">check_replace_divergence</span></code></p></td>
+<td><p></p></td>
+<td><p>Catches replace divergence and exits the flow because global placement failed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">check_macro_placer_num_solns</span></code></p></td>
+<td><p></p></td>
+<td><p>Checks if macro placement was successful using basic placement.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">quit_on_tr_drc</span></code></p></td>
+<td><p></p></td>
+<td><p>Checks for DRC violations after routing and exits the flow if any was found. Controlled by <code class="docutils literal notranslate"><span class="pre">QUIT_ON_TR_DRC</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">quit_on_magic_drc</span></code></p></td>
+<td><p></p></td>
+<td><p>Checks for DRC violations after magic DRC is executed and exits the flow if any was found. Controlled by <code class="docutils literal notranslate"><span class="pre">QUIT_ON_MAGIC_DRC</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">quit_on_lvs_error</span></code></p></td>
+<td><p></p></td>
+<td><p>Checks for LVS errors after netgen LVS is executed and exits the flow if any was found. Controlled by <code class="docutils literal notranslate"><span class="pre">QUIT_ON_LVS_ERROR</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-log</span> <span class="pre">&lt;file_parsed.log&gt;</span></code></p></td>
+<td><p>The parsed LVS log, generated at the end of running LVS. The reason why this is passed over is because there are two types of LVS and each produces a different report, and this might be expanded later.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">quit_on_illegal_overlaps</span></code></p></td>
+<td><p></p></td>
+<td><p>Checks for illegal overlaps during magic extraction. In some cases, these imply existing undetected shorts in the design. It also exits the flow if any was found. Controlled by <code class="docutils literal notranslate"><span class="pre">QUIT_ON_ILLEGAL_OVERLAPS</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-log</span> <span class="pre">&lt;magic_ext_feedback.log&gt;</span></code></p></td>
+<td><p>The magic extraction feedback log, generated at the end of running Magic extractions.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="synthesis-verilog-commands">
+<h2>Synthesis/Verilog Commands<a class="headerlink" href="#synthesis-verilog-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/synthesis.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_yosys</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs yosys synthesis on the design processed in the flow (the design is set by the <code class="docutils literal notranslate"><span class="pre">prep</span></code> command).</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-output</span> <span class="pre">&lt;output_file&gt;]</span></code></p></td>
+<td><p>Sets the outputfile from yosys synthesis. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/synthesis/&lt;design_name&gt;.synthesis.v</span></code>  <br> Optional flag.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_synthesis</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs yosys synthesis on the current design as well as OpenSTA timing analysis on the generated netlist. The logs are produced under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/logs/synthesis/</span></code>, the timing reports are under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/reports/synthesis/</span></code>, and the synthesized netlist under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/synthesis/</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_synth_exploration</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs synthesis exploration, which will try out the available synthesis strategies against the input design. The output will be the four possible gate level netlists under <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/results/synthesis</span></code> and a summary report under <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/reports</span></code> that compares the 4 outputs.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">verilog_elaborate</span> <span class="pre">&lt;optional</span> <span class="pre">args&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs on structural verilog (top-level netlists) and elaborates it. The <code class="docutils literal notranslate"><span class="pre">&lt;optional</span> <span class="pre">args&gt;</span></code> are used to control what is passed to <code class="docutils literal notranslate"><span class="pre">run_yosys</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">yosys_rewrite_verilog</span> <span class="pre">&lt;filename&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs yosys to rewrite the verilog given in <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code> into the already set environment variable <code class="docutils literal notranslate"><span class="pre">SAVE_NETLIST</span></code>.  Mainly used to generate explicit wire declarations</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_yosys_bin</span></code></p></td>
+<td><p></p></td>
+<td><p><strong>Removed: Read $::env(SYNTH_BIN)</strong> Returns the used binary for yosys.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">verilog_to_verilogPower</span></code></p></td>
+<td><p></p></td>
+<td><p><strong>Removed: Use <code class="docutils literal notranslate"><span class="pre">write_verilog</span> <span class="pre">-powered</span></code></strong> Adds the power pins and connections to a verilog file.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-input</span> <span class="pre">&lt;verilog_netlist_file&gt;</span></code></p></td>
+<td><p>The input verilog that doesn’t contain the power pins and connections.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-output</span> <span class="pre">&lt;verilog_netlist_file&gt;</span></code></p></td>
+<td><p>The output verilog file.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-lef</span> <span class="pre">&lt;lef_file&gt;</span></code></p></td>
+<td><p>The LEF view with the power pins information.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-power</span> <span class="pre">&lt;power_pin&gt;</span></code></p></td>
+<td><p>The name of the power pin.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-ground</span> <span class="pre">&lt;ground_pin&gt;</span></code></p></td>
+<td><p>The name of the ground pin.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">write_powered_verilog</span></code></p></td>
+<td><p></p></td>
+<td><p>writes a verilog file that contains the power pins and connections from a DEF file. It stores the result in <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/lvs</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-odb</span> <span class="pre">&lt;odb_file&gt;]</span></code></p></td>
+<td><p>The input ODB file. <br> Defaults to the <code class="docutils literal notranslate"><span class="pre">CURRENT_ODB</span></code> of the processed design.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-output_def</span> <span class="pre">&lt;def_file&gt;]</span></code></p></td>
+<td><p>The output DEF file. Required.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-output_verilog</span> <span class="pre">&lt;verilog_netlist_file&gt;]</span></code></p></td>
+<td><p>The output verilog file. Required.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-lef</span> <span class="pre">&lt;lef_file&gt;]</span></code></p></td>
+<td><p>The LEF view with the power pins information. <br> Defaults to the <code class="docutils literal notranslate"><span class="pre">MERGED_LEF</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-power</span> <span class="pre">&lt;power_pin&gt;]</span></code></p></td>
+<td><p>The name of the power pin. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">VDD_PIN</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-ground</span> <span class="pre">&lt;ground_pin&gt;]</span></code></p></td>
+<td><p>The name of the ground pin. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">GND_PIN</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-powered_netlist</span> <span class="pre">&lt;verilog_netlist_file&gt;]</span></code></p></td>
+<td><p>The verilog netlist parsed from yosys that contains the internal power connections in case the design has internal macros file. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/synthesis/synthesis.pg_define.v</span></code> if <code class="docutils literal notranslate"><span class="pre">::env(SYNTH_USE_PG_PINS_DEFINES)</span></code> is defined, and to empty string otherwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">logic_equiv_check</span></code></p></td>
+<td><p></p></td>
+<td><p><strong>Removed</strong>: Runs logic verification using yosys between the two given netlists.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-lhs</span> <span class="pre">&lt;verilog_netlist_file&gt;</span></code></p></td>
+<td><p>The first netlist (lefthand-side) in the logic verification comparison.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-rhs</span> <span class="pre">&lt;verilog_netlist_file&gt;</span></code></p></td>
+<td><p>The second netlist (righthand-side) in the logic verification comparison.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="floorplan-commands">
+<h2>Floorplan Commands<a class="headerlink" href="#floorplan-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/floorplan.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">init_floorplan</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs floorplanning on the processed design using the openroad app. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/floorplan/</span></code> .</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">place_io</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs io placement on the design processed using the openroad app. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/floorplan/</span></code> .</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">place_io_ol</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs IO placement based on an input configuration file to place the pins in the orientation and order requiered by the user.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-lef</span> <span class="pre">&lt;lef_file&gt;]</span></code></p></td>
+<td><p>LEF file to be used. It must also include the technology information. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">::env(MERGED_LEF)</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-def</span> <span class="pre">&lt;def_file&gt;]</span></code></p></td>
+<td><p>DEF file to be used. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">::env(CURRENT_DEF)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-cfg</span> <span class="pre">&lt;cfg_file&gt;]</span></code></p></td>
+<td><p>configuration file containing the list of desired pin order. An example could be found <a class="reference external" href="https://github.com/The-OpenROAD-Project/openlane/blob/master/designs/spm/pin_order.cfg">here</a>. The file should contain <code class="docutils literal notranslate"><span class="pre">#orientation</span></code> followed by the pin names each in a new line in the desired order. Between each orientation section there should be a new empty line. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">::env(FP_PIN_ORDER_CFG)</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-horizontal_layer</span> <span class="pre">&lt;val&gt;]</span></code></p></td>
+<td><p>The metal layer on which to place the io pins horizontally (top and bottom of the die). <br> Defaults to <code class="docutils literal notranslate"><span class="pre">::env(FP_IO_HMETAL)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-vertical_layer</span> <span class="pre">&lt;val&gt;]</span></code></p></td>
+<td><p>The metal layer on which to place the io pins vertically (left and right of the die). <br> Defaults to <code class="docutils literal notranslate"><span class="pre">::env(FP_IO_VMETAL)</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-vertical_mult</span> <span class="pre">&lt;val&gt;]</span></code></p></td>
+<td><p>A multiplier for vertical pin thickness. Base thickness is the pins layer minwidth. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">::env(FP_IO_VTHICKNESS_MULT)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-horizontal_mult</span> <span class="pre">&lt;val&gt;]</span></code></p></td>
+<td><p>A multiplier for horizontal pin thickness. Base thickness is the pins layer minwidth. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">::env(FP_IO_HTHICKNESS_MULT)</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-vertical_ext</span> <span class="pre">&lt;val&gt;]</span></code></p></td>
+<td><p>Extends the vertical io pins outside of the die by the specified units. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">::env(FP_IO_VEXTEND)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-horizontal_ext</span> <span class="pre">&lt;val&gt;]</span></code></p></td>
+<td><p>Extends the horizontal io pins outside of the die by the specified units. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">::env(FP_IO_HEXTEND)</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-length</span> <span class="pre">&lt;val&gt;]</span></code></p></td>
+<td><p>IO length to be used. <br> Defaults to maximum of <code class="docutils literal notranslate"><span class="pre">::env(FP_IO_VLENGTH)</span></code> and <code class="docutils literal notranslate"><span class="pre">::env(FP_IO_HLENGTH)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-output_def</span> <span class="pre">&lt;def_file&gt;]</span></code></p></td>
+<td><p>output DEF file to be written. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/tmp/floorplan/ioplacer.def</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">place_contextualized_io</span></code></p></td>
+<td><p></p></td>
+<td><p>contextualizes io placement on a given macro (the processed design) with the context of the higher macro that contains it. This allows the io pins to be placed in location closer to what they will be connected with on the bigger macro. The resuls are saved under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/floorplan/</span></code> .</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-lef</span> <span class="pre">&lt;lef_file&gt;</span></code></p></td>
+<td><p>LEF file needed to have a proper view of the top-level DEF</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-def</span> <span class="pre">&lt;def_file&gt;</span></code></p></td>
+<td><p>DEF view of the top-level design where the macro is instantiated.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tap_decap_or</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs tap/decap placement on the design processed using the openroad app. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/floorplan/</span></code> .</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">chip_floorplan</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs floorplanning on a chip removing pins section and other empty sections from the def. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/floorplan/</span></code> .</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_floorplan</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs <code class="docutils literal notranslate"><span class="pre">init_floorplan</span></code>, followed by one of the io placement functions: if <code class="docutils literal notranslate"><span class="pre">::env(FP_PIN_ORDER_CFG)</span></code> is defined then <code class="docutils literal notranslate"><span class="pre">place_io_ol</span></code> is run; otherwise, if <code class="docutils literal notranslate"><span class="pre">::env(FP_CONTEXT_DEF)</span></code> and <code class="docutils literal notranslate"><span class="pre">::env(FP_CONTEXT_LEF)</span></code> are defined it runs <code class="docutils literal notranslate"><span class="pre">place_contextualized_io</span></code>, if nothing of those is defined then it runs the vanilla <code class="docutils literal notranslate"><span class="pre">place_io</span></code>. Then it runs <code class="docutils literal notranslate"><span class="pre">tap_decap_or</span></code> on the processed design. Finally, power grid is generated utilizing <code class="docutils literal notranslate"><span class="pre">::env(VDD_NETS)</span></code>, <code class="docutils literal notranslate"><span class="pre">::env(GND_NETS)</span></code>, and <code class="docutils literal notranslate"><span class="pre">::env(SYNTH_USE_PG_PINS_DEFINES)</span></code> if they are defined, otherwise vanilla  gen_pdn is used. The resulting files are under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/floorplan/</span></code> and <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/floorplan/</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">apply_def_template</span></code></p></td>
+<td><p></p></td>
+<td><p>Applies the DIE_AREA, pin names, and pin locations excluding power and ground pins from <code class="docutils literal notranslate"><span class="pre">::env(FP_DEF_TEMPLATE)</span></code> to the <code class="docutils literal notranslate"><span class="pre">::env(CURRENT_DEF)</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="placement-commands">
+<h2>Placement Commands<a class="headerlink" href="#placement-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/placement.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">global_placement_or</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs global placement on the processed design using OpenROAD. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/placement/</span></code> .</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">global_placement</span></code></p></td>
+<td><p>Alias for <code class="docutils literal notranslate"><span class="pre">global_placement_or</span></code>.</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">random_global_placement</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs random global placement using a custom OpenROAD-based script. Useful for tiny designs. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/placement/</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">detailed_placement_or</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs detailed placement on the processed design using OpenROAD. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/placement/</span></code> .</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">detailed_placement</span></code></p></td>
+<td><p></p></td>
+<td><p>Alias for <code class="docutils literal notranslate"><span class="pre">detailed_placement_or</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">add_macro_placement</span> <span class="pre">&lt;macro_name&gt;</span> <span class="pre">&lt;x_coordinate&gt;</span> <span class="pre">&lt;y_coordinate&gt;</span> <span class="pre">[&lt;orientation&gt;]</span></code></p></td>
+<td><p></p></td>
+<td><p>Writes a configuration file to be processed by <code class="docutils literal notranslate"><span class="pre">manual_macro_placement</span></code> by setting the initial placement of the macro <code class="docutils literal notranslate"><span class="pre">&lt;macro_name&gt;</span></code> to location (<code class="docutils literal notranslate"><span class="pre">&lt;x_coordinate&gt;</span></code>,<code class="docutils literal notranslate"><span class="pre">&lt;y_coordinate&gt;</span></code>) on the chip with the option of specifying the <code class="docutils literal notranslate"><span class="pre">&lt;orientation&gt;</span></code> as well. The line written will be appened to this configuration file <code class="docutils literal notranslate"><span class="pre">/run_path/tmp/macro_placements.cfg</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">manual_macro_placement</span> <span class="pre">[-f]</span></code></p></td>
+<td><p></p></td>
+<td><p>Uses the configuration file generated by <code class="docutils literal notranslate"><span class="pre">add_macro_placement</span></code> (<code class="docutils literal notranslate"><span class="pre">/run_path/tmp/macro_placements.cfg</span></code>) to manually initialize the placement of the macros to the locations determined in the file. It works on the currently processed design and it overwrites the <code class="docutils literal notranslate"><span class="pre">CURRENT_DEF</span></code>. if <code class="docutils literal notranslate"><span class="pre">-f</span></code> is passed as an argument, the placement will be fixed and final, and the placement tools will not be allowed to change it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">basic_macro_placement</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs basic macro placement on the chip level using the openroad app, and it writes into <code class="docutils literal notranslate"><span class="pre">::env(CURRENT_DEF).macro_placement.def</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_resizer_design</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs resizer design optimizations to insert buffers on nets to repair max slew, max capacitance, max fanout violations, and on long wires to reduce RC delay in the wire. It also resizes cells.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_placement</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs global placement (<code class="docutils literal notranslate"><span class="pre">global_placement_or</span></code> or <code class="docutils literal notranslate"><span class="pre">random_global_placement</span></code> based on the value of <code class="docutils literal notranslate"><span class="pre">PL_RANDOM_GLB_PLACEMENT</span></code>), then applies the optional optimizations <code class="docutils literal notranslate"><span class="pre">repair_wire_length</span></code> followed by <code class="docutils literal notranslate"><span class="pre">run_openPhySyn</span></code> if enabled, then runs the detailed placement (<code class="docutils literal notranslate"><span class="pre">detailed_placement_or</span></code>).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="cts-commands">
+<h2>CTS Commands<a class="headerlink" href="#cts-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/cts.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_cts</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs clock tree synthesis using the openroad app on the processed design. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/cts/</span></code>. It also generates a the updated netlist using yosys and stores the results under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/cts</span></code> and runs yosys logic verification if enabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_resizer_timing</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs resizer timing optimizations which repairs setup and hold violations.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="fill-insertion-diode-insertion-commands">
+<h2>Fill Insertion/Diode Insertion Commands<a class="headerlink" href="#fill-insertion-diode-insertion-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/routing.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ins_fill_cells</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs fill insertion on the processed design using the openroad app. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/routing/</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ins_diode_cells_1</span></code></p></td>
+<td><p></p></td>
+<td><p><strong>Deprecated</strong></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">heuristic_diode_insertion</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs diode insertion on the processed design using an opendb custom script following diode insertion strategies 4 and 5. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/placement/</span></code> . It also generates a the updated netlist using yosys and stores the results under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/synthesis</span></code> and runs yosys logic verification if enabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">heal_antenna_violators</span></code></p></td>
+<td><p></p></td>
+<td><p><strong>Deprecated</strong></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="pdn-generation-commands">
+<h2>PDN Generation Commands<a class="headerlink" href="#pdn-generation-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/routing.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gen_pdn</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs basic power grid generation on the processed design using the openroad app. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/floorplan/</span></code> .</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">power_routing</span></code></p></td>
+<td><p></p></td>
+<td><p>Performs power routing on a chip level design. More details in <a class="reference internal" href="../usage/chip_integration.html"><span class="std std-doc">Chip Integration</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-odb</span> <span class="pre">&lt;odb_file&gt;]</span></code></p></td>
+<td><p>The input ODB file. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">CURRENT_ODB</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-power</span> <span class="pre">&lt;power_pin&gt;]</span></code></p></td>
+<td><p>The name of the power pin. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">VDD_PIN</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-ground</span> <span class="pre">&lt;ground_pin&gt;]</span></code></p></td>
+<td><p>The name of the ground pin. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">GND_PIN</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-output_def</span> <span class="pre">&lt;output_def_file&gt;]</span></code></p></td>
+<td><p>The output DEF file path. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/tmp/routing/$::env(DESIGN_NAME).power_routed.def</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-output_odb</span> <span class="pre">&lt;output_odb_file&gt;]</span></code></p></td>
+<td><p>The output ODB file path. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/tmp/routing/$::env(DESIGN_NAME).power_routed.odb</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_power_grid_generation</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs power grid generation with the advanced control options, <code class="docutils literal notranslate"><span class="pre">VDD_NETS</span></code>, <code class="docutils literal notranslate"><span class="pre">GND_NETS</span></code>, etc… This proc is capable of generating multiple power grid. Check <a class="reference internal" href="../usage/advanced_power_grid_control.html"><span class="std std-doc">this documentation</span></a> for more details about controlling this command.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="routing-commands">
+<h2>Routing Commands<a class="headerlink" href="#routing-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/routing.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">global_routing</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs global routing  on the processed design The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/routing/</span></code> .</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">global_routing_fastroute</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs global routing  on the processed design using the openroad app’s fastroute. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/routing/</span></code> .</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">detailed_routing</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs detailed routing on the processed design. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/routing/</span></code> .</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">detailed_routing_tritonroute</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs detailed routing on the processed design using OpenROAD TritonRoute. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/routing/</span></code> .</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">apply_route_obs</span></code></p></td>
+<td><p></p></td>
+<td><p>Uses <code class="docutils literal notranslate"><span class="pre">GRT_OBS</span></code> to insert obstruction for each macro in order to prevent routing for each specified layer on each macro. Check <code class="docutils literal notranslate"><span class="pre">GRT_OBS</span></code> in the configurations documentation for more details.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">add_route_obs</span></code></p></td>
+<td><p></p></td>
+<td><p>Uses <code class="docutils literal notranslate"><span class="pre">GRT_OBS</span></code> to call <code class="docutils literal notranslate"><span class="pre">apply_route_obs</span></code>, then calls <code class="docutils literal notranslate"><span class="pre">apply_route_obs</span></code> again to apply obstructions over the whole die area based on the value of <code class="docutils literal notranslate"><span class="pre">GRT_MAXLAYER</span></code> up to the highest available metal layer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_routing</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs diode insertion based on the strategy, then adds the routing obstructions, followed by <code class="docutils literal notranslate"><span class="pre">global_routing</span></code>, then <code class="docutils literal notranslate"><span class="pre">ins_fill_cells</span></code>, <code class="docutils literal notranslate"><span class="pre">detailed_routing</span></code>, and finally SPEF extraction on the processed design. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/routing/</span></code>. It also generates a pre_route netlist using yosys and stores the results under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/synthesis</span></code>, and it runs yosys logic verification if enabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">global_routing_cugr</span></code></p></td>
+<td><p></p></td>
+<td><p><strong>Removed: Aliases global_routing_fastroute</strong>: Runs global routing  on the processed design using cugr. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/tmp/routing/</span></code> .</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">detailed_routing_drcu</span></code></p></td>
+<td><p></p></td>
+<td><p><strong>Removed: Aliases detailed_routing_tritonroute</strong>: Runs detailed routing on the processed design using DRCU. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/routing/</span></code> .</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="magic-commands">
+<h2>Magic Commands<a class="headerlink" href="#magic-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/magic.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_magic</span></code></p></td>
+<td><p></p></td>
+<td><p>Streams the final GDS and a mag view + a PNG screenshot of the layout. This is controlled by <code class="docutils literal notranslate"><span class="pre">RUN_MAGIC</span></code> and <code class="docutils literal notranslate"><span class="pre">TAKE_LAYOUT_SCROT</span></code>. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/magic/</span></code> .</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_magic_drc</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs a drc check on the <code class="docutils literal notranslate"><span class="pre">CURRENT_DEF</span></code> or the <code class="docutils literal notranslate"><span class="pre">CURRENT_GDS</span></code> based on the value of <code class="docutils literal notranslate"><span class="pre">MAGIC_DRC_USE_GDS</span></code>. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/logs/magic/magic.drc</span></code> .</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_magic_spice_export</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs spice extractions on the processed design. Based on the value of <code class="docutils literal notranslate"><span class="pre">MAGIC_EXT_USE_GDS</span></code> either the GDS or the DEF/LEF is used for the extraction. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/magic/</span></code> .</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">export_magic_view</span></code></p></td>
+<td><p></p></td>
+<td><p>Export a mag view of a given def file.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-def</span> <span class="pre">&lt;def_file&gt;</span></code></p></td>
+<td><p>The input DEF file, the default is <code class="docutils literal notranslate"><span class="pre">::env(CURRENT_DEF)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-output</span> <span class="pre">&lt;output_file&gt;</span></code></p></td>
+<td><p>The output mag file path.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_magic_antenna_check</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs spice extractions on the processed design and performs antenna checks. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/magic/</span></code> and <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/reports/magic/</span></code> .</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="klayout-commands">
+<h2>KLayout Commands<a class="headerlink" href="#klayout-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/klayout.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_klayout</span></code></p></td>
+<td><p></p></td>
+<td><p>Streams the back-up final GDSII, generates a PNG screenshot, then runs KLayout DRC deck on it. This is controlled by <code class="docutils literal notranslate"><span class="pre">RUN_KLAYOUT</span></code> and <code class="docutils literal notranslate"><span class="pre">TAKE_LAYOUT_SCROT</span></code>. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/klayout/</span></code> .</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">scrot_klayout</span></code></p></td>
+<td><p></p></td>
+<td><p>Export a PNG view of a given GDSII or DEF file. This is controlled by <code class="docutils literal notranslate"><span class="pre">TAKE_LAYOUT_SCROT</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-log</span> <span class="pre">&lt;log_file&gt;]</span></code></p></td>
+<td><p>Output log file.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-layout</span> <span class="pre">&lt;layout_file&gt;]</span></code></p></td>
+<td><p>The input GDS or DEF file, the default is <code class="docutils literal notranslate"><span class="pre">::env(CURRENT_GDS)</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_klayout_drc</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs KLayout DRC on a<code class="docutils literal notranslate"><span class="pre">::env(CURRENT_GDS)</span></code>. This is controlled by <code class="docutils literal notranslate"><span class="pre">RUN_KLAYOUT_DRC</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_klayout_gds_xor</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs KLayout XOR on 2 GDSIIs. This is controlled by <code class="docutils literal notranslate"><span class="pre">RUN_KLAYOUT_XOR</span></code> and <code class="docutils literal notranslate"><span class="pre">KLAYOUT_XOR_GDS</span></code> and <code class="docutils literal notranslate"><span class="pre">KLAYOUT_XOR_XML</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-layout1</span> <span class="pre">&lt;gds_file&gt;]</span></code></p></td>
+<td><p>The input GDS file, the default is the magic generated GDSII under <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/results/magic/&lt;design_name&gt;.gds</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-layout2</span> <span class="pre">&lt;gds_file&gt;]</span></code></p></td>
+<td><p>The input GDS file, the default is the klayout generated GDSII under <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/results/klayout/&lt;design_name&gt;.gds</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-output_gds</span> <span class="pre">&lt;gds_file&gt;]</span></code></p></td>
+<td><p>The output GDS file with the xor result, the default under <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/results/klayout/&lt;design_name&gt;.xor.gds</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-output_xml</span> <span class="pre">&lt;xml_file&gt;]</span></code></p></td>
+<td><p>The output XML file with the xor result, the default under <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/results/klayout/&lt;design_name&gt;.xor.xml</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">open_in_klayout</span></code></p></td>
+<td><p></p></td>
+<td><p>Opens a design in the KLayout GUI with MERGED_LEF for the cell/macro definitions. Useful as it works around KLayout’s LEF import peculiarities.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-layout</span> <span class="pre">&lt;def_file&gt;]</span></code></p></td>
+<td><p>The input DEF file, the default is <code class="docutils literal notranslate"><span class="pre">::env(CURRENT_DEF)</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="lvs-commands">
+<h2>LVS Commands<a class="headerlink" href="#lvs-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this <a class="reference internal" href="#./../../../scripts/tcl_commands/lvs.tcl"><span class="xref myst">file</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_lvs</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs an lvs check between an extracted spice netlist <code class="docutils literal notranslate"><span class="pre">EXT_NETLIST</span></code> (so <code class="docutils literal notranslate"><span class="pre">run_magic_spice_export</span></code> should be run before it.) and the current verilog netlist of the processed design <code class="docutils literal notranslate"><span class="pre">CURRENT_NETLIST</span></code>. The resulting file is under <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/results/lvs/</span></code> and <code class="docutils literal notranslate"><span class="pre">/&lt;run_path&gt;/reports/lvs/</span></code>. The LVS could be on the block/cell level or on the device/transistor level, this is controlled by the extraction type set by <code class="docutils literal notranslate"><span class="pre">MAGIC_EXT_USE_GDS</span></code>. If the GDS is used in extraction then the LVS will be run down to the device/transistor level, otherwise it will be run on the block/cell level which is the default behavior in OpenLane.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="erc-commands">
+<h2>ERC Commands<a class="headerlink" href="#erc-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in this [file][18]</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">run_erc</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs Circuit Validity Checker Electrical Rule Checking. Voltage aware ERC checker for CDL netlists. The output files exist under <code class="docutils literal notranslate"><span class="pre">&lt;run-path&gt;/results/cvc/</span></code>..</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">run_lef_cvc</span></code></p></td>
+<td><p></p></td>
+<td><p><strong>Deprecated: Use run_erc</strong>: Runs Circuit Validity Checker ERC on the output spice, which is a Circuit Validity Checker. Voltage aware ERC checker for CDL netlists. The output files exist under <code class="docutils literal notranslate"><span class="pre">&lt;run-path&gt;/results/cvc/</span></code>..</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="utility-commands">
+<h2>Utility Commands<a class="headerlink" href="#utility-commands" title="Link to this heading">¶</a></h2>
+<p>Most of the following commands’ implementation exists in these files: <a class="reference internal" href="#./../../../scripts/utils/deflef_utils.tcl"><span class="xref myst">deflef</span></a> and <a class="reference internal" href="#./../../../scripts/utils/utils.tcl"><span class="xref myst">general</span></a></p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>Flags</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">generate_final_summary_report</span></code></p></td>
+<td><p></p></td>
+<td><p>Generates a final summary csv report of the most important statistics and configurations in the run as well as a manufacturability report with the sumamry of DRC, LVS, and Antenna violations. This command is controlled by the flag <code class="docutils literal notranslate"><span class="pre">$::env(GENERATE_FINAL_SUMMARY_REPORT)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-output_file</span> <span class="pre">&lt;output_file&gt;]</span></code></p></td>
+<td><p>The ouput final summary csv report file path. <br> Defaults to being generated under <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/reports/metrics.csv</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-man_report</span> <span class="pre">&lt;man_report&gt;]</span></code></p></td>
+<td><p>The ouput manufacturability report file path. <br> Defaults to being generated under <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/reports/manufacturability.rpt</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">remove_pins</span></code></p></td>
+<td><p></p></td>
+<td><p>Removes pins from a given database.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-input</span> <span class="pre">&lt;odb_file&gt;</span></code></p></td>
+<td><p>The ODB file to merge the components in to. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">CURRENT_ODB</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-output</span> <span class="pre">&lt;odb_file&gt;</span></code></p></td>
+<td><p>The output ODB file. <br> Defaults to the value of <code class="docutils literal notranslate"><span class="pre">-input</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">remove_nets</span></code></p></td>
+<td><p></p></td>
+<td><p>Removes nets from a given database.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-input</span> <span class="pre">&lt;odb_file&gt;</span></code></p></td>
+<td><p>The ODB file to merge the components in to. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">CURRENT_ODB</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-output</span> <span class="pre">&lt;odb_file&gt;</span></code></p></td>
+<td><p>The output ODB file. <br> Defaults to the value of <code class="docutils literal notranslate"><span class="pre">-input</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-rx</span> <span class="pre">&lt;regular</span> <span class="pre">expression&gt;</span></code></p></td>
+<td><p>A regular expression to match to delete a certain net. Must match whole name of the net. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">.+</span></code> (matches everything.)</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-empty</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">resize_die</span></code></p></td>
+<td><p></p></td>
+<td><p>Resizes the DIEAREA in a given DEF file to the given size.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-def</span> <span class="pre">&lt;def_file&gt;</span></code></p></td>
+<td><p>The input DEF file.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-area</span> <span class="pre">&lt;list&gt;</span></code></p></td>
+<td><p>The new coordinates of the DIEARA listed as (llx, lly, urx, ury).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">get_instance_position</span></code></p></td>
+<td><p></p></td>
+<td><p>Returns the position of a given instance from the DEF view file.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-instance</span> <span class="pre">&lt;instance_name&gt;</span></code></p></td>
+<td><p>The name of the instance.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-def</span> <span class="pre">&lt;def_file&gt;]</span></code></p></td>
+<td><p>The input DEF file. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">CURRENT_DEF</span></code> of the currently processed design. <br> Optional Flag.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">add_lefs</span></code></p></td>
+<td><p></p></td>
+<td><p>Merges the given <code class="docutils literal notranslate"><span class="pre">&lt;-src&gt;</span></code> LEF files to the existing processed LEF files.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-src</span> <span class="pre">&lt;lef_files&gt;</span></code></p></td>
+<td><p>The input LEF files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">merge_components</span></code></p></td>
+<td><p></p></td>
+<td><p>Appends the components of a <code class="docutils literal notranslate"><span class="pre">def</span></code> file into the current database.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-input</span> <span class="pre">&lt;odb_file&gt;</span></code></p></td>
+<td><p>The ODB file to merge the components in to. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">CURRENT_ODB</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-donor</span> <span class="pre">&lt;def_file&gt;</span></code></p></td>
+<td><p>The DEF file to merge components from.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-output</span> <span class="pre">&lt;odb_file&gt;</span></code></p></td>
+<td><p>The output ODB file. <br> Defaults to the value of <code class="docutils literal notranslate"><span class="pre">-input</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">relocate_pins</span></code></p></td>
+<td><p></p></td>
+<td><p><strong>Previously: <code class="docutils literal notranslate"><span class="pre">replace_pins</span></code></strong>: Moves pins that are common between a template DEF file and a database to the location specified in the template DEF.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-input</span> <span class="pre">&lt;odb_file&gt;</span></code></p></td>
+<td><p>The ODB file to relocate the common pins of. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">CURRENT_ODB</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-template</span> <span class="pre">&lt;def_file&gt;</span></code></p></td>
+<td><p>The DEF file to relocate pins to.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-output</span> <span class="pre">&lt;odb_file&gt;</span></code></p></td>
+<td><p>The output ODB file. <br> Defaults to the value of <code class="docutils literal notranslate"><span class="pre">-input</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fake_display_buffer</span></code></p></td>
+<td><p></p></td>
+<td><p>Runs a fake display buffer for the pad generator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kill_display_buffer</span></code></p></td>
+<td><p></p></td>
+<td><p>Kills the fake display buffer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">set_if_unset</span> <span class="pre">&lt;var&gt;</span> <span class="pre">&lt;default_value&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>If <code class="docutils literal notranslate"><span class="pre">&lt;var&gt;</span></code> doesn’t exist/have a value, it will be set to <code class="docutils literal notranslate"><span class="pre">&lt;default_value&gt;</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">try_exec</span> <span class="pre">&lt;command&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Attempts to execute the following command, printing the last couple of lines and either returning an error (most cases) or quitting (interactive scripts).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">puts_err</span> <span class="pre">&lt;text&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Prints <code class="docutils literal notranslate"><span class="pre">[ERROR]:</span> </code> followed by the <code class="docutils literal notranslate"><span class="pre">&lt;text&gt;</span></code> in red.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">puts_success</span> <span class="pre">&lt;text&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Prints <code class="docutils literal notranslate"><span class="pre">[SUCCESS]:</span> </code> followed by the <code class="docutils literal notranslate"><span class="pre">&lt;text&gt;</span></code> in green.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">puts_warn</span> <span class="pre">&lt;text&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Prints <code class="docutils literal notranslate"><span class="pre">[WARNING]:</span> </code> followed by the <code class="docutils literal notranslate"><span class="pre">&lt;text&gt;</span></code> in yellow.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">puts_info</span> <span class="pre">&lt;text&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Prints <code class="docutils literal notranslate"><span class="pre">[INFO]:</span> </code> followed by the <code class="docutils literal notranslate"><span class="pre">&lt;text&gt;</span></code> in cyan.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">copy_gds_properties</span> <span class="pre">&lt;arg_1.mag&gt;</span> <span class="pre">&lt;arg2.mag&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>copies the GDS properties from <code class="docutils literal notranslate"><span class="pre">&lt;arg_1.mag&gt;</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;arg2.mag&gt;</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">increment_index</span></code></p></td>
+<td><p></p></td>
+<td><p>Increments <code class="docutils literal notranslate"><span class="pre">CURRENT_INDEX</span></code> by 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">index_file</span> <span class="pre">&lt;file&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Adds an index prefix to the file name keeping it’s path. The prefix is <code class="docutils literal notranslate"><span class="pre">CURRENT_INDEX</span></code>. The current value of the <code class="docutils literal notranslate"><span class="pre">CURRENT_INDEX</span></code> could be found in <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/config.tcl</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">calc_total_runtime</span></code></p></td>
+<td><p></p></td>
+<td><p>Finalizes the generated <code class="docutils literal notranslate"><span class="pre">runtime.yaml</span></code> file for the design followed  with the total runtime from the beginning of the flow.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[-status</span> <span class="pre">&lt;status&gt;]</span></code></p></td>
+<td><p>The status message printed in the file. <br> Defaults to <code class="docutils literal notranslate"><span class="pre">flow</span> <span class="pre">completed</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">flow_fail</span></code></p></td>
+<td><p></p></td>
+<td><p>Calls <code class="docutils literal notranslate"><span class="pre">generate_final_summary_report</span></code>, calls <code class="docutils literal notranslate"><span class="pre">calc_total_runtime</span></code> with status <code class="docutils literal notranslate"><span class="pre">flow</span> <span class="pre">failed</span></code>, and finally prints <code class="docutils literal notranslate"><span class="pre">Flow</span> <span class="pre">Failed</span></code> to the terminal.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">find_all</span> <span class="pre">&lt;ext&gt;</span></code></p></td>
+<td><p></p></td>
+<td><p>Print a sorted list of *.ext files that are found in the current run directory.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">remove_empty_nets</span></code></p></td>
+<td><p></p></td>
+<td><p><strong>Deprecated: use <code class="docutils literal notranslate"><span class="pre">remove_nets</span> <span class="pre">-empty</span></code></strong> the empty nets from a given ODB file.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-input</span> <span class="pre">&lt;odb_file&gt;</span></code></p></td>
+<td><p>The input ODB file.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">zeroize_origin_lef</span></code></p></td>
+<td><p></p></td>
+<td><p><strong>Removed:</strong> Zeroizes the origin of all views in a LEF file.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">-file</span> <span class="pre">&lt;lef_file&gt;</span></code></p></td>
+<td><p>The input LEF file.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="interactive_mode.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Interactive Mode</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="pdk_configuration.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">PDK Configuration Variables</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2020-2022 Efabless Corporation and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/The-OpenROAD-Project/OpenLane" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Tcl Commands</a><ul>
+<li><a class="reference internal" href="#general-commands">General Commands</a></li>
+<li><a class="reference internal" href="#checker-commands">Checker Commands</a></li>
+<li><a class="reference internal" href="#synthesis-verilog-commands">Synthesis/Verilog Commands</a></li>
+<li><a class="reference internal" href="#floorplan-commands">Floorplan Commands</a></li>
+<li><a class="reference internal" href="#placement-commands">Placement Commands</a></li>
+<li><a class="reference internal" href="#cts-commands">CTS Commands</a></li>
+<li><a class="reference internal" href="#fill-insertion-diode-insertion-commands">Fill Insertion/Diode Insertion Commands</a></li>
+<li><a class="reference internal" href="#pdn-generation-commands">PDN Generation Commands</a></li>
+<li><a class="reference internal" href="#routing-commands">Routing Commands</a></li>
+<li><a class="reference internal" href="#magic-commands">Magic Commands</a></li>
+<li><a class="reference internal" href="#klayout-commands">KLayout Commands</a></li>
+<li><a class="reference internal" href="#lvs-commands">LVS Commands</a></li>
+<li><a class="reference internal" href="#erc-commands">ERC Commands</a></li>
+<li><a class="reference internal" href="#utility-commands">Utility Commands</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

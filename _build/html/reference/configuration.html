@@ -1,0 +1,1646 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="PDK Configuration Variables" href="pdk_configuration.html" /><link rel="prev" title="Design Configuration Files" href="configuration_files.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.07.18 -->
+        <title>Flow Configuration Variables - OpenLane Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=613ab9ff" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">OpenLane Documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">OpenLane Documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting_started/installation/index.html">Installation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_ubuntu.html">Ubuntu 20.04+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_macos.html">macOS 11+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_win.html">Windows 10+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_linux.html">Other Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/updating.html">Updating OpenLane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/quickstart.html">Quick-Start Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../flow_overview.html">OpenLane Architecture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../usage/index.html">Usage guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Usage guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../usage/designs.html">Adding Your Designs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/exploration_script.html">Regression &amp; Exploration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/hardening_macros.html">Hardening Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/chip_integration.html">Chip Level Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/advanced_power_grid_control.html">Power Grid/Power Distribution Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/custom_pdk_builds.html">Custom-Building PDKs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/digital_guide.html">Hierarchical chip design (with macros)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/openram.html">Designing a chip with an OpenRAM (sky130)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Reference Manual</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Reference Manual</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command-Line Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_files.html">Design Configuration Files</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Flow Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdk_configuration.html">PDK Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openlane_commands.html">Tcl Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive_mode.html">Interactive Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datapoint_definitions.html">Datapoint Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html">Viewing layouts graphically</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../additional_material.html">Additional Material</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../for_developers/index.html">Developer’s Guide</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Developer’s Guide</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/docs_contribution.html">Contributing Docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/pdk_structure.html">Porting a PDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/using_or_issue.html"><code class="docutils literal notranslate"><span class="pre">or_issue.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/gha_workflow.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/issue_regression_tests.html">Issue regression tests</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/blob/master/docs/source/reference/configuration.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/edit/master/docs/source/reference/configuration.md" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="flow-configuration-variables">
+<h1>Flow Configuration Variables<a class="headerlink" href="#flow-configuration-variables" title="Link to this heading">¶</a></h1>
+<p>This page is the comprehensive manual for user-configurable flow variables
+and their default values.
+Variables that are defined by the PDK configuration support files and not the
+flow itself are listed <a class="reference internal" href="pdk_configuration.html"><span class="std std-doc">in this chapter</span></a>.</p>
+<div class="admonition-a-couple-things-to-keep-in-mind admonition">
+<p class="admonition-title">A couple things to keep in mind</p>
+<ul class="simple">
+<li><p>This is a comprehesive list- there are many variables here you would never
+need to touch. If you want just a brief list of variables you should be
+using, see the usage guide <a class="reference internal" href="../usage/hardening_macros.html"><span class="std std-doc">Hardening Macros</span></a>.</p></li>
+<li><p>Deprecated variables are automatically translated to their new names for at
+least 6 months. Removed variables will be entirely ignored by the flow.</p></li>
+<li><p>Variables prefixed <code class="docutils literal notranslate"><span class="pre">RUN_</span></code> enable or disable a certain step as part of the
+larger OpenLane flow, not when calling the relevant function standalone.
+For example, if RUN_DRT is set 0, but calling <code class="docutils literal notranslate"><span class="pre">detailed_routing</span></code> in
+interactive mode will still run detailed routing.</p></li>
+</ul>
+</div>
+<section id="general">
+<h2>General<a class="headerlink" href="#general" title="Link to this heading">¶</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">`include</span></code> directive is <em>not</em> supported in Verilog files. List all the
+files you may be depending on, including headers, in <code class="docutils literal notranslate"><span class="pre">VERILOG_FILES</span></code>.</p>
+</div>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PDK</span></code> <a id="PDK"></a></p></td>
+<td><p>Specifies the process design kit (PDK). <br> (Default: <code class="docutils literal notranslate"><span class="pre">sky130A</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DESIGN_NAME</span></code> <a id="DESIGN_NAME"></a></p></td>
+<td><p>The name of the top level module of the design</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">VERILOG_FILES</span></code> <a id="VERILOG_FILES"></a></p></td>
+<td><p>The path of the design’s Verilog files, provided as an array of files in JSON or a whitespace-delimited list of files in Tcl. The files are evaluated in order, i.e., if file B depends on file A, file A must be listed first.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CLOCK_PERIOD</span></code> <a id="CLOCK_PERIOD"></a></p></td>
+<td><p>The clock period used for clocks in the design, in nanoseconds.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CLOCK_PORT</span></code> <a id="CLOCK_PORT"></a></p></td>
+<td><p>The name of the design’s clock port.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CLOCK_NET</span></code> <a id="CLOCK_NET"></a></p></td>
+<td><p>The name of the net input to root clock buffer. <br> (Default: <code class="docutils literal notranslate"><span class="pre">CLOCK_PORT</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">STD_CELL_LIBRARY</span></code> <a id="STD_CELL_LIBRARY"></a></p></td>
+<td><p>Specifies the standard cell library to be used under the specified PDK. <br> (Default: <code class="docutils literal notranslate"><span class="pre">sky130_fd_sc_hd</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">STD_CELL_LIBRARY_OPT</span></code> <a id="STD_CELL_LIBRARY_OPT"></a></p></td>
+<td><p>Specifies the standard cell library to be used during resizer optimizations. <br> (Default: <code class="docutils literal notranslate"><span class="pre">STD_CELL_LIBRARY</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PDK_ROOT</span></code> <a id="PDK_ROOT"></a></p></td>
+<td><p>Specifies the folder path of the PDK. It searches for a <code class="docutils literal notranslate"><span class="pre">config.tcl</span></code> in <code class="docutils literal notranslate"><span class="pre">$::env(PDK_ROOT)/$::env(PDK)/libs.tech/openlane/</span></code> directory and at least have one standard cell library config defined in <code class="docutils literal notranslate"><span class="pre">$::env(PDK_ROOT)/$::env(PDK)/libs.tech/openlane/$::env(STD_CELL_LIBRARY)</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DIODE_PADDING</span></code> <a id="DIODE_PADDING"></a></p></td>
+<td><p>Number of sites to left pad <code class="docutils literal notranslate"><span class="pre">DIODE_CELL</span></code> during detailed placement. <br> (Default: <code class="docutils literal notranslate"><span class="pre">2</span></code> sites)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MERGED_LEF</span></code> <a id="MERGED_LEF"></a></p></td>
+<td><p>Points to <code class="docutils literal notranslate"><span class="pre">merged.lef</span></code>, which is a merger of various LEF files, including the technology lef, cells lef, any custom lefs, and IO lefs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NO_SYNTH_CELL_LIST</span></code> <a id="NO_SYNTH_CELL_LIST"></a></p></td>
+<td><p>Specifies the file that contains the don’t-use-cell-list to be excluded from the liberty file during synthesis. If it’s not defined, this path is searched <code class="docutils literal notranslate"><span class="pre">$::env(PDK_ROOT)/$::env(PDK)/libs.tech/openlane/$::env(STD_CELL_LIBRARY)/no_synth.cells</span></code> and if it’s not found, then the original liberty will be used as is.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DRC_EXCLUDE_CELL_LIST</span></code> <a id="DRC_EXCLUDE_CELL_LIST"></a></p></td>
+<td><p>Specifies the file that contains the don’t-use-cell-list to be excluded from the liberty file during synthesis and timing optimizations. If it’s not defined, this path is searched <code class="docutils literal notranslate"><span class="pre">$::env(PDK_ROOT)/$::env(PDK)/libs.tech/openlane/$::env(STD_CELL_LIBRARY)/drc_exclude.cells</span></code> and if it’s not found, then the original liberty will be used as is. In other words, <code class="docutils literal notranslate"><span class="pre">DRC_EXCLUDE_CELL_LIST</span></code> contain the only excluded cell list in timing optimizations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">BASE_SDC_FILE</span></code> <a id="BASE_SDC_FILE"></a></p></td>
+<td><p>Specifies the base SDC file using during the flow. It is the default SDC file used for <code class="docutils literal notranslate"><span class="pre">PNR_SDC_FILE</span></code> and <code class="docutils literal notranslate"><span class="pre">SIGNOFF_SDC_FILE</span></code> <br> (Default: <code class="docutils literal notranslate"><span class="pre">$::env(OPENLANE_ROOT)/scripts/base.SDC</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PNR_SDC_FILE</span></code> <a id="PNR_SDC_FILE"></a></p></td>
+<td><p>Specifies the SDC file used during all implementation (PnR) stages. It is used by tools in the flow and during STA done at these stages. It is <em>not</em> used during signoff stage. <br> (Default: <code class="docutils literal notranslate"><span class="pre">$::env(BASE_SDC_FILE)</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="macros-chip-integration">
+<h3>Macros/Chip Integration<a class="headerlink" href="#macros-chip-integration" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">VERILOG_FILES_BLACKBOX</span></code> <a id="VERILOG_FILES_BLACKBOX"></a></p></td>
+<td><p>Black-boxed, Verilog files where the implementation is ignored. Useful for pre-hardened macros you incorporate into your design, used during synthesis and OpenSTA. <code class="docutils literal notranslate"><span class="pre">///</span> <span class="pre">sta-blackbox</span></code> can be added to a file in order to skip that file while doing STA. This will blackbox all the modules defined inside that file. It is recommended to provide a gatelevel netlist whenever possible to do full STA.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">EXTRA_LEFS</span></code> <a id="EXTRA_LEFS"></a></p></td>
+<td><p>Specifies LEF files of pre-hardened macros used in the current design, used in placement and routing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">EXTRA_LIBS</span></code> <a id="EXTRA_LIBS"></a></p></td>
+<td><p>Specifies LIB files of pre-hardened macros used in the current design, used during timing analysis. (Optional)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">EXTRA_GDS_FILES</span></code> <a id="EXTRA_GDS_FILES"></a></p></td>
+<td><p>Specifies GDS files of pre-hardened macros used in the current design, used during tape-out.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="linting">
+<h2>Linting<a class="headerlink" href="#linting" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>If you’re running a hierarchical design (i.e. one that incorporates Macros
+or directly instantiates SCLs), Linting may not work correctly. You have two
+options:</p>
+<ol class="arabic simple">
+<li><p>Provide blackboxes for all gate-level models instantiated by the top level
+design or any of its macros.</p>
+<ul>
+<li><p>Files in <code class="docutils literal notranslate"><span class="pre">VERILOG_FILES_BLACKBOX</span></code> will not be included by default.</p></li>
+<li></li>
+</ul>
+</li>
+<li><p>Disable linting altogether.</p></li>
+</ol>
+</li>
+</ul>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_LINTER</span></code> <a id="RUN_LINTER"></a></p></td>
+<td><p>Enable linter (currently Verilator) <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LINTER_RELATIVE_INCLUDES</span></code> <a id="LINTER_RELATIVE_INCLUDES"></a>‡</p></td>
+<td><p>When a file references an include file, resolve the filename relative to the path of the referencing file, instead of relative to the current directory. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LINTER_DEFINES</span></code> <a id="LINTER_DEFINES"></a></p></td>
+<td><p>A list of defines that are passed to the linter. The syntax for each item in the list is as follows <code class="docutils literal notranslate"><span class="pre">&lt;define&gt;(=&lt;value&gt;)</span></code>. <code class="docutils literal notranslate"><span class="pre">(=value)</span></code> is optional. Both <code class="docutils literal notranslate"><span class="pre">PnR=1</span></code> or <code class="docutils literal notranslate"><span class="pre">PnR</span></code> are accepted <br> (Default: <code class="docutils literal notranslate"><span class="pre">SYNTH_DEFINES</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LINTER_INCLUDE_PDK_MODELS</span></code> <a id="LINTER_INCLUDE_PDK_MODELS"></a></p></td>
+<td><p>Enables including verilog models of the pdk with the linter. This is useful when the design has hand instantiated macros. This variable has no effect if the PDK/STD_CELL_LIBRARY aren’t supported. Currently, sky130A/sky130_fd_sc_hd and sky130B/sky130_fd_sc_hd are the only ones supported <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<div><p><strong>‡</strong> Variable previously prefixed <code class="docutils literal notranslate"><span class="pre">VERILATOR_</span></code> have had their prefix changed to <code class="docutils literal notranslate"><span class="pre">LINTER_</span></code>. The replaced variable is deprecated and will be translated to its new form automatically by the flow.</p>
+</div></blockquote>
+</section>
+<section id="synthesis">
+<h2>Synthesis<a class="headerlink" href="#synthesis" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_AUTONAME</span></code> <a id="SYNTH_AUTONAME"></a></p></td>
+<td><p>Add a synthesis step to generate names for instances. This results in instance names that can be very long, but may be more useful than the internal names that are six digit numbers. <br> Enabled = 1, Disabled = 0 <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_BIN</span></code> <a id="SYNTH_BIN"></a></p></td>
+<td><p>The yosys binary used in the flow. <br> (Default: <code class="docutils literal notranslate"><span class="pre">yosys</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_DEFINES</span></code> <a id="SYNTH_DEFINES"></a></p></td>
+<td><p>Specifies verilog defines. Variable should be provided as a json/tcl list. <br> (Default: None)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_CLOCK_UNCERTAINTY</span></code> <a id="SYNTH_CLOCK_UNCERTAINTY"></a></p></td>
+<td><p>Specifies a value for the clock uncertainty/jitter for timing analysis. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0.25</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_CLOCK_TRANSITION</span></code> <a id="SYNTH_CLOCK_TRANSITION"></a></p></td>
+<td><p>Specifies a value for the clock transition /slew for timing analysis. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0.15</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_TIMING_DERATE</span></code> <a id="SYNTH_TIMING_DERATE"></a></p></td>
+<td><p>Specifies a derating factor to multiply the path delays with. It specifies the upper and lower ranges of timing. <br> (Default: <code class="docutils literal notranslate"><span class="pre">+5%/-5%</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_STRATEGY</span></code> <a id="SYNTH_STRATEGY"></a></p></td>
+<td><p>Strategies for abc logic synthesis and technology mapping <br> Possible values are <code class="docutils literal notranslate"><span class="pre">DELAY/AREA</span> <span class="pre">0-4/0-3</span></code>; the first part refers to the optimization target of the synthesis strategy (area vs. delay) and the second one is an index. <br> (Default: <code class="docutils literal notranslate"><span class="pre">AREA</span> <span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_BUFFERING</span></code> <a id="SYNTH_BUFFERING"></a></p></td>
+<td><p>Enables abc cell buffering <br> Enabled = 1, Disabled = 0 <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_SIZING</span></code> <a id="SYNTH_SIZING"></a></p></td>
+<td><p>Enables abc cell sizing (instead of buffering) <br> Enabled = 1, Disabled = 0 <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_NO_FLAT</span></code> <a id="SYNTH_NO_FLAT"></a></p></td>
+<td><p>A flag that disables flattening the hierarchy during synthesis, only flattening it after synthesis, mapping and optimizations. <br> Enabled = 1, Disabled = 0 <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_SHARE_RESOURCES</span></code> <a id="SYNTH_SHARE_RESOURCES"></a></p></td>
+<td><p>A flag that enables yosys to reduce the number of cells by determining shareable resources and merging them. <br> Enabled = 1, Disabled = 0 <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_ABC_LEGACY_REFACTOR</span></code> <a id="SYNTH_ABC_LEGACY_REFACTOR"></a></p></td>
+<td><p>Replaces the ABC command <code class="docutils literal notranslate"><span class="pre">drf</span> <span class="pre">-l</span></code> with <code class="docutils literal notranslate"><span class="pre">refactor</span></code> which matches older versions of OpenLane but is more unstable.  <br> Enabled = 1, Disabled = 0 <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_ABC_LEGACY_REWRITE</span></code> <a id="SYNTH_ABC_LEGACY_REWRITE"></a></p></td>
+<td><p>Replaces the ABC command <code class="docutils literal notranslate"><span class="pre">drw</span> <span class="pre">-l</span></code> with <code class="docutils literal notranslate"><span class="pre">rewrite</span></code> which matches older versions of OpenLane but is more unstable.  <br> Enabled = 1, Disabled = 0 <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_ADDER_TYPE</span></code> <a id="SYNTH_ADDER_TYPE"></a></p></td>
+<td><p>Adder type to which the $add and $sub operators are mapped to. <br> Possible values are <code class="docutils literal notranslate"><span class="pre">YOSYS/FA/RCA/CSA</span></code>; where <code class="docutils literal notranslate"><span class="pre">YOSYS</span></code> refers to using Yosys internal adder definition, <code class="docutils literal notranslate"><span class="pre">FA</span></code> refers to full-adder structure, <code class="docutils literal notranslate"><span class="pre">RCA</span></code> refers to ripple carry adder structure, and <code class="docutils literal notranslate"><span class="pre">CSA</span></code> refers to carry select adder. <br> (Default: <code class="docutils literal notranslate"><span class="pre">YOSYS</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_EXTRA_MAPPING_FILE</span></code> <a id="SYNTH_EXTRA_MAPPING_FILE"></a></p></td>
+<td><p>Points to extra techmap file for yosys that runs right after yosys <code class="docutils literal notranslate"><span class="pre">synth</span></code> before generic techmap. <br> (Default: <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_PARAMETERS</span></code> <a id="SYNTH_PARAMETERS"></a></p></td>
+<td><p>Whitespace-delimited key value pairs to be <code class="docutils literal notranslate"><span class="pre">chparam</span></code>ed in Yosys. In the format <code class="docutils literal notranslate"><span class="pre">key1=value1</span> <span class="pre">key2=value2</span></code> <br> (Default: None)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_ELABORATE_ONLY</span></code> <a id="SYNTH_ELABORATE_ONLY"></a></p></td>
+<td><p>“Elaborate” the design only without attempting any logic mapping. Useful when dealing with structural Verilog netlists. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VERILOG_INCLUDE_DIRS</span></code> <a id="VERILOG_INCLUDE_DIRS"></a></p></td>
+<td><p>Specifies the verilog includes directories. <br> Optional.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_FLAT_TOP</span></code> <a id="SYNTH_FLAT_TOP"></a></p></td>
+<td><p>Specifies whether or not the top level should be flattened during elaboration. 1 = True, 0= False <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">IO_PCT</span></code> <a id="IO_PCT"></a></p></td>
+<td><p>Specifies the percentage of the clock period used in the input/output delays. Ranges from 0 to 1.0. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0.2</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_BUFFER_DIRECT_WIRES</span></code> <a id="SYNTH_BUFFER_DIRECT_WIRES"></a></p></td>
+<td><p>Insert buffer cells into the design for directly connected wires. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_SPLITNETS</span></code> <a id="SYNTH_SPLITNETS"></a></p></td>
+<td><p>Splits multi-bit nets into single-bit nets. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_TOP_LEVEL</span></code> <a id="SYNTH_TOP_LEVEL"></a></p></td>
+<td><p><strong>Deprecated: Use <code class="docutils literal notranslate"><span class="pre">SYNTH_ELABORATE_ONLY</span></code></strong>: “Elaborate” the design only without attempting any logic mapping. Useful when dealing with structural Verilog netlists.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_MAX_FANOUT</span></code> <a id="SYNTH_MAX_FANOUT"></a></p></td>
+<td><p><strong>Deprecated: Use the PDK’s <code class="docutils literal notranslate"><span class="pre">MAX_FANOUT_CONSTRAINT</span></code> value</strong>: The max load that the output ports can drive.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_MAX_TRAN</span></code> <a id="SYNTH_MAX_TRAN"></a></p></td>
+<td><p><strong>Deprecated: Use the PDK’s <code class="docutils literal notranslate"><span class="pre">MAX_TRANSITION_CONSTRAINT</span></code> value</strong>: The max transition time (slew) from high to low or low to high on cell inputs in ns. If unset, the library’s default maximum transition time will be used.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_READ_BLACKBOX_LIB</span></code> <a id="SYNTH_READ_BLACKBOX_LIB"></a></p></td>
+<td><p>**Removed: The liberty file is always read now. A flag that enable reading the full(untrimmed) liberty file as a blackbox for synthesis. Please note that this is not used in technology mapping. This should only be used when trying to preserve gate instances in the rtl of the design.  <br> Enabled = 1, Disabled = 0 <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="static-timing-analysis-sta">
+<h2>Static Timing Analysis (STA)<a class="headerlink" href="#static-timing-analysis-sta" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">STA_REPORT_POWER</span></code> <a id="STA_REPORT_POWER"></a></p></td>
+<td><p>Enables reporting power in sta. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">EXTRA_SPEFS</span></code> <a id="EXTRA_SPEFS"></a></p></td>
+<td><p>Specifies min, nom, max spef files for modules(s). Variable should be provided as a json/tcl list or a space delimited tcl string. Note that a module name is provided not an instance name. A module may have multiple instances. Each module must have define 3 files, one for each corner. For example: <code class="docutils literal notranslate"><span class="pre">module1</span> <span class="pre">min1</span> <span class="pre">nom1</span> <span class="pre">max1</span> <span class="pre">module2</span> <span class="pre">min2</span> <span class="pre">nom2</span> <span class="pre">max2</span></code>. A file can be used multiple time in case of absence of other corner files. For example: <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">nom</span> <span class="pre">nom</span> <span class="pre">nom</span></code>. In this case, the nom file will be used in all corners of sta. At all times a module must specify 3 files.  <br> (Default: None)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">STA_WRITE_LIB</span></code> <a id="STA_WRITE_LIB"></a></p></td>
+<td><p>Controls whether a timing model is written using OpenROAD OpenSTA after static timing analysis. This is an option as it in its current state, the timing model generation (and the model itself) can be quite buggy. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="floorplanning-fp">
+<h2>Floorplanning (FP)<a class="headerlink" href="#floorplanning-fp" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_TAP_DECAP_INSERTION</span></code> <a id="RUN_TAP_DECAP_INSERTION"></a></p></td>
+<td><p>Enables tap and decap cells insertion after floorplanning. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_CORE_UTIL</span></code> <a id="FP_CORE_UTIL"></a></p></td>
+<td><p>The core utilization percentage. <br> (Default: <code class="docutils literal notranslate"><span class="pre">50</span></code> percent)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_ASPECT_RATIO</span></code> <a id="FP_ASPECT_RATIO"></a></p></td>
+<td><p>The core’s aspect ratio (height / width). <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> <a id="FP_SIZING"></a></p></td>
+<td><p>Whether to use relative sizing by making use of <code class="docutils literal notranslate"><span class="pre">FP_CORE_UTIL</span></code> or absolute one using <code class="docutils literal notranslate"><span class="pre">DIE_AREA</span></code>. <br> (Default: <code class="docutils literal notranslate"><span class="pre">&quot;relative&quot;</span></code> - accepts <code class="docutils literal notranslate"><span class="pre">&quot;absolute&quot;</span></code> as well)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DIE_AREA</span></code> <a id="DIE_AREA"></a></p></td>
+<td><p>Specific die area to be used in floorplanning when <code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> is set to <code class="docutils literal notranslate"><span class="pre">absolute</span></code>. Specified as a 4-corner rectangle “x0 y0 x1 y1”. Units in μm <br> (Default: unset)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CORE_AREA</span></code> <a id="CORE_AREA"></a></p></td>
+<td><p>Specific core area (i.e. die area minus margins) to be used in floorplanning when <code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> is set to <code class="docutils literal notranslate"><span class="pre">absolute</span></code>. Specified as a 4-corner rectangle “x0 y0 x1 y1”. Units in μm <br> (Default: unset)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_MODE</span></code> <a id="FP_IO_MODE"></a></p></td>
+<td><p>Decides the mode of the random IO placement option. 0=matching mode, 1=random equidistant mode. Matching mode attempts to optimize pin and cell placement. Random equidistant mode places equidistant pins with a random order <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_WELLTAP_CELL</span></code> <a id="FP_WELLTAP_CELL"></a></p></td>
+<td><p>The name of the welltap cell during welltap insertion.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_ENDCAP_CELL</span></code> <a id="FP_ENDCAP_CELL"></a></p></td>
+<td><p>The name of the endcap cell during endcap insertion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_CFG</span></code> <a id="FP_PDN_CFG"></a></p></td>
+<td><p>Points to a PDN configuration file that describes how to construct the PDN in detail. <br> (Default: <code class="docutils literal notranslate"><span class="pre">scripts/openroad/common/pdn_cfg.tcl</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_AUTO_ADJUST</span></code> <a id="FP_PDN_AUTO_ADJUST"></a></p></td>
+<td><p>Decides whether or not the flow should attempt to re-adjust the power grid, in order for it to fit inside the core area of the design, if needed. 1 = Enabled, 0 = Disabled. <br>(Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_SKIPTRIM</span></code> <a id="FP_PDN_SKIPTRIM"></a></p></td>
+<td><p>Enables <code class="docutils literal notranslate"><span class="pre">-skip_trim</span></code> option during pdngen which skips the metal trim step, which attempts to remove metal stubs. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_TAPCELL_DIST</span></code> <a id="FP_TAPCELL_DIST"></a></p></td>
+<td><p>The horizontal distance between two tapcell columns <br> (Default: <code class="docutils literal notranslate"><span class="pre">14</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_VEXTEND</span></code> <a id="FP_IO_VEXTEND"></a></p></td>
+<td><p>Extends the vertical io pins outside of the die by the specified units<br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code> Disabled)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_HEXTEND</span></code> <a id="FP_IO_HEXTEND"></a></p></td>
+<td><p>Extends the horizontal io pins outside of the die by the specified units<br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code> Disabled)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_VLENGTH</span></code> <a id="FP_IO_VLENGTH"></a></p></td>
+<td><p>The length of the vertical IOs in microns. <br> (Default: <code class="docutils literal notranslate"><span class="pre">4</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_HLENGTH</span></code> <a id="FP_IO_HLENGTH"></a></p></td>
+<td><p>The length of the horizontal IOs in microns. <br> (Default: <code class="docutils literal notranslate"><span class="pre">4</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_VTHICKNESS_MULT</span></code> <a id="FP_IO_VTHICKNESS_MULT"></a></p></td>
+<td><p>A multiplier for vertical pin thickness. Base thickness is the pins layer minwidth <br> (Default: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_HTHICKNESS_MULT</span></code> <a id="FP_IO_HTHICKNESS_MULT"></a></p></td>
+<td><p>A multiplier for horizontal pin thickness. Base thickness is the pins layer minwidth <br> (Default: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_UNMATCHED_ERROR</span></code> <a id="FP_IO_UNMATCHED_ERROR"></a></p></td>
+<td><p>Exit on unmatched pins in a provided <code class="docutils literal notranslate"><span class="pre">FP_PIN_ORDER_CFG</span></code> file. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BOTTOM_MARGIN_MULT</span></code> <a id="BOTTOM_MARGIN_MULT"></a></p></td>
+<td><p>The core margin, in multiples of site heights, from the bottom boundary. If <code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> is absolute and <code class="docutils literal notranslate"><span class="pre">CORE_AREA</span></code> is set, this variable has no effect. <br> (Default: <code class="docutils literal notranslate"><span class="pre">4</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TOP_MARGIN_MULT</span></code> <a id="TOP_MARGIN_MULT"></a></p></td>
+<td><p>The core margin, in multiples of site heights, from the top boundary. If <code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> is absolute and <code class="docutils literal notranslate"><span class="pre">CORE_AREA</span></code> is set, this variable has no effect. <br> (Default: <code class="docutils literal notranslate"><span class="pre">4</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LEFT_MARGIN_MULT</span></code> <a id="LEFT_MARGIN_MULT"></a></p></td>
+<td><p>The core margin, in multiples of site widths, from the left boundary. If <code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> is absolute and <code class="docutils literal notranslate"><span class="pre">CORE_AREA</span></code> is set, this variable has no effect.  <br> (Default: <code class="docutils literal notranslate"><span class="pre">12</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RIGHT_MARGIN_MULT</span></code> <a id="RIGHT_MARGIN_MULT"></a></p></td>
+<td><p>The core margin, in multiples of site widths, from the right boundary. If <code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> is absolute and <code class="docutils literal notranslate"><span class="pre">CORE_AREA</span></code> is set, this variable has no effect.   <br> (Default: <code class="docutils literal notranslate"><span class="pre">12</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_CORE_RING</span></code> <a id="FP_PDN_CORE_RING"></a></p></td>
+<td><p>Enables adding a core ring around the design. More details on the control variables in the pdk configurations documentation. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_ENABLE_GLOBAL_CONNECTIONS</span></code> <a id="FP_PDN_ENABLE_GLOBAL_CONNECTIONS"></a></p></td>
+<td><p>Enables power connection to std cells. It is rare that this variable needs to be disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_ENABLE_RAILS</span></code> <a id="FP_PDN_ENABLE_RAILS"></a></p></td>
+<td><p>Enables the creation of rails in the power grid. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_ENABLE_MACROS_GRID</span></code> <a id="FP_PDN_ENABLE_MACROS_GRID"></a></p></td>
+<td><p>Enables the connection of macros to the top level power grid. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_MACRO_HOOKS</span></code> <a id="FP_PDN_MACRO_HOOKS"></a></p></td>
+<td><p>Specifies explicit power connections of internal macros to the top level power grid as a list of macro instance names, power domain vdd and ground net names, and macro vdd and ground pin names: <code class="docutils literal notranslate"><span class="pre">&lt;instance_name&gt;</span> <span class="pre">&lt;vdd_net&gt;</span> <span class="pre">&lt;gnd_net&gt;</span> <span class="pre">&lt;vdd_pin&gt;</span> <span class="pre">&lt;gnd_pin&gt;</span></code>. In JSON, declare it as an array of strings, and in Tcl, use commas as a delimiter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_CHECK_NODES</span></code> <a id="FP_PDN_CHECK_NODES"></a></p></td>
+<td><p>Enables checking for unconnected nodes in the power grid. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_TAP_HORIZONTAL_HALO</span></code> <a id="FP_TAP_HORIZONTAL_HALO"></a></p></td>
+<td><p>Specify the horizontal halo size around macros during tap insertion. The value provided is in microns. <br> (Default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_TAP_VERTICAL_HALO</span></code> <a id="FP_TAP_VERTICAL_HALO"></a></p></td>
+<td><p>Specify the vertical halo size around macros during tap insertion. The value provided is in microns. <br> (Default: set to the value of <code class="docutils literal notranslate"><span class="pre">FP_TAP_HORIZONTAL_HALO</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_HORIZONTAL_HALO</span></code> <a id="FP_PDN_HORIZONTAL_HALO"></a></p></td>
+<td><p>Sets the horizontal halo around the macros during power grid insertion. The value provided is in microns. <br> (Default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_VERTICAL_HALO</span></code> <a id="FP_PDN_VERTICAL_HALO"></a></p></td>
+<td><p>Sets the vertical halo around the macros during power grid insertion. The value provided is in microns. <br> (Default: set to the value of <code class="docutils literal notranslate"><span class="pre">FP_PDN_HORIZONTAL_HALO</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_MULTILAYER</span></code> <a id="FP_PDN_MULTILAYER"></a></p></td>
+<td><p>Controls the layers used in the power grid. If set to <code class="docutils literal notranslate"><span class="pre">0</span></code> (Tcl)/<code class="docutils literal notranslate"><span class="pre">false</span></code> (JSON), only the lower, vertical layer will be used, which is useful when hardening a macro for integrating into a larger top-level design. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PIN_ORDER_CFG</span></code> <a id="FP_PIN_ORDER_CFG"></a></p></td>
+<td><p>Points to the pin order configuration file to set the pins in specific directions (S, W, E, N). If not set, then the IO pins will be placed based on one of the other methods depending on the rest of the configurations. <code class="docutils literal notranslate"><span class="pre">$&lt;number&gt;</span></code> i.e. <code class="docutils literal notranslate"><span class="pre">$1</span></code> can be used to place a virtual pin where <code class="docutils literal notranslate"><span class="pre">&lt;number&gt;</span></code> is the count of virtual pins. This can create separation between pins. You can also use <code class="docutils literal notranslate"><span class="pre">&#64;min_distance=&lt;number&gt;</span></code> i.e. <code class="docutils literal notranslate"><span class="pre">&#64;min_distance=0.8</span></code> to set preferred min distance between pins in a specific direction. See spm configuration file as an example.<br> (Default: None)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_CONTEXT_DEF</span></code> <a id="FP_CONTEXT_DEF"></a></p></td>
+<td><p>Points to the parent DEF file that includes this macro/design and uses this DEF file to determine the best locations for the pins. It must be used with <code class="docutils literal notranslate"><span class="pre">FP_CONTEXT_LEF</span></code>, otherwise it’s considered non-existing. If not set, then the IO pins will be placed based on one of the other methods depending on the rest of the configurations. <br> (Default: None)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_CONTEXT_LEF</span></code> <a id="FP_CONTEXT_LEF"></a></p></td>
+<td><p>Points to the parent LEF file that includes this macro/design and uses this LEF file to determine the best locations for the pins. It must be used with <code class="docutils literal notranslate"><span class="pre">FP_CONTEXT_DEF</span></code>, otherwise it’s considered non-existing. If not set, then the IO pins will be placed based on one of the other methods depending on the rest of the configurations. <br> (Default: None)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_DEF_TEMPLATE</span></code> <a id="FP_DEF_TEMPLATE"></a></p></td>
+<td><p>Points to the DEF file to be used as a template when running <code class="docutils literal notranslate"><span class="pre">apply_def_template</span></code>. This will be used to exctract pin names, locations, shapes -excluding power and ground pins- as well as the die area and replicate all this information in the <code class="docutils literal notranslate"><span class="pre">CURRENT_DEF</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VDD_NETS</span></code> <a id="VDD_NETS"></a></p></td>
+<td><p>Specifies the power nets/pins to be used when creating the power grid for the design.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GND_NETS</span></code> <a id="GND_NETS"></a></p></td>
+<td><p>Specifies the ground nets/pins to be used when creating the power grid for the design.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_USE_PG_PINS_DEFINES</span></code> <a id="SYNTH_USE_PG_PINS_DEFINES"></a></p></td>
+<td><p>Specifies the power guard used in the verilog source code to specify the power and ground pins. This is used to automatically extract <code class="docutils literal notranslate"><span class="pre">VDD_NETS</span></code> and <code class="docutils literal notranslate"><span class="pre">GND_NET</span></code> variables from the verilog, with the assumption that they will be order <code class="docutils literal notranslate"><span class="pre">inout</span> <span class="pre">vdd1,</span> <span class="pre">inout</span> <span class="pre">gnd1,</span> <span class="pre">inout</span> <span class="pre">vdd2,</span> <span class="pre">inout</span> <span class="pre">gnd2,</span> <span class="pre">...</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_MIN_DISTANCE</span></code> <a id="FP_IO_MIN_DISTANCE"></a></p></td>
+<td><p>The minmimum distance between the IOs in microns. <br> (Default: <code class="docutils literal notranslate"><span class="pre">3</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PADFRAME_CFG</span></code> <a id="FP_PADFRAME_CFG"></a></p></td>
+<td><p>A configuration file passed to padringer, a padframe generator. <br> (Default: None)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PDN_CFG</span></code> <a id="PDN_CFG"></a></p></td>
+<td><p><strong>Deprecated: Use <code class="docutils literal notranslate"><span class="pre">FP_PDN_CFG</span></code></strong>: Points to a PDN configuration file that describes how to construct the PDN in detail.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_HORIZONTAL_HALO</span></code> <a id="FP_HORIZONTAL_HALO"></a></p></td>
+<td><p><strong>Deprecated: Use <code class="docutils literal notranslate"><span class="pre">FP_PDN_HORIZONTAL_HALO</span></code></strong>: Sets the horizontal halo around the macros during power grid insertion. The value provided is in microns.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_VERTICAL_HALO</span></code> <a id="FP_PDN_VERTICAL_HALO"></a></p></td>
+<td><p><strong>Deprecated: Use <code class="docutils literal notranslate"><span class="pre">FP_PDN_VERTICAL_HALO</span></code></strong>: Sets the vertical halo around the macros during power grid insertion. The value provided is in microns.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DESIGN_IS_CORE</span></code> <a id="DESIGN_IS_CORE"></a></p></td>
+<td><p><strong>Deprecated as even macros can have a full-stack PDN if core rings are used: New variable is <code class="docutils literal notranslate"><span class="pre">FP_PDN_MULTILAYER</span></code></strong> Controls the layers used in the power grid. Depending on whether the design is the core of the chip or a macro inside the core. 1=Is a Core, 0=Is a Macro <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_IRDROP</span></code> <a id="FP_PDN_IRDROP"></a></p></td>
+<td><p><strong>Removed: No point running it this early in the flow</strong>: Enable calculation of power grid IR drop during PDN generation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="deprecated-i-o-layer-variables">
+<h3>Deprecated I/O Layer variables<a class="headerlink" href="#deprecated-i-o-layer-variables" title="Link to this heading">¶</a></h3>
+<p>These variables worked initially, but they were too sky130 specific and will be removed. Currently, if you define them in your design, they’ll be used, but it’s recommended to update your configuration to use <code class="docutils literal notranslate"><span class="pre">FP_IO_HLAYER</span></code> and <code class="docutils literal notranslate"><span class="pre">FP_IO_VLAYER</span></code>, which are defined in the PDK.</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_HMETAL</span></code> <a id="FP_IO_HMETAL"></a></p></td>
+<td><p>The metal layer on which to place the io pins horizontally (top and bottom of the die). <br>(Default: <code class="docutils literal notranslate"><span class="pre">4</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_VMETAL</span></code> <a id="FP_IO_VMETAL"></a></p></td>
+<td><p>The metal layer on which to place the io pins vertically (sides of the die) <br> (Default: <code class="docutils literal notranslate"><span class="pre">3</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="all-resizer-rsz-steps">
+<h2>All Resizer (RSZ) Steps<a class="headerlink" href="#all-resizer-rsz-steps" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RSZ_LIB</span></code> <a id="RSZ_LIB"></a></p></td>
+<td><p>Points to one or more lib files, corresponding to the typical corner, that is used during resizer optimizations. <br> (Default: set to the value of PDK’s <code class="docutils literal notranslate"><span class="pre">LIB_SYNTH</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RSZ_LIB_FASTEST</span></code> <a id="RSZ_LIB_FASTEST"></a></p></td>
+<td><p>Points to one or more lib files, corresponding to the fastest corner, that is used during resizer optimizations. <br> (Default: set to the value of PDK’s <code class="docutils literal notranslate"><span class="pre">LIB_FASTEST</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RSZ_LIB_SLOWEST</span></code> <a id="RSZ_LIB_SLOWEST"></a></p></td>
+<td><p>Points to one or more lib files, corresponding to the slowest corner, that is used during resizer optimizations. <br> (Default: set to the value of PDK’s <code class="docutils literal notranslate"><span class="pre">LIB_SLOWEST</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RSZ_MULTICORNER_LIB</span></code> <a id="RSZ_MULTICORNER_LIB"></a></p></td>
+<td><p>A flag for reading fastest and slowest corner during resizer optimizations. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RSZ_DONT_TOUCH_RX</span></code> <a id="RSZ_DONT_TOUCH_RX"></a></p></td>
+<td><p>A single regular expression designating nets as “don’t touch” by resizer optimizations. <br> (Default: <code class="docutils literal notranslate"><span class="pre">$^</span></code> (matches nothing))</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RSZ_DONT_TOUCH</span></code> <a id="RSZ_DONT_TOUCH"></a></p></td>
+<td><p>A list of nets or instances to set as “don’t touch”. <br> (Default: Empty)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LIB_RESIZER_OPT</span></code> <a id="LIB_RESIZER_OPT"></a></p></td>
+<td><p><strong>Deprecated: Use <code class="docutils literal notranslate"><span class="pre">RSZ_LIB</span></code></strong>: Points to the lib file, corresponding to the typical corner, that is used during resizer optimizations. This is copy of <code class="docutils literal notranslate"><span class="pre">LIB_SYNTH</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="global-and-detailed-placement-gpl-dpl">
+<h2>Global and Detailed Placement (GPL/DPL)<a class="headerlink" href="#global-and-detailed-placement-gpl-dpl" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_TARGET_DENSITY</span></code> <a id="PL_TARGET_DENSITY"></a></p></td>
+<td><p>The desired placement density of cells. It reflects how spread the cells would be on the core area. 1 = closely dense. 0 = widely spread <br> (Default: <code class="docutils literal notranslate"><span class="pre">($::env(FP_CORE_UTIL)</span> <span class="pre">+</span> <span class="pre">10</span> <span class="pre">+</span> <span class="pre">(5</span> <span class="pre">*</span> <span class="pre">$::env(GPL_CELL_PADDING))</span> <span class="pre">)</span> <span class="pre">/</span> <span class="pre">100.0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_TIME_DRIVEN</span></code> <a id="PL_TIME_DRIVEN"></a></p></td>
+<td><p>Specifies whether the placer should use time driven placement. 0 = false, 1 = true <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_BASIC_PLACEMENT</span></code> <a id="PL_BASIC_PLACEMENT"></a></p></td>
+<td><p>Specifies whether the placer should run basic placement. Basic placement is used for extremely simple, low-density designs of only a few dozens of gates, and should be disabled for most designs. 0 = false, 1 = true <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_SKIP_INITIAL_PLACEMENT</span></code> <a id="PL_SKIP_INITIAL_PLACEMENT"></a></p></td>
+<td><p>Specifies whether the placer should run initial placement or not. 0 = false, 1 = true <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RANDOM_GLB_PLACEMENT</span></code> <a id="PL_RANDOM_GLB_PLACEMENT"></a></p></td>
+<td><p>Specifies whether the placer should run random placement or not. This is useful if the design is tiny (less than 100 cells). 0 = false, 1 = true <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RANDOM_INITIAL_PLACEMENT</span></code> <a id="PL_RANDOM_INITIAL_PLACEMENT"></a></p></td>
+<td><p>Specifies whether the placer should run random placement or not followed by replace’s initial placement. This is useful if the design is tiny (less than 100 cells). 0 = false, 1 = true <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_ROUTABILITY_DRIVEN</span></code> <a id="PL_ROUTABILITY_DRIVEN"></a></p></td>
+<td><p>Specifies whether the placer should use routability driven placement. 0 = false, 1 = true <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_TIE_SEPERATION</span></code> <a id="PL_RESIZER_TIE_SEPERATION"></a></p></td>
+<td><p>Distance between load and an inserted tie cell in microns. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_DESIGN_OPTIMIZATIONS</span></code> <a id="PL_RESIZER_DESIGN_OPTIMIZATIONS"></a></p></td>
+<td><p>Specifies whether resizer design optimizations should be performed or not. 0 = false, 1 = true <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_TIMING_OPTIMIZATIONS</span></code> <a id="PL_RESIZER_TIMING_OPTIMIZATIONS"></a></p></td>
+<td><p>Specifies whether resizer timing optimizations should be performed or not. 0 = false, 1 = true <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_MAX_WIRE_LENGTH</span></code> <a id="PL_RESIZER_MAX_WIRE_LENGTH"></a></p></td>
+<td><p>Specifies the maximum wire length cap used by resizer to insert buffers. If set to 0, no buffers will be inserted. Value in microns. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_MAX_SLEW_MARGIN</span></code> <a id="PL_RESIZER_MAX_SLEW_MARGIN"></a></p></td>
+<td><p>Specifies a margin for the slews in percentage. <br> (Default: <code class="docutils literal notranslate"><span class="pre">20</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_MAX_CAP_MARGIN</span></code> <a id="PL_RESIZER_MAX_CAP_MARGIN"></a></p></td>
+<td><p>Specifies a margin for the capacitances in percentage. <br> (Default: <code class="docutils literal notranslate"><span class="pre">20</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_HOLD_SLACK_MARGIN</span></code> <a id="PL_RESIZER_HOLD_SLACK_MARGIN"></a></p></td>
+<td><p>Specifies a time margin for the slack when fixing hold violations. Normally the resizer will stop when it reaches zero slack. This option allows you to overfix. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0.1ns</span></code>.)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_SETUP_SLACK_MARGIN</span></code> <a id="PL_RESIZER_SETUP_SLACK_MARGIN"></a></p></td>
+<td><p>Specifies a time margin for the slack when fixing setup violations. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0.05ns</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_HOLD_MAX_BUFFER_PERCENT</span></code> <a id="PL_RESIZER_HOLD_MAX_BUFFER_PERCENT"></a></p></td>
+<td><p>Specifies a max number of buffers to insert to fix hold violations. This number is calculated as a percentage of the number of instances in the design. <br> (Default: <code class="docutils literal notranslate"><span class="pre">50</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_SETUP_MAX_BUFFER_PERCENT</span></code> <a id="PL_RESIZER_SETUP_MAX_BUFFER_PERCENT"></a></p></td>
+<td><p>Specifies a max number of buffers to insert to fix setup violations. This number is calculated as a percentage of the number of instances in the design. <br> (Default: <code class="docutils literal notranslate"><span class="pre">50</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_ALLOW_SETUP_VIOS</span></code> <a id="PL_RESIZER_ALLOW_SETUP_VIOS"></a></p></td>
+<td><p>Allows setup violations when fixing hold. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_WIRELENGTH_COEF</span></code> <a id="PL_WIRELENGTH_COEF"></a></p></td>
+<td><p>Global placement initial wirelength coefficient. Decreasing the variable will modify the initial placement of the standard cells to reduce the wirelengths. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0.25</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DONT_USE_CELLS</span></code> <a id="DONT_USE_CELLS"></a></p></td>
+<td><p>The list of cells to not use during resizer optimizations. <br> (Default: the contents of <code class="docutils literal notranslate"><span class="pre">DRC_EXCLUDE_CELL_LIST</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_ESTIMATE_PARASITICS</span></code> <a id="PL_ESTIMATE_PARASITICS"></a></p></td>
+<td><p>Specifies whether or not to run STA after global placement using OpenROAD’s estimate_parasitics -placement and generates reports under <code class="docutils literal notranslate"><span class="pre">logs/placement</span></code>. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_OPTIMIZE_MIRRORING</span></code> <a id="PL_OPTIMIZE_MIRRORING"></a></p></td>
+<td><p>Specifies whether or not to run an optimize_mirroring pass whenever detailed placement happens. This pass will mirror the cells whenever possible to optimize the design. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_BUFFER_INPUT_PORTS</span></code> <a id="PL_RESIZER_BUFFER_INPUT_PORTS"></a></p></td>
+<td><p>Specifies whether or not to insert buffers on input ports whenever resizer optimizations are run. For this to be used, <code class="docutils literal notranslate"><span class="pre">PL_RESIZER_DESIGN_OPTIMIZATIONS</span></code> must be set to 1. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_BUFFER_OUTPUT_PORTS</span></code> <a id="PL_RESIZER_BUFFER_OUTPUT_PORTS"></a></p></td>
+<td><p>Specifies whether or not to insert buffers on output ports whenever resizer optimizations are run. For this to be used, <code class="docutils literal notranslate"><span class="pre">PL_RESIZER_DESIGN_OPTIMIZATIONS</span></code> must be set to 1. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_RESIZER_REPAIR_TIE_FANOUT</span></code> <a id="PL_RESIZER_REPAIR_TIE_FANOUT"></a></p></td>
+<td><p>Specifies whether or not to repair tie cells fanout whenever resizer optimizations are run. For this to be used, <code class="docutils literal notranslate"><span class="pre">PL_RESIZER_DESIGN_OPTIMIZATIONS</span></code> must be set to 1. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_MAX_DISPLACEMENT_X</span></code> <a id="PL_MAX_DISPLACEMENT_X"></a></p></td>
+<td><p>Specifies how far an instance can be moved along the X-axis when finding a site where it can be placed during detailed placement. <br> (Default: <code class="docutils literal notranslate"><span class="pre">500</span></code>μm)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_MAX_DISPLACEMENT_Y</span></code> <a id="PL_MAX_DISPLACEMENT_Y"></a></p></td>
+<td><p>Specifies how far an instance can be moved along the Y-axis when finding a site where it can be placed during detailed placement. <br> (Default: <code class="docutils literal notranslate"><span class="pre">100</span></code>μm)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PL_MACRO_HALO</span></code> <a id="PL_MACRO_HALO"></a></p></td>
+<td><p>Macro placement halo. Format: <code class="docutils literal notranslate"><span class="pre">{Horizontal}</span> <span class="pre">{Vertical}</span></code> <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">0</span></code>μm).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PL_MACRO_CHANNEL</span></code> <a id="PL_MACRO_CHANNEL"></a></p></td>
+<td><p>Channel widths between macros. Format: <code class="docutils literal notranslate"><span class="pre">{Horizontal}</span> <span class="pre">{Vertical}</span></code> <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">0</span></code>μm).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MACRO_PLACEMENT_CFG</span></code> <a id="MACRO_PLACEMENT_CFG"></a></p></td>
+<td><p>Specifies the path to a file that instructs OpenLane how and where to place certain macros. For information about the format of this file, see <a class="reference internal" href="#macro-placement-configuration">Macro placement configuration</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">UNBUFFER_NETS</span></code> <a id="UNBUFFER_NETS"></a></p></td>
+<td><p><strong>Deprecated: Use <code class="docutils literal notranslate"><span class="pre">RSZ_DONT_TOUCH_RX</span></code></strong>: A regular expression used to match nets from which to remove buffers after every resizer run. Useful for analog ports in mixed-signal designs where OpenROAD may sometimes add a buffer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DONT_BUFFER_PORTS</span></code> <a id="DONT_BUFFER_PORTS"></a></p></td>
+<td><p><strong>Removed: Use <code class="docutils literal notranslate"><span class="pre">RSZ_DONT_TOUCH_RX</span></code></strong>: Semicolon;delimited list of nets from which to remove buffers.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="macro-placement-configuration">
+<h3>Macro placement configuration<a class="headerlink" href="#macro-placement-configuration" title="Link to this heading">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">MACRO_PLACEMENT_CFG</span></code> specifies a file (often called <code class="docutils literal notranslate"><span class="pre">macro.cfg</span></code> or <code class="docutils literal notranslate"><span class="pre">macro_placement.cfg</span></code>) listing macros (i.e. already-hardened design layouts) to be placed as submodules within the layout being hardened. For example, using JSON configuration:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;MACRO_PLACEMENT_CFG&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dir::macro.cfg&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>In that specified <code class="docutils literal notranslate"><span class="pre">macro.cfg</span></code> file each non-blank/non-comment line declares: a single macro to be included; where it is to be placed; and whether it is to be rotated or mirrored. This example places 3 macros:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Some macros:</span>
+my_controller<span class="w">  </span><span class="m">100</span><span class="w">  </span><span class="m">150</span><span class="w">  </span>N
+your_device<span class="w">   </span><span class="m">1200</span><span class="w"> </span><span class="m">1400</span><span class="w">  </span>FS<span class="w">  </span><span class="c1"># Face south by flipping upside-down.</span>
+
+<span class="c1"># Another macro of some kind:</span>
+our_bridge<span class="w">     </span><span class="m">200</span><span class="w">  </span><span class="m">800</span><span class="w">  </span>S
+</pre></div>
+</div>
+<p>Each line comprises 4 parameters (separated by <em>any</em> amount of whitespace but formatted as columns in this example for readability), and they are as follows:</p>
+<ol class="arabic simple">
+<li><p>Name of the macro (e.g. <code class="docutils literal notranslate"><span class="pre">my_controller</span></code>).</p></li>
+<li><p>Horizontal placement of the macro (e.g. <code class="docutils literal notranslate"><span class="pre">100</span></code>, which is 100µm). This is the horizontal offset from the parent layout’s left edge, to the macro’s left edge.</p></li>
+<li><p>Vertical placement (e.g. <code class="docutils literal notranslate"><span class="pre">150</span></code>, or 150µm). Vertical offset from the parent’s bottom edge to the macro’s bottom edge.</p></li>
+<li><p>Orientation specifier (e.g. <code class="docutils literal notranslate"><span class="pre">N</span></code>, meaning the macro’s own North or <em>top</em> edge points in the North direction, and hence is not rotated).</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">N</span></code> orientation is used most often, but sometimes it is necessary to rotate and/or flip macros. The orientation specifier follows the LEF/DEF language reference, and can be one of the following:</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Orientation</p></th>
+<th class="head"><p>Effect</p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">N</span></code>  or <code class="docutils literal notranslate"><span class="pre">R0</span></code></p></td>
+<td><p>No rotation</p></td>
+<td><p>Macro’s “top” faces North.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">S</span></code>  or <code class="docutils literal notranslate"><span class="pre">R180</span></code></p></td>
+<td><p>Rotate 180°</p></td>
+<td><p>Macro’s “top” faces South, by rotation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">W</span></code>  or <code class="docutils literal notranslate"><span class="pre">R90</span></code></p></td>
+<td><p>Rotate 90° anti-clockwise</p></td>
+<td><p>Macro’s “top” faces West, by rotation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">E</span></code>  or <code class="docutils literal notranslate"><span class="pre">R270</span></code></p></td>
+<td><p>Rotate 90° clockwise</p></td>
+<td><p>Macro’s “top” faces East, by rotation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FN</span></code> or <code class="docutils literal notranslate"><span class="pre">MY</span></code></p></td>
+<td><p>Mirror about the Y axis</p></td>
+<td><p>Macro’s “top” faces North and is <em>flipped</em> left-to-right.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FS</span></code> or <code class="docutils literal notranslate"><span class="pre">MX</span></code></p></td>
+<td><p>Mirror about the X axis</p></td>
+<td><p>Macro’s “top” faces South by being <em>flipped</em> top-to-bottom.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FW</span></code> or <code class="docutils literal notranslate"><span class="pre">MXR90</span></code></p></td>
+<td><p>Mirror about X, rotate 90° anti-clockwise</p></td>
+<td><p>Macro’s “top” faces <strong>East</strong> by flipping <code class="docutils literal notranslate"><span class="pre">W</span></code> left-to-right.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FE</span></code> or <code class="docutils literal notranslate"><span class="pre">MYR90</span></code></p></td>
+<td><p>Mirror about Y, rotate 90° anti-clockwise</p></td>
+<td><p>Macro’s “top” faces <strong>West</strong> by flipping <code class="docutils literal notranslate"><span class="pre">E</span></code> right-to-left.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The alternative names (<code class="docutils literal notranslate"><span class="pre">R0</span></code>, <code class="docutils literal notranslate"><span class="pre">MXR90</span></code>, etc.) follow the OpenAccess database format, and specifically these 8 alternatives are also supported by OpenLane.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Be careful if using East/West orientations: Ensure the macro’s PDN is still able to properly intersect/connect with the parent layout’s PDN.</p>
+</div>
+<p>For more information on integrating macros and other relevant configuration variables, see:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#macros-chip-integration">Macros/Chip Integration</a></p></li>
+<li><p><a class="reference internal" href="#FP_PDN_MACRO_HOOKS"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">FP_PDN_MACRO_HOOKS</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#EXTRA_SPEFS"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">EXTRA_SPEFS</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="#CLOCK_NET"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">CLOCK_NET</span></code></span></a> (which can be an array to specify multiple clock nets if needed) and <a class="reference internal" href="#CLOCK_PORT"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">CLOCK_PORT</span></code></span></a></p></li>
+</ul>
+</section>
+</section>
+<section id="clock-tree-synthesis-cts">
+<h2>Clock Tree Synthesis (CTS)<a class="headerlink" href="#clock-tree-synthesis-cts" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_CTS</span></code> <a id="RUN_CTS"></a></p></td>
+<td><p>Enable clock tree synthesis. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_FILL_INSERTION</span></code> <a id="RUN_FILL_INSERTION"></a></p></td>
+<td><p>Enables fill cells insertion after cts (if enabled). 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_SINK_CLUSTERING_SIZE</span></code> <a id="CTS_SINK_CLUSTERING_SIZE"></a></p></td>
+<td><p>Specifies the maximum number of sinks per cluster. <br> (Default: <code class="docutils literal notranslate"><span class="pre">25</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_SINK_CLUSTERING_MAX_DIAMETER</span></code> <a id="CTS_SINK_CLUSTERING_MAX_DIAMETER"></a></p></td>
+<td><p>Specifies maximum diameter (in micron) of sink cluster. <br> (Default: <code class="docutils literal notranslate"><span class="pre">50</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_REPORT_TIMING</span></code> <a id="CTS_REPORT_TIMING"></a></p></td>
+<td><p>Specifies whether or not to run STA after clock tree synthesis using OpenROAD’s estimate_parasitics -placement and generates reports under <code class="docutils literal notranslate"><span class="pre">logs/cts</span></code>. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_CLK_MAX_WIRE_LENGTH</span></code> <a id="CTS_CLK_MAX_WIRE_LENGTH"></a></p></td>
+<td><p>Specifies the maximum wire length on the clock net. Value in microns. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_DISABLE_POST_PROCESSING</span></code> <a id="CTS_DISABLE_POST_PROCESSING"></a></p></td>
+<td><p>Specifies whether or not to disable post cts processing for outlier sinks. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_DISTANCE_BETWEEN_BUFFERS</span></code> <a id="CTS_DISTANCE_BETWEEN_BUFFERS"></a></p></td>
+<td><p>Specifies the distance (in microns) between buffers when creating the clock tree (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LIB_CTS</span></code> <a id="LIB_CTS"></a></p></td>
+<td><p>The liberty file used for CTS for typical corner. By default, this is the <code class="docutils literal notranslate"><span class="pre">LIB_SYNTH</span></code> minus the cells with drc errors as specified by the drc exclude list. <br> (Default: <code class="docutils literal notranslate"><span class="pre">$::env(cts_tmpfiles)/cts.lib</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LIB_CTS_SLOWEST</span></code> <a id="LIB_CTS_SLOWEST"></a></p></td>
+<td><p>The liberty file used for CTS for slowest corner. By default, this is the <code class="docutils literal notranslate"><span class="pre">LIB_SLOWEST</span></code> minus the cells with drc errors as specified by the drc exclude list. <br> (Default: <code class="docutils literal notranslate"><span class="pre">$::env(cts_tmpfiles)/cts-slowest.lib</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LIB_CTS_FASTEST</span></code> <a id="LIB_CTS_FASTEST"></a></p></td>
+<td><p>The liberty file used for CTS for fastest corner. By default, this is the <code class="docutils literal notranslate"><span class="pre">LIB_FASTEST</span></code> minus the cells with drc errors as specified by the drc exclude list. <br> (Default: <code class="docutils literal notranslate"><span class="pre">$::env(cts_tmpfiles)/cts-fastest.lib</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_MULTICORNER_LIB</span></code> <a id="CTS_MULTICORNER_LIB"></a></p></td>
+<td><p>A flag for reading fastest and slowest corner during CTS. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CLOCK_TREE_SYNTH</span></code> <a id="CLOCK_TREE_SYNTH"></a></p></td>
+<td><p><strong>Deprecated: Use <code class="docutils literal notranslate"><span class="pre">RUN_CTS</span></code></strong>: Enable clock tree synthesis. 1 = Enabled, 0 = Disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FILL_INSERTION</span></code> <a id="FILL_INSERTION"></a></p></td>
+<td><p><strong>Removed: Use <code class="docutils literal notranslate"><span class="pre">RUN_FILL_INSERTION</span></code></strong>: Enables fill cells insertion after CTS. 1 = Enabled, 0 = Disabled.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_SIMPLE_CTS</span></code> <a id="RUN_SIMPLE_CTS"></a></p></td>
+<td><p><strong>Removed: TritonCTS is always run</strong>: Run an alternative simple clock tree synthesis after synthesis instead of TritonCTS. 1 = Enabled, 0 = Disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_TARGET_SKEW</span></code> <a id="CTS_TARGET_SKEW"></a></p></td>
+<td><p><strong>Removed: No longer supported by underlying utility</strong>: The target clock skew in picoseconds. <br> (Default: <code class="docutils literal notranslate"><span class="pre">200</span></code>ps)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CLOCK_BUFFER_FANOUT</span></code> <a id="CLOCK_BUFFER_FANOUT"></a></p></td>
+<td><p><strong>Removed: Unused</strong>: Fanout of clock tree buffers. <br> (Default: <code class="docutils literal notranslate"><span class="pre">16</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_TOLERANCE</span></code> <a id="CTS_TOLERANCE"></a></p></td>
+<td><p><strong>Removed: Unused</strong>: An integer value that represents a tradeoff of QoR and runtime. Higher values will produce smaller runtime but worse QoR <br> (Default: <code class="docutils literal notranslate"><span class="pre">100</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="global-and-detailed-routing-grt-drt">
+<h2>Global and Detailed Routing (GRT/DRT)<a class="headerlink" href="#global-and-detailed-routing-grt-drt" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_DRT</span></code> <a id="RUN_DRT"></a></p></td>
+<td><p>Enables detailed routing. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GLOBAL_ROUTER</span></code> <a id="GLOBAL_ROUTER"></a></p></td>
+<td><p>Specifies which global router to use. Values: <code class="docutils literal notranslate"><span class="pre">fastroute</span></code>. (<code class="docutils literal notranslate"><span class="pre">cugr</span></code> is deprecated and fastroute will be used instead.) <br> (Default: <code class="docutils literal notranslate"><span class="pre">fastroute</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DETAILED_ROUTER</span></code> <a id="DETAILED_ROUTER"></a></p></td>
+<td><p>Specifies which detailed router to use. Values: <code class="docutils literal notranslate"><span class="pre">tritonroute</span></code>. (<code class="docutils literal notranslate"><span class="pre">drcu</span></code>/<code class="docutils literal notranslate"><span class="pre">tritonroute_or</span></code> are both deprecated and tritonroute will be used instead.) <br> (Default: <code class="docutils literal notranslate"><span class="pre">tritonroute</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ROUTING_CORES</span></code> <a id="ROUTING_CORES"></a></p></td>
+<td><p>Specifies the number of threads to be used in TritonRoute. Can be overriden via environment variable. <br> (Default: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RT_CLOCK_MIN_LAYER</span></code> <a id="RT_CLOCK_MIN_LAYER"></a></p></td>
+<td><p>The name of lowest layer to be used in routing the clock net. <br> (Default: <code class="docutils literal notranslate"><span class="pre">RT_MIN_LAYER</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RT_CLOCK_MAX_LAYER</span></code> <a id="RT_CLOCK_MAX_LAYER"></a></p></td>
+<td><p>The name of highest layer to be used in routing the clock net. <br> (Default: <code class="docutils literal notranslate"><span class="pre">RT_MAX_LAYER</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RESIZER_TIMING_OPTIMIZATIONS</span></code> <a id="GLB_RESIZER_TIMING_OPTIMIZATIONS"></a></p></td>
+<td><p>Specifies whether resizer timing optimizations should be performed after global routing or not. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RESIZER_DESIGN_OPTIMIZATIONS</span></code> <a id="GLB_RESIZER_DESIGN_OPTIMIZATIONS"></a></p></td>
+<td><p>Specifies whether resizer design optimizations should be performed after global routing or not. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RESIZER_MAX_WIRE_LENGTH</span></code> <a id="GLB_RESIZER_MAX_WIRE_LENGTH"></a></p></td>
+<td><p>Specifies the maximum wire length cap used by resizer to insert buffers. If set to 0, no buffers will be inserted. Value in microns. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RESIZER_MAX_SLEW_MARGIN</span></code> <a id="GLB_RESIZER_MAX_SLEW_MARGIN"></a></p></td>
+<td><p>Specifies a margin for the slews. <br> (Default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RESIZER_MAX_CAP_MARGIN</span></code> <a id="GLB_RESIZER_MAX_CAP_MARGIN"></a></p></td>
+<td><p>Specifies a margin for the capacitances. <br> (Default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RESIZER_HOLD_SLACK_MARGIN</span></code> <a id="GLB_RESIZER_HOLD_SLACK_MARGIN"></a></p></td>
+<td><p>Specifies a time margin for the slack when fixing hold violations. Normally the resizer will stop when it reaches zero slack. This option allows you to overfix. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0.05ns</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RESIZER_SETUP_SLACK_MARGIN</span></code> <a id="GLB_RESIZER_SETUP_SLACK_MARGIN"></a></p></td>
+<td><p>Specifies a time margin for the slack when fixing setup violations. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0.025ns</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RESIZER_HOLD_MAX_BUFFER_PERCENT</span></code> <a id="GLB_RESIZER_HOLD_MAX_BUFFER_PERCENT"></a></p></td>
+<td><p>Specifies a max number of buffers to insert to fix hold violations. This number is calculated as a percentage of the number of instances in the design. <br> (Default: <code class="docutils literal notranslate"><span class="pre">50</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RESIZER_SETUP_MAX_BUFFER_PERCENT</span></code> <a id="GLB_RESIZER_SETUP_MAX_BUFFER_PERCENT"></a></p></td>
+<td><p>Specifies a max number of buffers to insert to fix setup violations. This number is calculated as a percentage of the number of instances in the design. <br> (Default: <code class="docutils literal notranslate"><span class="pre">50</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RESIZER_ALLOW_SETUP_VIOS</span></code> <a id="GLB_RESIZER_ALLOW_SETUP_VIOS"></a></p></td>
+<td><p>Allows setup violations when fixing hold. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_OPTIMIZE_MIRRORING</span></code> <a id="GLB_OPTIMIZE_MIRRORING"></a></p></td>
+<td><p>Specifies whether or not to run an optimize_mirroring pass whenever detailed placement happens after Routing timing optimization. This pass will mirror the cells whenever possible to optimize the design. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GRT_ALLOW_CONGESTION</span></code> <a id="GRT_ALLOW_CONGESTION"></a>‡</p></td>
+<td><p>Allow congestion in the resulting guides. 0 = false, 1 = true <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GRT_OVERFLOW_ITERS</span></code> <a id="GRT_OVERFLOW_ITERS"></a>‡</p></td>
+<td><p>The maximum number of iterations waiting for the overflow to reach the desired value. <br> (Default: <code class="docutils literal notranslate"><span class="pre">50</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GRT_ANT_ITERS</span></code> <a id="GRT_ANT_ITERS"></a>‡</p></td>
+<td><p>The maximum number of iterations for global router repair_antenna. This option is only available when <code class="docutils literal notranslate"><span class="pre">GRT_REPAIR_ANTENNAS</span></code> is enabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">15</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GRT_ANT_MARGIN</span></code> <a id="GRT_ANT_MARGIN"></a>‡</p></td>
+<td><p>The margin to over fix antenna violations in global routing as a percentage. This option is only available when <code class="docutils literal notranslate"><span class="pre">GRT_REPAIR_ANTENNAS</span></code> is enabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GRT_ESTIMATE_PARASITICS</span></code> <a id="GRT_ESTIMATE_PARASITICS"></a>‡</p></td>
+<td><p>Specifies whether or not to run STA after global routing using OpenROAD’s estimate_parasitics -global_routing and generates reports under <code class="docutils literal notranslate"><span class="pre">logs/routing</span></code>. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GRT_MAX_DIODE_INS_ITERS</span></code> <a id="GRT_MAX_DIODE_INS_ITERS"></a>‡</p></td>
+<td><p>Controls the maximum number of iterations at which re-running Fastroute for diode insertion stops. Each iteration ARC detects the violations and FastRoute fixes them by inserting diodes, then producing the new DEF. The number of antenna violations is compared with the previous iteration and if they are equal or the number is greater the iterations stop and the DEF from the previous iteration is used in the rest of the flow. If the current antenna violations reach zero, the current def will be used and the iterations will not continue. This option is only available in when <code class="docutils literal notranslate"><span class="pre">GRT_REPAIR_ANTENNAS</span></code> is enabled.  <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GRT_REPAIR_ANTENNAS</span></code> <a id="GRT_REPAIR_ANTENNAS"></a>‡</p></td>
+<td><p>Enables OpenROAD’s antenna avoidance flow. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GRT_OBS</span></code> <a id="GRT_OBS"></a>‡</p></td>
+<td><p>Specifies custom obstruction to be added prior to global routing as of layer and coordinates in the format <code class="docutils literal notranslate"><span class="pre">layer</span> <span class="pre">llx</span> <span class="pre">lly</span> <span class="pre">urx</span> <span class="pre">ury</span></code>, where <code class="docutils literal notranslate"><span class="pre">ll</span></code> and <code class="docutils literal notranslate"><span class="pre">ur</span></code> stand for “lower left” and “upper right” respectively. In JSON, declare it as an array of strings, and in Tcl, use commas as a delimiter. (Example: <code class="docutils literal notranslate"><span class="pre">li1</span> <span class="pre">0</span> <span class="pre">100</span> <span class="pre">1000</span> <span class="pre">300,</span> <span class="pre">met5</span> <span class="pre">0</span> <span class="pre">0</span> <span class="pre">1000</span> <span class="pre">500</span></code>) <br> (Default: unset)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GRT_ADJUSTMENT</span></code> <a id="GRT_ADJUSTMENT"></a>‡</p></td>
+<td><p>Reduction in the routing capacity of the edges between the cells in the global routing graph. Values range from 0 to 1. <br> 1 = most reduction, 0 = least reduction  <br> (Default: <code class="docutils literal notranslate"><span class="pre">0.3</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GRT_MACRO_EXTENSION</span></code> <a id="GRT_MACRO_EXTENSION"></a>‡</p></td>
+<td><p>Sets the number of GCells added to the blockages boundaries from macros. A GCell is typically defined in terms of Mx routing tracks. The default GCell size is 15 M3 pitches. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DRT_MIN_LAYER</span></code> <a id="DRT_MIN_LAYER"></a></p></td>
+<td><p>An optional override to the lowest layer used in detailed routing. For example, in sky130, you may want global routing to avoid li1, but let detailed routing use li1 if it has to. <br> (Default: <code class="docutils literal notranslate"><span class="pre">RT_MIN_LAYER</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DRT_MAX_LAYER</span></code> <a id="DRT_MAX_LAYER"></a></p></td>
+<td><p>An optional override to the highest layer used in detailed routing. <br> (Default: <code class="docutils literal notranslate"><span class="pre">RT_MAX_LAYER</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DRT_OPT_ITERS</span></code> <a id="DRT_OPT_ITERS"></a></p></td>
+<td><p>Specifies the maximum number of optimization iterations during Detailed Routing in TritonRoute. Values allowed are integers from <code class="docutils literal notranslate"><span class="pre">1</span></code> to <code class="docutils literal notranslate"><span class="pre">64</span></code>. <br> (Default: <code class="docutils literal notranslate"><span class="pre">64</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ROUTING_OPT_ITERS</span></code> <a id="ROUTING_OPT_ITERS"></a></p></td>
+<td><p><strong>Removed: Use <code class="docutils literal notranslate"><span class="pre">DRT_OPT_ITERS</span></code></strong>: Specifies the maximum number of optimization iterations during Detailed Routing in TritonRoute.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RT_MINLAYER</span></code> <a id="GLB_RT_MINLAYER"></a></p></td>
+<td><p><strong>Removed: Use <code class="docutils literal notranslate"><span class="pre">RT_MIN_LAYER</span></code></strong>: The number of lowest layer to be used in routing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RT_MAXLAYER</span></code> <a id="GLB_RT_MAXLAYER"></a></p></td>
+<td><p><strong>Removed: Use <code class="docutils literal notranslate"><span class="pre">RT_MAX_LAYER</span></code></strong>: The number of highest layer to be used in routing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RT_CLOCK_MINLAYER</span></code> <a id="GLB_RT_CLOCK_MINLAYER"></a></p></td>
+<td><p><strong>Removed: Use <code class="docutils literal notranslate"><span class="pre">RT_CLOCK_MIN_LAYER</span></code></strong>: The number of lowest layer to be used in routing the clock net.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RT_CLOCK_MAXLAYER</span></code> <a id="GLB_RT_CLOCK_MAXLAYER"></a></p></td>
+<td><p><strong>Removed: Use <code class="docutils literal notranslate"><span class="pre">RT_CLOCK_MIN_LAYER</span></code></strong>: The number of highest layer to be used in routing the clock net.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RT_L{1/2/3/4/5/6}_ADJUSTMENT</span></code></p></td>
+<td><p><strong>Removed: See PDK variable <code class="docutils literal notranslate"><span class="pre">GRT_LAYER_ADJUSTMENTS</span></code> instead</strong>: Reduction in the routing capacity of the edges between the cells in the global routing graph but specific to a metal layer in sky130A. Values ranged from 0 to 1</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RT_UNIDIRECTIONAL</span></code> <a id="GLB_RT_UNIDIRECTIONAL"></a></p></td>
+<td><p><strong>Removed</strong>: Allow unidirectional routing. 1 = Enabled, 0 = Disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GLB_RT_TILES</span></code> <a id="GLB_RT_TILES"></a></p></td>
+<td><p><strong>Removed</strong>: The size of the GCELL used by Fastroute during global routing.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<div><p><strong>‡</strong> Variable previously prefixed <code class="docutils literal notranslate"><span class="pre">GLB_RT_</span></code> have had its prefix changed to <code class="docutils literal notranslate"><span class="pre">GRT_</span></code>. The replaced variable is deprecated and will be translated to its new form automatically by the flow.</p>
+</div></blockquote>
+<section id="custom-diode-insertion-scripts">
+<h3>Custom Diode Insertion Scripts<a class="headerlink" href="#custom-diode-insertion-scripts" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_HEURISTIC_DIODE_INSERTION</span></code> <a id="RUN_HEURISTIC_DIODE_INSERTION"></a></p></td>
+<td><p>Runs a script by <a class="reference external" href="https://github.com/smunaut">Sylvain Munaut</a> that inserts diodes heuristically based on . 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">HEURISTIC_ANTENNA_THRESHOLD</span></code> <a id="HEURISTIC_ANTENNA_THRESHOLD"></a></p></td>
+<td><p>Minimum manhattan distance of a net to insert a diode in microns. Only applicable for <code class="docutils literal notranslate"><span class="pre">RUN_HEURISTIC_DIODE_INSERTION</span></code> is enabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">90</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DIODE_ON_PORTS</span></code> <a id="DIODE_ON_PORTS"></a></p></td>
+<td><p>Insert diodes on ports with the specified polarities. Available options are <code class="docutils literal notranslate"><span class="pre">none</span></code>, <code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">out</span></code> and <code class="docutils literal notranslate"><span class="pre">both</span></code>. <br> (Default: <code class="docutils literal notranslate"><span class="pre">none</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="parasitic-resistance-capacitance-extraction-rcx">
+<h2>Parasitic Resistance/Capacitance Extraction (RCX)<a class="headerlink" href="#parasitic-resistance-capacitance-extraction-rcx" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_SPEF_EXTRACTION</span></code> <a id="RUN_SPEF_EXTRACTION"></a></p></td>
+<td><p>Specifies whether or not to run SPEF extraction on the routed DEF. 1=enabled 0=disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SPEF_EXTRACTOR</span></code> <a id="SPEF_EXTRACTOR"></a></p></td>
+<td><p>Specifies which spef extractor to use. Values: <code class="docutils literal notranslate"><span class="pre">openrcx</span></code> or (<strong>removed:</strong> <code class="docutils literal notranslate"><span class="pre">def2spef</span></code>). <br> (Default: <code class="docutils literal notranslate"><span class="pre">openrcx</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RCX_MERGE_VIA_WIRE_RES</span></code> <a id="RCX_MERGE_VIA_WIRE_RES"></a></p></td>
+<td><p>Specifies whether to merge the via resistance with the wire resistance or separate it from the wire resistance. 1 = Merge via resistance, 0 = Separate via resistance <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RCX_SDC_FILE</span></code> <a id="RCX_SDC_FILE"></a></p></td>
+<td><p><strong>Deprecated: Use <code class="docutils literal notranslate"><span class="pre">SIGNOFF_SDC_FILE</span></code></strong>: Specifies SDC file to be used for RCX-based STA, which can be different from the one used for implementation. <br> (Default: <code class="docutils literal notranslate"><span class="pre">BASE_SDC_FILE</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SPEF_WIRE_MODEL</span></code> <a id="SPEF_WIRE_MODEL"></a></p></td>
+<td><p><strong>Removed:</strong> Specifies the wire model used in SPEF extraction. Options are <code class="docutils literal notranslate"><span class="pre">L</span></code> or <code class="docutils literal notranslate"><span class="pre">Pi</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SPEF_EDGE_CAP_FACTOR</span></code> <a id="SPEF_EDGE_CAP_FACTOR"></a></p></td>
+<td><p><strong>Removed:</strong> Specifies the edge capacitance factor used in SPEF extraction. Ranges from 0 to 1</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="ir-drop-analysis">
+<h2>IR Drop Analysis<a class="headerlink" href="#ir-drop-analysis" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_IRDROP_REPORT</span></code> <a id="RUN_IRDROP_REPORT"></a></p></td>
+<td><p>Creates an IR Drop report using OpenROAD PSM. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VSRC_LOC_FILES</span></code> <a id="VSRC_LOC_FILES"></a></p></td>
+<td><p>Map of voltage source nets to OpenROAD PSM location files. Variable should be provided as a Tcl dict, i.e.: <code class="docutils literal notranslate"><span class="pre">net1</span> <span class="pre">file1</span> <span class="pre">net2</span> <span class="pre">file2</span></code>. See <a class="reference external" href="https://github.com/The-OpenROAD-Project/OpenROAD/tree/master/src/psm#commands">this</a> for more info. <br> (Default: None)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="signoff">
+<h2>Signoff<a class="headerlink" href="#signoff" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PRIMARY_GDSII_STREAMOUT_TOOL</span></code> <a id="PRIMARY_GDSII_STREAMOUT_TOOL"></a></p></td>
+<td><p>Determines whether <code class="docutils literal notranslate"><span class="pre">magic</span></code> or <code class="docutils literal notranslate"><span class="pre">klayout</span></code> is the primary signoff tool. <br> (Default: <code class="docutils literal notranslate"><span class="pre">magic</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">USE_ARC_ANTENNA_CHECK</span></code> <a id="USE_ARC_ANTENNA_CHECK"></a></p></td>
+<td><p>Specifies whether to use the openroad ARC antenna checker or magic antenna checker. 0=magic antenna checker, 1=ARC OR antenna checker <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_CVC</span></code> <a id="RUN_CVC"></a></p></td>
+<td><p>Runs CVC on the output spice, which is a Circuit Validity Checker. Voltage aware ERC checker for CDL netlists. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SIGNOFF_SDC_FILE</span></code> <a id="SIGNOFF_SDC_FILE"></a></p></td>
+<td><p>Specifies SDC file used by multicorner STA during signoff stage, which can be different from the one used for implementation. <br> (Default: <code class="docutils literal notranslate"><span class="pre">BASE_SDC_FILE</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="magic">
+<h3>Magic<a class="headerlink" href="#magic" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_MAGIC</span></code> <a id="RUN_MAGIC"></a></p></td>
+<td><p>Enables running magic and GDSII streaming. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_MAGIC_DRC</span></code> <a id="RUN_MAGIC_DRC"></a></p></td>
+<td><p>Enables running magic DRC on either GDSII produced by <code class="docutils literal notranslate"><span class="pre">PRIMARY_GDSII_STREAMOUT_TOOL</span></code> or final produced DEF file depending on <code class="docutils literal notranslate"><span class="pre">MAGIC_DRC_USE_GDS</span></code>. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_PAD</span></code> <a id="MAGIC_PAD"></a></p></td>
+<td><p>A flag to pad the views generated by magic (.mag, .lef, .gds) with one site. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_ZEROIZE_ORIGIN</span></code> <a id="MAGIC_ZEROIZE_ORIGIN"></a></p></td>
+<td><p>A flag to move the layout such that it’s origin in the lef generated by magic is 0,0. 1 = Enabled, 0 = Disabled  <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_GENERATE_GDS</span></code> <a id="MAGIC_GENERATE_GDS"></a></p></td>
+<td><p>A flag to generate gds view via magic. 1 = Enabled, 0 = Disabled  <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_GENERATE_LEF</span></code> <a id="MAGIC_GENERATE_LEF"></a></p></td>
+<td><p>A flag to generate lef view via magic. 1 = Enabled, 0 = Disabled  <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_GENERATE_MAGLEF</span></code> <a id="MAGIC_GENERATE_MAGLEF"></a></p></td>
+<td><p>A flag to generate maglef view via magic. Requires <code class="docutils literal notranslate"><span class="pre">MAGIC_GENERATE_LEF</span></code> to be also set. 1 = Enabled, 0 = Disabled  <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_WRITE_FULL_LEF</span></code> <a id="MAGIC_WRITE_FULL_LEF"></a></p></td>
+<td><p>A flag to specify whether or not the output LEF should include all shapes inside the macro or an abstracted view of the macro lef view via magic. 1 = Full View, 0 = Abstracted View  <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_DRC_USE_GDS</span></code> <a id="MAGIC_DRC_USE_GDS"></a></p></td>
+<td><p>A flag to choose whether to run the magic DRC checks on GDS or not. If not, then the checks will be done on the DEF/LEF. 1 = GDS, 0 = DEF/LEF  <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_EXT_USE_GDS</span></code> <a id="MAGIC_EXT_USE_GDS"></a></p></td>
+<td><p>A flag to choose whether to run the magic extractions on GDS or DEF/LEF. If GDS was used Device Level LVS will be run. Otherwise, blackbox LVS will be run. 1 = GDS, 0 = DEF/LEF  <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_LEF_WRITE_USE_GDS</span></code> <a id="MAGIC_LEF_WRITE_USE_GDS"></a></p></td>
+<td><p>A flag to choose whether to run the magic lef write on GDS or DEF/LEF. 1 = GDS, 0 = DEF/LEF  <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_INCLUDE_GDS_POINTERS</span></code> <a id="MAGIC_INCLUDE_GDS_POINTERS"></a></p></td>
+<td><p>A flag to choose whether to include GDS pointers in the generated mag files or not. 1 = Enabled, 0 = Disabled  <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_DISABLE_HIER_GDS</span></code> <a id="MAGIC_DISABLE_HIER_GDS"></a></p></td>
+<td><p>A flag to disable cif hier and array during GDSII writing.* 1=Enabled <code class="docutils literal notranslate"><span class="pre">&lt;so</span> <span class="pre">this</span> <span class="pre">hier</span> <span class="pre">gds</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">disabled&gt;</span></code>, 0=Disabled <code class="docutils literal notranslate"><span class="pre">&lt;so</span> <span class="pre">this</span> <span class="pre">hier</span> <span class="pre">gds</span> <span class="pre">will</span> <span class="pre">be</span> <span class="pre">enabled&gt;</span></code>. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_DEF_NO_BLOCKAGES</span></code> <a id="MAGIC_DEF_NO_BLOCKAGES"></a></p></td>
+<td><p>A flag to choose whether blockages are read with DEF files or not (they are read as a sheet of metal by Magic). 1 = No Blockages, 0 = Blockages as Metal Sheets  <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_DEF_LABELS</span></code> <a id="MAGIC_DEF_LABELS"></a></p></td>
+<td><p>A flag to choose whether labels are read with DEF files or not. From magic docs: “The ‘-labels’ option to the ‘def read’ command causes each net in the NETS and SPECIALNETS sections of the DEF file to be annotated with a label having the net name as the label text.” 1 = Labels, 0 = Unlabeled  <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_GDS_ALLOW_ABSTRACT</span></code> <a id="MAGIC_GDS_ALLOW_ABSTRACT"></a></p></td>
+<td><p>A flag to allow abstract view of macros during magic gds generation. 1 = Allow, 0 = Disallow  <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_GDS_POLYGON_SUBCELLS</span></code> <a id="MAGIC_GDS_POLYGON_SUBCELLS"></a></p></td>
+<td><p>A flag to enable polygon subcells in magic for gds read potentially speeding up magic. From magic docs: “Put non-Manhattan polygons. This prevents interations with other polygons on the same plane and so reduces tile splitting” 1 = Allow, 0 = Disallow  <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<div><ul class="simple">
+<li><p>Tim Edwards’s Explanation on disabling hier gds: The following is an explanation by Tim Edwards, provided in a slack thread, on how this affects the GDS writing process: “Magic can take a very long time writing out GDS while checking hierarchical interactions in a standard cell layout. If your design is all digital, I recommend using “gds *hier write disable” before “gds write” so that it does not try to resolve hierarchical interactions (since by definition, standard cells are designed to just sit next to each other without creating DRC issues).  That can actually make the difference between a 20 hour GDS write and a 2 minute GDS write.  For a standard cell design that takes up the majority of the user space, a &gt; 24 hour write time (without disabling the hierarchy checks) would not surprise me.”</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="klayout">
+<h3>KLayout<a class="headerlink" href="#klayout" title="Link to this heading">¶</a></h3>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_KLAYOUT</span></code> <a id="RUN_KLAYOUT"></a></p></td>
+<td><p>Enables running KLayout and GDSII streaming. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_KLAYOUT_XOR</span></code> <a id="RUN_KLAYOUT_XOR"></a></p></td>
+<td><p>Enables running KLayout XOR on 2 GDSIIs, the defaults are the one produced by magic vs the one produced by klayout. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_KLAYOUT_DRC</span></code> <a id="RUN_KLAYOUT_DRC"></a></p></td>
+<td><p>Enables running KLayout DRC on GDSII produced by <code class="docutils literal notranslate"><span class="pre">PRIMARY_GDSII_STREAMOUT_TOOL</span></code>. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">KLAYOUT_DRC_KLAYOUT_GDS</span></code> <a id="KLAYOUT_DRC_KLAYOUT_GDS"></a></p></td>
+<td><p>Enables running KLayout DRC on GDSII produced by KLayout. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">KLAYOUT_XOR_THREADS</span></code> <a id="KLAYOUT_XOR_THREADS"></a></p></td>
+<td><p>Specifies number of threads used in klayout xor check <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">KLAYOUT_DRC_THREADS</span></code> <a id="KLAYOUT_DRC_THREADS"></a></p></td>
+<td><p>Specifies number of threads used in klayout drc check <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TAKE_LAYOUT_SCROT</span></code> <a id="TAKE_LAYOUT_SCROT"></a></p></td>
+<td><p>Enables running KLayout to take a PNG screenshot of the produced layout (currently configured to run on the results of each stage).1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="layout-vs-schematic-lvs">
+<h2>Layout vs. Schematic (LVS)<a class="headerlink" href="#layout-vs-schematic-lvs" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_LVS</span></code> <a id="RUN_LVS"></a></p></td>
+<td><p>Enables running LVS. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LVS_INSERT_POWER_PINS</span></code> <a id="LVS_INSERT_POWER_PINS"></a></p></td>
+<td><p>Enables power pins insertion before running lvs. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LVS_CONNECT_BY_LABEL</span></code> <a id="LVS_CONNECT_BY_LABEL"></a></p></td>
+<td><p>Enables connections by label in LVS by skipping <code class="docutils literal notranslate"><span class="pre">extract</span> <span class="pre">unique</span></code> in magic extractions. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">YOSYS_REWRITE_VERILOG</span></code> <a id="YOSYS_REWRITE_VERILOG"></a></p></td>
+<td><p>Enables yosys to rewrite the verilog before LVS producing a canonical verilog netlist with verbose wire declarations. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="checkers">
+<h2>Checkers<a class="headerlink" href="#checkers" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_SYNTH_CHECKS</span></code> <a id="QUIT_ON_SYNTH_CHECKS"></a></p></td>
+<td><p>Quit if any of the following conditions are met: (1) <code class="docutils literal notranslate"><span class="pre">check</span> <span class="pre">-assert</span></code> in yosys. This checks for combinational loops, conflicting drivers and wires with no drivers. (2) Using a signal that doesn’t match a module port size in the RTL. For instance, given such a module <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">example(x);</span> <span class="pre">input</span> <span class="pre">x;</span> <span class="pre">endmodule</span></code> it gets instantiated like that <code class="docutils literal notranslate"><span class="pre">example</span> <span class="pre">y(2'b11);</span></code> (3) Found Latches in the design. (4) Out of bound(range) errors in the RTL. e.g. <code class="docutils literal notranslate"><span class="pre">wire</span> <span class="pre">[10:0]</span> <span class="pre">x;</span> <span class="pre">assign</span> <span class="pre">x[13]</span> <span class="pre">=</span> <span class="pre">1'b1</span></code>. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_CHECKS_ALLOW_TRISTATE</span></code> <a id="SYNTH_CHECKS_ALLOW_TRISTATE"></a></p></td>
+<td><p>Allow tristate logic in <code class="docutils literal notranslate"><span class="pre">QUIT_ON_SYNTH_CHECKS</span></code>. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_UNMAPPED_CELLS</span></code> <a id="QUIT_ON_UNMAPPED_CELLS"></a></p></td>
+<td><p>Checks if there are unmapped cells after synthesis and aborts if any was found. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_ASSIGN_STATEMENTS</span></code> <a id="QUIT_ON_ASSIGN_STATEMENTS"></a></p></td>
+<td><p>Checks for assign statement in the generated gate level netlist and aborts of any was found.1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_TR_DRC</span></code> <a id="QUIT_ON_TR_DRC"></a></p></td>
+<td><p>Checks for DRC violations after routing and exits the flow if any was found. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_LONG_WIRE</span></code> <a id="QUIT_ON_LONG_WIRE"></a></p></td>
+<td><p>Exits the flow if any wire length exceeds the threshold set in the PDK. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_MAGIC_DRC</span></code> <a id="QUIT_ON_MAGIC_DRC"></a></p></td>
+<td><p>Checks for DRC violations after magic DRC is executed and exits the flow if any was found. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_ILLEGAL_OVERLAPS</span></code> <a id="QUIT_ON_ILLEGAL_OVERLAPS"></a></p></td>
+<td><p>Checks for illegal overlaps during magic extraction. In some cases, these imply existing undetected shorts in the design. It also exits the flow if any was found. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_LVS_ERROR</span></code> <a id="QUIT_ON_LVS_ERROR"></a></p></td>
+<td><p>Checks for LVS errors after netgen LVS is executed and exits the flow if any was found. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_HOLD_VIOLATIONS</span></code> <a id="QUIT_ON_HOLD_VIOLATIONS"></a></p></td>
+<td><p>Exits the flow on hold violations at the typical corner <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_SETUP_VIOLATIONS</span></code> <a id="QUIT_ON_SETUP_VIOLATIONS"></a></p></td>
+<td><p>Exits the flow on setup violations at the typical corner <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_TIMING_VIOLATIONS</span></code> <a id="QUIT_ON_TIMING_VIOLATIONS"></a></p></td>
+<td><p>Controls <code class="docutils literal notranslate"><span class="pre">QUIT_ON_HOLD_VIOLATIONS</span></code> and <code class="docutils literal notranslate"><span class="pre">QUIT_ON_SETUP_VIOLATIONS</span></code> <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_LINTER_WARNINGS</span></code> <a id="QUIT_ON_LINTER_WARNINGS"></a></p></td>
+<td><p>Quit on warnings generated by linter (currently Verilator) <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_LINTER_ERRORS</span></code> <a id="QUIT_ON_LINTER_ERRORS"></a></p></td>
+<td><p>Quit on errors generated by linter (currently Verilator) <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_XOR_ERROR</span></code> <a id="QUIT_ON_XOR_ERROR"></a></p></td>
+<td><p>Quit on XOR differences between GDSII generated by Magic and KLayout <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_KLAYOUT_DRC</span></code> <a id="QUIT_ON_KLAYOUT_DRC"></a></p></td>
+<td><p>Checks for DRC violations after KLayout DRC is executed and exits the flow if any was found. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="misc">
+<h2>Misc.<a class="headerlink" href="#misc" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GENERATE_FINAL_SUMMARY_REPORT</span></code> <a id="GENERATE_FINAL_SUMMARY_REPORT"></a></p></td>
+<td><p>Specifies whether or not to generate a final summary report after the run is completed. Check command <code class="docutils literal notranslate"><span class="pre">generate_final_summary_report</span></code>. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">USE_GPIO_PADS</span></code> <a id="USE_GPIO_PADS"></a></p></td>
+<td><p>Decides whether or not to use the gpio pads in routing by merging their LEF file set in <code class="docutils literal notranslate"><span class="pre">::env(USE_GPIO_ROUTING_LEF)</span></code> and blackboxing their verilog modules set in <code class="docutils literal notranslate"><span class="pre">::env(GPIO_PADS_VERILOG)</span></code>. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TAP_DECAP_INSERTION</span></code> <a id="TAP_DECAP_INSERTION"></a></p></td>
+<td><p><strong>Deprecated: Use <code class="docutils literal notranslate"><span class="pre">RUN_TAP_DECAP_INSERTION</span></code></strong>: Enables tap and decap cells insertion after floorplanning. 1 = Enabled, 0 = Disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RUN_ROUTING_DETAILED</span></code> <a id="RUN_ROUTING_DETAILED"></a></p></td>
+<td><p><strong>Deprecated: Use <code class="docutils literal notranslate"><span class="pre">RUN_DRT</span></code></strong>: Enables detailed routing. 1 = Enabled, 0 = Disabled. <br> (Default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DIODE_INSERTION_STRATEGY</span></code> <a id="DIODE_INSERTION_STRATEGY"></a></p></td>
+<td><p><strong>Deprecated: Update replacement variables <code class="docutils literal notranslate"><span class="pre">GRT_REPAIR_ANTENNAS</span></code> and <code class="docutils literal notranslate"><span class="pre">RUN_HEURISTIC_DIODE_INSERTION</span></code> as per the instructions below</strong>: Specifies the insertion strategy of diodes to be used in the flow.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>0: No diode insertion. Equivalent to replacement variables being set to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>1: <strong>Removed</strong>: Spray diodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>2: <strong>Removed</strong>: Insert fake diodes and replace them with real diodes if needed.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>3: Use OpenROAD’s Antenna Avoidance flow. Equivalent to replacement variables being set to <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code> respectively.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>4: Use Sylvain Minaut’s custom script for diode insertion. Equivalent to replacement variables being set to <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code> respectively.</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>5: <strong>Removed</strong>: A combination of strategies 2 and 4.</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>6: A combination of strategies 3 and 4. Equivalent to replacement variables being set to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_CONVERT_DRC_TO_RDB</span></code> <a id="MAGIC_CONVERT_DRC_TO_RDB"></a></p></td>
+<td><p><strong>Removed: Will always run</strong>: Specifies whether or not generate a Calibre RDB out of the magic.drc report. Result is saved in <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/results/magic/</span></code>. 1 = Enabled, 0 = Disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TEST_MISMATCHES</span></code> <a id="TEST_MISMATCHES"></a></p></td>
+<td><p><strong>Removed: See <code class="docutils literal notranslate"><span class="pre">./flow.tcl</span> <span class="pre">-test_mismatches</span></code></strong>: Test for mismatches between the OpenLane tool versions and the current environment. <code class="docutils literal notranslate"><span class="pre">all</span></code> tests all mismatches. <code class="docutils literal notranslate"><span class="pre">tools</span></code> tests all except the PDK. <code class="docutils literal notranslate"><span class="pre">pdk</span></code> only tests the PDK. <code class="docutils literal notranslate"><span class="pre">none</span></code> disables the check.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">QUIT_ON_MISMATCHES</span></code> <a id="QUIT_ON_MISMATCHES"></a></p></td>
+<td><p><strong>Removed: See <code class="docutils literal notranslate"><span class="pre">./flow.tcl</span> <span class="pre">-ignore_mismatches</span></code></strong>: Whether to halt the flow execution or not if <code class="docutils literal notranslate"><span class="pre">TEST_MISMATCHES</span></code> is enabled and any mismatches are found.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">KLAYOUT_XOR_GDS</span></code> <a id="KLAYOUT_XOR_GDS"></a></p></td>
+<td><p><strong>Removed: GDS always generated</strong>: If <code class="docutils literal notranslate"><span class="pre">RUN_KLAYOUT_XOR</span></code> is enabled, this will enable producing a GDS output from the XOR along with it’s PNG export. 1 = Enabled, 0 = Disabled.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">KLAYOUT_XOR_XML</span></code> <a id="KLAYOUT_XOR_XML"></a></p></td>
+<td><p><strong>Removed: XML always generated</strong>: If <code class="docutils literal notranslate"><span class="pre">RUN_KLAYOUT_XOR</span></code> is enabled, this will enable producing an XML output from the XOR. 1 = Enabled, 0 = Disabled.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LEC_ENABLE</span></code> <a id="LEC_ENABLE"></a></p></td>
+<td><p><strong>Removed: buggy</strong> Enables logic verification using yosys, for comparing each netlist at each stage of the flow with the previous netlist and verifying that they are logically equivalent. Warning: this will increase the runtime significantly. 1 = Enabled, 0 = Disabled <br> (Default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="pdk_configuration.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">PDK Configuration Variables</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="configuration_files.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Design Configuration Files</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2020-2022 Efabless Corporation and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/The-OpenROAD-Project/OpenLane" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Flow Configuration Variables</a><ul>
+<li><a class="reference internal" href="#general">General</a><ul>
+<li><a class="reference internal" href="#macros-chip-integration">Macros/Chip Integration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#linting">Linting</a></li>
+<li><a class="reference internal" href="#synthesis">Synthesis</a></li>
+<li><a class="reference internal" href="#static-timing-analysis-sta">Static Timing Analysis (STA)</a></li>
+<li><a class="reference internal" href="#floorplanning-fp">Floorplanning (FP)</a><ul>
+<li><a class="reference internal" href="#deprecated-i-o-layer-variables">Deprecated I/O Layer variables</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#all-resizer-rsz-steps">All Resizer (RSZ) Steps</a></li>
+<li><a class="reference internal" href="#global-and-detailed-placement-gpl-dpl">Global and Detailed Placement (GPL/DPL)</a><ul>
+<li><a class="reference internal" href="#macro-placement-configuration">Macro placement configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#clock-tree-synthesis-cts">Clock Tree Synthesis (CTS)</a></li>
+<li><a class="reference internal" href="#global-and-detailed-routing-grt-drt">Global and Detailed Routing (GRT/DRT)</a><ul>
+<li><a class="reference internal" href="#custom-diode-insertion-scripts">Custom Diode Insertion Scripts</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parasitic-resistance-capacitance-extraction-rcx">Parasitic Resistance/Capacitance Extraction (RCX)</a></li>
+<li><a class="reference internal" href="#ir-drop-analysis">IR Drop Analysis</a></li>
+<li><a class="reference internal" href="#signoff">Signoff</a><ul>
+<li><a class="reference internal" href="#magic">Magic</a></li>
+<li><a class="reference internal" href="#klayout">KLayout</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#layout-vs-schematic-lvs">Layout vs. Schematic (LVS)</a></li>
+<li><a class="reference internal" href="#checkers">Checkers</a></li>
+<li><a class="reference internal" href="#misc">Misc.</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

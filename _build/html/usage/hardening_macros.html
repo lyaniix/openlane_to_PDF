@@ -1,0 +1,571 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Chip Level Integration" href="chip_integration.html" /><link rel="prev" title="Regression &amp; Exploration" href="exploration_script.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.07.18 -->
+        <title>Hardening Macros - OpenLane Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=613ab9ff" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">OpenLane Documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">OpenLane Documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting_started/installation/index.html">Installation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_ubuntu.html">Ubuntu 20.04+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_macos.html">macOS 11+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_win.html">Windows 10+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_linux.html">Other Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/updating.html">Updating OpenLane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/quickstart.html">Quick-Start Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../flow_overview.html">OpenLane Architecture</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Usage guides</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Usage guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="designs.html">Adding Your Designs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploration_script.html">Regression &amp; Exploration</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Hardening Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chip_integration.html">Chip Level Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_power_grid_control.html">Power Grid/Power Distribution Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_pdk_builds.html">Custom-Building PDKs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/digital_guide.html">Hierarchical chip design (with macros)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/openram.html">Designing a chip with an OpenRAM (sky130)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">Reference Manual</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Reference Manual</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cli.html">Command-Line Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/configuration_files.html">Design Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/configuration.html">Flow Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/pdk_configuration.html">PDK Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/openlane_commands.html">Tcl Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/interactive_mode.html">Interactive Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/datapoint_definitions.html">Datapoint Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/gui.html">Viewing layouts graphically</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../additional_material.html">Additional Material</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../for_developers/index.html">Developer’s Guide</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Developer’s Guide</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/docs_contribution.html">Contributing Docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/pdk_structure.html">Porting a PDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/using_or_issue.html"><code class="docutils literal notranslate"><span class="pre">or_issue.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/gha_workflow.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/issue_regression_tests.html">Issue regression tests</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/blob/master/docs/source/usage/hardening_macros.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/edit/master/docs/source/usage/hardening_macros.md" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="hardening-macros">
+<h1>Hardening Macros<a class="headerlink" href="#hardening-macros" title="Link to this heading">¶</a></h1>
+<p>Using OpenLane, you can produce a GDSII from an RTL for macros, and then use
+these macros to create your chip. Check <a class="reference internal" href="chip_integration.html"><span class="std std-doc">this</span></a> for more
+details about chip integration.</p>
+<p>In this document we will go through the hardening steps and discuss in some
+detail what considerations should be made when hardening your macro.</p>
+<section id="configuration-variables">
+<h2>Configuration Variables<a class="headerlink" href="#configuration-variables" title="Link to this heading">¶</a></h2>
+<p>You should start by setting the basic configuration file for your design. Check <a class="reference internal" href="designs.html"><span class="std std-doc">this</span></a> for how to add your new design.</p>
+<p>The basic configuration <code class="docutils literal notranslate"><span class="pre">config.json</span></code> or <code class="docutils literal notranslate"><span class="pre">config.tcl</span></code> file should in the vast
+majority of cases at least contain these variables:</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Click on any variable name listed in this document to get its usage information.</p>
+</div>
+<ul class="simple">
+<li><p><a class="reference internal" href="../reference/configuration.html#DESIGN_NAME"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">DESIGN_NAME</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="../reference/configuration.html#VERILOG_FILES"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">VERILOG_FILES</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="../reference/configuration.html#CLOCK_PORT"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">CLOCK_PORT</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="../reference/configuration.html#CLOCK_PERIOD"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">CLOCK_PERIOD</span></code></span></a></p></li>
+<li><p><a class="reference internal" href="../reference/configuration.html#FP_PDN_MULTILAYER"><span class="std std-ref"><code class="docutils literal notranslate"><span class="pre">FP_PDN_MULTILAYER</span></code></span></a> (You may leave it empty if true)</p></li>
+</ul>
+<p>So, for example:</p>
+<table>
+<tr><th>JSON</th><th>Tcl</th></tr>
+<tr>
+<td>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="w">    </span><span class="nt">&quot;DESIGN_NAME&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;spm&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;VERILOG_FILES&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dir::src/*.v&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;CLOCK_PERIOD&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span>
+</pre></div>
+</div>
+</td>
+<td>
+<div class="highlight-tcl notranslate"><div class="highlight"><pre><span></span><span class="k">set</span><span class="w"> </span><span class="o">::</span>env<span class="k">(</span><span class="nv">DESIGN_NAME</span><span class="k">)</span><span class="w"> </span><span class="k">{</span><span class="nv">spm</span><span class="k">}</span>
+
+<span class="k">set</span><span class="w"> </span><span class="o">::</span>env<span class="k">(</span><span class="nv">VERILOG_FILES</span><span class="k">)</span><span class="w"> </span><span class="k">[</span><span class="nb">glob</span><span class="w"> </span><span class="nv">$::env</span><span class="k">(</span><span class="nv">DESIGN_DIR</span><span class="k">)</span><span class="o">/</span>src<span class="o">/*</span>.v<span class="k">]</span>
+<span class="k">set</span><span class="w"> </span><span class="o">::</span>env<span class="k">(</span><span class="nv">CLOCK_PORT</span><span class="k">)</span><span class="w"> </span><span class="k">{</span><span class="nv">clk</span><span class="k">}</span>
+<span class="k">set</span><span class="w"> </span><span class="o">::</span>env<span class="k">(</span><span class="nv">FP_PDN_MULTILAYER</span><span class="k">)</span><span class="w"> </span><span class="k">{</span><span class="nv">0</span><span class="k">}</span>
+</pre></div>
+</div>
+</td>
+</tr>
+</table>
+<section id="synthesis">
+<h3>Synthesis<a class="headerlink" href="#synthesis" title="Link to this heading">¶</a></h3>
+<p>The first decision in synthesis is determining the optimal synthesis strategy <code class="docutils literal notranslate"><span class="pre">SYNTH_STRATEGY</span></code> for your design. For that purpose there is a flag in the <code class="docutils literal notranslate"><span class="pre">flow.tcl</span></code> script, <code class="docutils literal notranslate"><span class="pre">-synth_explore</span></code> that runs a synthesis strategy exploration and reports the results in a table under <code class="docutils literal notranslate"><span class="pre">&lt;run_path&gt;/reports/</span></code>.</p>
+<p>Then you need to consider the best values for the <code class="docutils literal notranslate"><span class="pre">MAX_FANOUT_CONSTRAINT</span></code>.</p>
+<p>If your macro is huge (200k+ cells), then you might want to try setting <code class="docutils literal notranslate"><span class="pre">SYNTH_NO_FLAT</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code> (Tcl)/<code class="docutils literal notranslate"><span class="pre">true</span></code> (JSON), which will postpone the flattening of the design during synthesis until the very end.</p>
+<p>For all variables, check <a class="reference internal" href="../reference/configuration.html#synthesis"><span class="std std-ref">this</span></a> documentation for more details about those configurations and their values.</p>
+</section>
+</section>
+<section id="static-timing-analysis">
+<h2>Static Timing Analysis<a class="headerlink" href="#static-timing-analysis" title="Link to this heading">¶</a></h2>
+<p>Static Timing Analysis happens multiple times during the flow. However, they all use the same base.sdc file. You can control the outcome of the static timing analysis by setting those values:</p>
+<ol class="arabic simple">
+<li><p>The clock ports in the design, explained in the base requirements section <code class="docutils literal notranslate"><span class="pre">CLOCK_PORT</span></code>.</p></li>
+<li><p>The clock period that you prefer the design to run with. This could be set using <code class="docutils literal notranslate"><span class="pre">CLOCK_PERIOD</span></code> and the unit is ns. It is important to note that the flow will use this value to calculate the worst and total negative slack, also if timing optimizations are enabled, it will try to optimize for it and give suggested clock period at the end of the run in <code class="docutils literal notranslate"><span class="pre">&lt;run-path&gt;/reports/metrics.csv</span></code> This value should be used in the future to speed up the optimization process and it will be the estimated value at which the design should run.</p></li>
+<li><p>The IO delay percentage from the clock period <code class="docutils literal notranslate"><span class="pre">IO_PCT</span></code>. More about that <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">here</span></a>.</p></li>
+<li><p>You may want to write a custom SDC file to be used in STA and CTS. The default SDC file in the flow is as follows. However, you can change that by pointing to a new file with the environment variable <code class="docutils literal notranslate"><span class="pre">IMPLEMENTATION_SDC_FILE</span></code>. More about that <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">here</span></a>.</p></li>
+</ol>
+<p>Other values are set based on the (PDK, STD_CELL_LIBRARY) used. You can read more about those configurations <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">here</span></a>.</p>
+<p>Static Timing Analysis are done after:</p>
+<ol class="arabic simple">
+<li><p>Synthesis using the verilog netlist.</p></li>
+<li><p>Placement using OpenROAD’s estimate_parasitics.</p></li>
+<li><p>Timing optimizations using the verilog netlist.</p></li>
+<li><p>Global Routing using OpenROAD’s estimate_parasitics.</p></li>
+<li><p>Detailed Routing using SPEF extraction and the verilog netlist.</p></li>
+</ol>
+<p>For SPEF extraction, you can control the wire model and the edge capacitance factor through these variables <code class="docutils literal notranslate"><span class="pre">SPEF_WIRE_MODEL</span></code> and <code class="docutils literal notranslate"><span class="pre">SPEF_EDGE_CAP_FACTOR</span></code>.</p>
+<p>More about that <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">here</span></a>.</p>
+</section>
+<section id="floorplan">
+<h2>Floorplan<a class="headerlink" href="#floorplan" title="Link to this heading">¶</a></h2>
+<p>During Floor plan, you have one of three options:</p>
+<ol class="arabic simple">
+<li><p>Let the tools determine the area relative to the size and number of cells. This is done by setting <code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> to <code class="docutils literal notranslate"><span class="pre">relative</span></code> (the default value), and setting <code class="docutils literal notranslate"><span class="pre">FP_CORE_UTIL</span></code> as the core utilization percentage. Also, you can change the aspect ratio by changing <code class="docutils literal notranslate"><span class="pre">FP_ASPECT_RATIO</span></code>.</p></li>
+<li><p>Set a specific DIE AREA by making <code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> set to <code class="docutils literal notranslate"><span class="pre">absolute</span></code> and then giving the size as four coordinates to <code class="docutils literal notranslate"><span class="pre">DIE_AREA</span></code>.</p></li>
+<li><p>Use a template DEF and apply the same DIE AREA and dimensions of that DEF. Note that this option will also force the flow to use the same PIN locations and PIN names (they are copied over from the template DEF). To use this option set: <code class="docutils literal notranslate"><span class="pre">FP_DEF_TEMPLATE</span></code> to point to that DEF file.</p></li>
+</ol>
+<p>You can read more about how to control these variables <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">here</span></a>.</p>
+</section>
+<section id="io-placement">
+<h2>IO Placement<a class="headerlink" href="#io-placement" title="Link to this heading">¶</a></h2>
+<p>For IO placement, you currently have four options:</p>
+<ol class="arabic simple">
+<li><p>By default, just OpenLane’s floorplanning utility randomly assign IOs
+using a “random equidistant” mode.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">FP_PIN_ORDER_CFG</span></code> to a file in the format shown below</p></li>
+</ol>
+<ol class="arabic simple" start="3">
+<li><p>Using a template DEF file and applying the same PIN locations and PIN names
+(they are copied over from the template DEF). Note that this will force the
+flow to apply the same exact DIE AREA and dimensions of the template DEF.
+To use that option set: <code class="docutils literal notranslate"><span class="pre">FP_DEF_TEMPLATE</span></code> to point to that DEF file.</p></li>
+</ol>
+<p>The options are prioritized based on the order mentioned above. This means that if you set a value for <code class="docutils literal notranslate"><span class="pre">FP_DEF_TEMPLATE</span></code> it will be used and the rest - if they exist - will be ignored.</p>
+</section>
+<section id="placement">
+<h2>Placement<a class="headerlink" href="#placement" title="Link to this heading">¶</a></h2>
+<p>Placement is done in three steps: Global Placement, Optimizations, and Detailed Placement.</p>
+<section id="global-placement">
+<h3>Global Placement<a class="headerlink" href="#global-placement" title="Link to this heading">¶</a></h3>
+<p>For Global Placement, the most important value would be <code class="docutils literal notranslate"><span class="pre">PL_TARGET_DENSITY</span></code> which should be easy to set.</p>
+<ul class="simple">
+<li><p>If your design is not a tiny design, then <code class="docutils literal notranslate"><span class="pre">PL_TARGET_DENSITY</span></code> should have a value that is <code class="docutils literal notranslate"><span class="pre">FP_CORE_UTIL</span></code> + 1~5%. Note that <code class="docutils literal notranslate"><span class="pre">FP_CORE_UTIL</span></code> has a value from 0 to 100, while <code class="docutils literal notranslate"><span class="pre">PL_TARGET_DENSITY</span></code> has a value from 0 to 1.0.</p></li>
+<li><p>If your design is a tiny design, then you may need to set <code class="docutils literal notranslate"><span class="pre">PL_RANDOM_GLB_PLACEMENT</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code> or <code class="docutils literal notranslate"><span class="pre">PL_RANDOM_INITIAL_PLACEMENT</span></code> to 1. Also, <code class="docutils literal notranslate"><span class="pre">PL_TARGET_DENSITY</span></code> should have high value, while <code class="docutils literal notranslate"><span class="pre">FP_CORE_UTIL</span></code> should have a low value. (i.e <code class="docutils literal notranslate"><span class="pre">PL_TARGET_DENSITY</span></code> set to 0.5 and <code class="docutils literal notranslate"><span class="pre">FP_CORE_UTIL</span></code> set to 5). In very tiny designs (i.e. 1 std cell designs), the approximated DIE AREA in the floorplan stage may not leave enough room to insert tap cells in the design. Thus, it is recommended to use <code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> as <code class="docutils literal notranslate"><span class="pre">absolute</span></code> and manually setting an appropriate <code class="docutils literal notranslate"><span class="pre">DIE_AREA</span></code>, check <a class="reference internal" href="#floorplan">the floorplan section</a> for more details. You may also want to reduce the values for <code class="docutils literal notranslate"><span class="pre">FP_PDN_HORIZONTAL_HALO</span></code> and <code class="docutils literal notranslate"><span class="pre">FP_PDN_VERTICAL_HALO</span></code>. You can read more about those <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">here</span></a>.</p></li>
+</ul>
+<p>Other values to be considered are <code class="docutils literal notranslate"><span class="pre">PL_BASIC_PLACEMENT</span></code> and <code class="docutils literal notranslate"><span class="pre">PL_SKIP_INITIAL_PLACEMENT</span></code>, you can read more about those <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">here</span></a>.</p>
+</section>
+<section id="optimizations">
+<h3>Optimizations<a class="headerlink" href="#optimizations" title="Link to this heading">¶</a></h3>
+<p>For this step we rely on Resizer and OpenPhySyn.</p>
+<section id="resizer-optimizations">
+<h4>Resizer optimizations<a class="headerlink" href="#resizer-optimizations" title="Link to this heading">¶</a></h4>
+<p>The only optimization we use from resizer is the wire length optimization which is used to reduce the antenna violations. This is disabled by default since the diode insertion strategies should cover that purpose.</p>
+<p>However, you can enable that by setting <code class="docutils literal notranslate"><span class="pre">PL_RESIZER_OVERBUFFER</span></code> to <code class="docutils literal notranslate"><span class="pre">1</span></code> and then determine the maximum wire length by setting this value <code class="docutils literal notranslate"><span class="pre">MAX_WIRE_LENGTH</span></code>.</p>
+</section>
+</section>
+<section id="detailed-placement">
+<h3>Detailed Placement<a class="headerlink" href="#detailed-placement" title="Link to this heading">¶</a></h3>
+<p>The only value to consider here is the <code class="docutils literal notranslate"><span class="pre">DPL_CELL_PADDING</span></code> which is usually selected for each (PDK,STD_CELL_LIBRARY) and should mostly be left as is. However, typically for the skywater libraries the value should be 4~6.</p>
+<p>You can read more about that <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">here</span></a>.</p>
+<p>test</p>
+</section>
+</section>
+<section id="clock-tree-synthesis">
+<h2>Clock Tree Synthesis<a class="headerlink" href="#clock-tree-synthesis" title="Link to this heading">¶</a></h2>
+<p>Most of the values for clock tree synthesis are (PDK,STD_CELL_LIBRARY) specific and you can read more about those in <a class="reference internal" href="../reference/pdk_configuration.html"><span class="std std-doc"><strong>PDK configuration variables</strong></span></a>.</p>
+<p>You can disable it by setting <code class="docutils literal notranslate"><span class="pre">RUN_CTS</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>If you do not want all the clock ports to be used in clock tree synthesis, then you can use set <code class="docutils literal notranslate"><span class="pre">CLOCK_NET</span></code> to specify those ports. Otherwise, <code class="docutils literal notranslate"><span class="pre">CLOCK_NET</span></code> will be defaulted to the value of <code class="docutils literal notranslate"><span class="pre">CLOCK_PORT</span></code>.</p>
+</section>
+<section id="power-grid-power-distribution-network">
+<h2>Power Grid/Power Distribution Network<a class="headerlink" href="#power-grid-power-distribution-network" title="Link to this heading">¶</a></h2>
+<p>See <a class="reference internal" href="advanced_power_grid_control.html"><span class="std std-doc">here</span></a>.</p>
+</section>
+<section id="diode-insertion">
+<h2>Diode Insertion<a class="headerlink" href="#diode-insertion" title="Link to this heading">¶</a></h2>
+<p>Here, you have four options to choose from and they are controlled by setting <code class="docutils literal notranslate"><span class="pre">DIODE_INSERTION_STRATEGY</span></code> to one of the following values: (0, 1, 2, 3, 4, 5)</p>
+<ol class="arabic simple" start="0">
+<li><p>No diode insertion is done.</p></li>
+<li><p>A diode is inserted for each PIN and connected to it.</p></li>
+<li><p>A fake diode is inserted for each PIN and connected to it, then after an antenna check is run and the fake diodes are replaced with real ones if the pin is violated.</p></li>
+<li><p>Rely on OpenROAD:FastRoute antenna avoidance flow to insert the diodes during global routing by using the Antenna Rule Checker and fixing violations. You can execute this iteratively by setting <code class="docutils literal notranslate"><span class="pre">GRT_MAX_DIODE_INS_ITERS</span></code>, it is capable to detect any divergence, so, you will probably end up with the lowest # of Antenna violations possible.</p></li>
+<li><p>A smarter version of strategy 1 that attempts to reduce the number of inserted diodes and places a diode at each design pin.</p></li>
+<li><p>A variant of 2 utilizing the script used in strategy 4.</p></li>
+</ol>
+<p>You can read more about those configurations <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">here</span></a>.</p>
+</section>
+<section id="routing">
+<h2>Routing<a class="headerlink" href="#routing" title="Link to this heading">¶</a></h2>
+<p>The configurations here were optimized based on a large design set and are best left as is, however the advanced user could refer to <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">this documentation</span></a> to learn more about each used configuration and how to change it.</p>
+<p>You are advised to change <code class="docutils literal notranslate"><span class="pre">ROUTING_CORES</span></code> based on your CPU capacity to specify the number of threads that TritonRoute can run with to perform Detailed Routing in the least runtime possible.</p>
+</section>
+<section id="gds-streaming">
+<h2>GDS Streaming<a class="headerlink" href="#gds-streaming" title="Link to this heading">¶</a></h2>
+<p>The configurations here were selected based on a large design test set and the consulation of the magic sources; therefore they are best left as is. However, for the curious user, refer to <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">this documentation</span></a> to learn more about each used configuration and how to change it.</p>
+</section>
+<section id="final-reports-and-checks">
+<h2>Final Reports and Checks<a class="headerlink" href="#final-reports-and-checks" title="Link to this heading">¶</a></h2>
+<p>Finally, the flow ends with physical verification. This begins by streaming out the GDS followed by running DRC, LVS, and Antenna checks on the design. Then, it produces a final summary report in csv format to summarize all the reports.</p>
+<p>You can control whether the magic DRC should be done on GDSII or on LEF/DEF abstract views. We recommend using GDSII on macros while using LEF/DEF on the chip level. This should speed up the run process and still give results as accurate as possible. This is controlled by <code class="docutils literal notranslate"><span class="pre">MAGIC_DRC_USE_GDS</span></code>.</p>
+<p>You can run Antenna Checks using OpenROAD ARC or magic. This is controlled by <code class="docutils literal notranslate"><span class="pre">USE_ARC_ANTENNA_CHECK</span></code>. The magic antenna checker was more reliable at the time of writing this documentation but it comes with a huge runtime trade-off and the accuracy gain is not significant enough to accept that tradeoff; thus, the default is OpenROAD’s ARC.</p>
+<p>You can control whether LVS should be run down to the device level or the cell level based on the type of the extraction. If you perform extraction on GDSII then it is going to be down to the device/transistor level, otherwise using the LEF/DEF views then it is going to be down to the cell/block level. This is controlled by <code class="docutils literal notranslate"><span class="pre">MAGIC_EXT_USE_GDS</span></code>.</p>
+<p>A final summary report is produced by default as <code class="docutils literal notranslate"><span class="pre">&lt;run-path&gt;/reports/metrics.csv</span></code>, for more details about the contents of the report check <a class="reference internal" href="../reference/datapoint_definitions.html"><span class="std std-doc"><strong>Datapoint Definitions</strong></span></a>.</p>
+<p>A final manufacturability report is produced by default as <code class="docutils literal notranslate"><span class="pre">&lt;run-path&gt;/reports/manufacturability_report.csv</span></code>, this report contains the magic DRC, the LVS, and the antenna violations summaries.</p>
+<p>The final GDSII file can be found under <code class="docutils literal notranslate"><span class="pre">&lt;run-path&gt;/results/final/gds</span></code>.</p>
+<p>To integrate that macro into a core or a chip, check this <a class="reference internal" href="chip_integration.html"><span class="std std-doc">documentation on chip integration</span></a>.</p>
+<p>If you want to create further tweaks in the flow that the abundant configuration
+variables do not allow, you can use <a class="reference internal" href="../reference/interactive_mode.html"><span class="std std-doc"><strong>interactive mode</strong></span></a>,
+which allows you to write a Tcl-based script to directly call functions in OpenLane and/or
+write your own.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="chip_integration.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Chip Level Integration</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="exploration_script.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Regression &amp; Exploration</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2020-2022 Efabless Corporation and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/The-OpenROAD-Project/OpenLane" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Hardening Macros</a><ul>
+<li><a class="reference internal" href="#configuration-variables">Configuration Variables</a><ul>
+<li><a class="reference internal" href="#synthesis">Synthesis</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#static-timing-analysis">Static Timing Analysis</a></li>
+<li><a class="reference internal" href="#floorplan">Floorplan</a></li>
+<li><a class="reference internal" href="#io-placement">IO Placement</a></li>
+<li><a class="reference internal" href="#placement">Placement</a><ul>
+<li><a class="reference internal" href="#global-placement">Global Placement</a></li>
+<li><a class="reference internal" href="#optimizations">Optimizations</a><ul>
+<li><a class="reference internal" href="#resizer-optimizations">Resizer optimizations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#detailed-placement">Detailed Placement</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#clock-tree-synthesis">Clock Tree Synthesis</a></li>
+<li><a class="reference internal" href="#power-grid-power-distribution-network">Power Grid/Power Distribution Network</a></li>
+<li><a class="reference internal" href="#diode-insertion">Diode Insertion</a></li>
+<li><a class="reference internal" href="#routing">Routing</a></li>
+<li><a class="reference internal" href="#gds-streaming">GDS Streaming</a></li>
+<li><a class="reference internal" href="#final-reports-and-checks">Final Reports and Checks</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

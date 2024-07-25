@@ -1,0 +1,914 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Designing a chip with an OpenRAM (sky130)" href="openram.html" /><link rel="prev" title="Tutorials" href="index.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.07.18 -->
+        <title>Hierarchical chip design (with macros) - OpenLane Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=613ab9ff" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">OpenLane Documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">OpenLane Documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting_started/installation/index.html">Installation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_ubuntu.html">Ubuntu 20.04+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_macos.html">macOS 11+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_win.html">Windows 10+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_linux.html">Other Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/updating.html">Updating OpenLane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/quickstart.html">Quick-Start Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../flow_overview.html">OpenLane Architecture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../usage/index.html">Usage guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Usage guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../usage/designs.html">Adding Your Designs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/exploration_script.html">Regression &amp; Exploration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/hardening_macros.html">Hardening Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/chip_integration.html">Chip Level Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/advanced_power_grid_control.html">Power Grid/Power Distribution Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/custom_pdk_builds.html">Custom-Building PDKs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Hierarchical chip design (with macros)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openram.html">Designing a chip with an OpenRAM (sky130)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">Reference Manual</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Reference Manual</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cli.html">Command-Line Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/configuration_files.html">Design Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/configuration.html">Flow Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/pdk_configuration.html">PDK Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/openlane_commands.html">Tcl Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/interactive_mode.html">Interactive Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/datapoint_definitions.html">Datapoint Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/gui.html">Viewing layouts graphically</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../additional_material.html">Additional Material</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../for_developers/index.html">Developer’s Guide</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Developer’s Guide</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/docs_contribution.html">Contributing Docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/pdk_structure.html">Porting a PDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/using_or_issue.html"><code class="docutils literal notranslate"><span class="pre">or_issue.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/gha_workflow.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/issue_regression_tests.html">Issue regression tests</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/blob/master/docs/source/tutorials/digital_guide.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/edit/master/docs/source/tutorials/digital_guide.md" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="hierarchical-chip-design-with-macros">
+<h1>Hierarchical chip design (with macros)<a class="headerlink" href="#hierarchical-chip-design-with-macros" title="Link to this heading">¶</a></h1>
+<p>This guide covers the creation of simple hierarchical chip level macro.</p>
+<p>Memory macro is hardened and then the hardened design is used to showcase the integration flow in chip-level macros.</p>
+<section id="hardening-the-mem-1r1w-macroblock">
+<h2>Hardening the mem_1r1w macroblock<a class="headerlink" href="#hardening-the-mem-1r1w-macroblock" title="Link to this heading">¶</a></h2>
+<p>In this section, the process of hardening the macroblock mem_1r1w is covered.
+As these macroblocks will be used in the top-level hierarchy some configurations need to be made.</p>
+<p>Keep in mind that these designs are not ready for production and are just used to showcase the capabilities of OpenLane.</p>
+<section id="create-the-memory-macro-design">
+<h3>Create the memory macro design<a class="headerlink" href="#create-the-memory-macro-design" title="Link to this heading">¶</a></h3>
+<p>Let us create the design. The following command will create a directory <code class="docutils literal notranslate"><span class="pre">design/mem_1r1w/</span></code> and one file <code class="docutils literal notranslate"><span class="pre">config.json</span></code> that will be mostly empty.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">mem_1r1w</span> <span class="o">-</span><span class="n">init_design_config</span> <span class="o">-</span><span class="n">add_to_designs</span>
+</pre></div>
+</div>
+<p>One of the common mistakes people make is copying existing designs,
+like <code class="docutils literal notranslate"><span class="pre">designs/inverter</span></code> and then they face issues with their configuration.
+Always create new designs using <code class="docutils literal notranslate"><span class="pre">-init_design_config</span></code>.
+It will ensure that your configuration is the absolute minimum.</p>
+<p>Example of the common issues people face:
+They copy <code class="docutils literal notranslate"><span class="pre">inverter</span></code> design and rename it. Next, run the flow and the router crashes with <code class="docutils literal notranslate"><span class="pre">error</span> <span class="pre">10</span></code>.
+This is caused by enabled “basic placement”,
+which works only for designs with a couple of dozen standard cells, not hundreds.
+So when you change the basic inverter with a design containing many cells,
+the router will not be able to route your design, therefore crashing with cryptic messages.</p>
+</section>
+<section id="create-the-rtl-files">
+<h3>Create the RTL files<a class="headerlink" href="#create-the-rtl-files" title="Link to this heading">¶</a></h3>
+<p>Then we need to create/copy the RTL files. The recommended location for files is <code class="docutils literal notranslate"><span class="pre">design/mem_1r1w/src/</span></code>. Let us put a simple counter in there.</p>
+<p>Create <code class="docutils literal notranslate"><span class="pre">design/mem_1r1w/src/mem_1r1w.v</span></code> file and put following content:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Originally we used a very small macroblock as an example,
+however, there is a known issue:
+Small macroblocks do not fit the power grid,
+therefore you need to avoid making small macroblocks.</p>
+<p>For this, set the <code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> to absolute and configure <code class="docutils literal notranslate"><span class="pre">DIE_AREA</span></code> to be bigger than <code class="docutils literal notranslate"><span class="pre">200um</span> <span class="pre">x</span> <span class="pre">200um</span></code> for sky130.</p>
+</div>
+</section>
+<section id="configure-mem-1r1w">
+<h3>Configure mem_1r1w<a class="headerlink" href="#configure-mem-1r1w" title="Link to this heading">¶</a></h3>
+<p>Modify the <code class="docutils literal notranslate"><span class="pre">config.json</span></code> to include following:</p>
+<p><code class="docutils literal notranslate"><span class="pre">FP_PDN_MULTILAYER</span></code> controls the metal levels used for power routing. Set it to <code class="docutils literal notranslate"><span class="pre">false</span></code> to use only lower levels.</p>
+<p><code class="docutils literal notranslate"><span class="pre">FP_PDN_CORE_RING</span></code> is set to <code class="docutils literal notranslate"><span class="pre">false</span></code> to disable a power ring around the macroblock.</p>
+<p><code class="docutils literal notranslate"><span class="pre">RT_MAX_LAYER</span></code> set to <code class="docutils literal notranslate"><span class="pre">met4</span></code> to limit metal layers allowed for routing.</p>
+<p>More information on <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">configuration can be found here</span></a>.</p>
+<figure class="align-default" id="id1">
+<img alt="../_images/ring_around_macro.png" src="../_images/ring_around_macro.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">On the left <code class="docutils literal notranslate"><span class="pre">&quot;FP_PDN_CORE_RING&quot;:</span> <span class="pre">true</span></code>, on the right <code class="docutils literal notranslate"><span class="pre">&quot;FP_PDN_CORE_RING&quot;:</span> <span class="pre">false</span></code></span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="run-the-flow-on-the-macroblock">
+<h3>Run the flow on the macroblock<a class="headerlink" href="#run-the-flow-on-the-macroblock" title="Link to this heading">¶</a></h3>
+<p>Finally, run OpenLane. <code class="docutils literal notranslate"><span class="pre">flow.tcl</span></code> is the entry point for OpenLane.
+The command needs to be run from inside the environment of OpenLane as described in quickstart.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">mem_1r1w</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide</span> <span class="o">-</span><span class="n">overwrite</span>
+</pre></div>
+</div>
+</section>
+<section id="analyzing-the-flow-generated-files">
+<h3>Analyzing the flow-generated files<a class="headerlink" href="#analyzing-the-flow-generated-files" title="Link to this heading">¶</a></h3>
+<p>You can open the interactive view using the following commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">mem_1r1w</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide</span> <span class="o">-</span><span class="n">interactive</span>
+<span class="n">package</span> <span class="n">require</span>  <span class="n">openlane</span>
+<span class="n">or_gui</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/mem_1r1w_def.png" src="../_images/mem_1r1w_def.png" />
+</figure>
+</section>
+</section>
+<section id="chip-level-integration">
+<h2>Chip level integration<a class="headerlink" href="#chip-level-integration" title="Link to this heading">¶</a></h2>
+<p>In this section, the integration of previously hardened macroblock is covered.
+Currently, OpenLane does not support cross-hierarchy timing analysis, so users should avoid multiple hierarchies.</p>
+<section id="create-chip-level">
+<h3>Create chip level<a class="headerlink" href="#create-chip-level" title="Link to this heading">¶</a></h3>
+<p>The top-level macroblock is called <code class="docutils literal notranslate"><span class="pre">regfile_2r1w</span></code>. However, to run the flow we need to prepare the design first.
+Create a new design named <code class="docutils literal notranslate"><span class="pre">regfile_2r1w</span></code>. This design will use the <code class="docutils literal notranslate"><span class="pre">mem_1r1w</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="n">regfile_2r1w</span> <span class="o">-</span><span class="n">init_design_config</span> <span class="o">-</span><span class="n">add_to_designs</span>
+</pre></div>
+</div>
+</section>
+<section id="integrate-the-macros">
+<h3>Integrate the macros<a class="headerlink" href="#integrate-the-macros" title="Link to this heading">¶</a></h3>
+<p>Verilog blackbox is used by the synthesis tool.
+It tells the synthesis tool the purpose and width of the input and output
+but does not carry information regarding the timings.</p>
+<p>In the <a class="reference internal" href="openram.html"><span class="std std-doc">OpenRAM macro tutorial</span></a>, the alternative with the Liberty file is described.</p>
+<p>Liberty flow contains the timings, unfortunately, OpenLane does not generate the Liberty output.
+This means that the only remaining option is the Verilog Blackbox flow.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The users should be careful when making subcomponents or blackboxes that have parameters,
+because this may cause behavior mismatches between RTL and the final GDS.</p>
+</div>
+<p>Create the verilog blackbox:</p>
+<p>Then add <code class="docutils literal notranslate"><span class="pre">VERILOG_FILES_BLACKBOX</span></code>, <code class="docutils literal notranslate"><span class="pre">EXTRA_LEFS</span></code> and <code class="docutils literal notranslate"><span class="pre">EXTRA_GDS_FILES</span></code> to the <code class="docutils literal notranslate"><span class="pre">config.json</span></code> in the <code class="docutils literal notranslate"><span class="pre">regfile_2r1w</span></code>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;DESIGN_NAME&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;regfile_2r1w&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;VERILOG_FILES&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dir::src/*.v&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;CLOCK_PORT&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;clk&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;CLOCK_PERIOD&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;FP_PDN_MULTILAYER&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+
+<span class="w">  </span><span class="nt">&quot;EXTRA_LEFS&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/openlane/designs/ci/mem_1r1w/runs/full_guide/results/final/lef/mem_1r1w.lef&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;EXTRA_GDS_FILES&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/openlane/designs/ci/mem_1r1w/runs/full_guide/results/final/gds/mem_1r1w.gds&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;VERILOG_FILES_BLACKBOX&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dir::bb/*.v&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This will add the LEF abstract representation of the macroblock. This abstraction file contains only layers required by tools.
+In contrast, GDS contains all of the layers and is used to generate the final GDS file.
+Mismatches between these files is not allowed. It is the responsibility of the users to ensure that they match.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Check for name collisions between the blackboxed macroblocks that have the same name but different parameters,
+to avoid a behavioral mismatch.
+This is a <a class="reference external" href="https://github.com/The-OpenROAD-Project/OpenLane/issues/1291">known issue documented here</a>.</p>
+</div>
+<p>The PDN straps will be routed in opposite directions.
+In locations where the two routings cross each other,
+VIAs connecting the layers are added. When <code class="docutils literal notranslate"><span class="pre">FP_PDN_MULTILAYER</span></code> is set to <code class="docutils literal notranslate"><span class="pre">true</span></code> then higher layers (met5 in sky130) are used.
+If it is set to <code class="docutils literal notranslate"><span class="pre">false</span></code> then VIAs will be missing and you will get LVS issues.</p>
+</section>
+<section id="verilog-files">
+<h3>Verilog files<a class="headerlink" href="#verilog-files" title="Link to this heading">¶</a></h3>
+<p>Create the RTL files for the macroblock <code class="docutils literal notranslate"><span class="pre">regfile_2r1w</span></code>.
+The file is located in newly created design path <code class="docutils literal notranslate"><span class="pre">designs/ci/regfile_2r1w/src/regfile_2r1w.v</span></code> and has following content:</p>
+</section>
+<section id="run-the-flow">
+<h3>Run the flow<a class="headerlink" href="#run-the-flow" title="Link to this heading">¶</a></h3>
+<p>Run the flow. It is expected for the flow to fail. In the next step, explanation is provided.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="n">regfile_2r1w</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide_broken_aspect_ratio</span> <span class="o">-</span><span class="n">overwrite</span>
+</pre></div>
+</div>
+</section>
+<section id="first-issue">
+<h3>First issue<a class="headerlink" href="#first-issue" title="Link to this heading">¶</a></h3>
+<p>Flow is expected to fail.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">ERROR</span><span class="p">]:</span> <span class="n">during</span> <span class="n">executing</span> <span class="n">openroad</span> <span class="n">script</span> <span class="o">/</span><span class="n">openlane</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">openroad</span><span class="o">/</span><span class="n">replace</span><span class="o">.</span><span class="n">tcl</span>
+<span class="p">[</span><span class="n">ERROR</span><span class="p">]:</span> <span class="n">Exit</span> <span class="n">code</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="n">ERROR</span><span class="p">]:</span> <span class="n">full</span> <span class="n">log</span><span class="p">:</span> <span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">regfile_2r1w</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">full_guide</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">placement</span><span class="o">/</span><span class="mi">9</span><span class="o">-</span><span class="k">global</span><span class="o">.</span><span class="n">log</span>
+<span class="p">[</span><span class="n">ERROR</span><span class="p">]:</span> <span class="n">Last</span> <span class="mi">10</span> <span class="n">lines</span><span class="p">:</span>
+<span class="p">[</span><span class="n">INFO</span> <span class="n">GPL</span><span class="o">-</span><span class="mi">0015</span><span class="p">]</span> <span class="n">CoreAreaUxUy</span><span class="p">:</span> <span class="mi">489440</span> <span class="mi">495040</span>
+<span class="p">[</span><span class="n">INFO</span> <span class="n">GPL</span><span class="o">-</span><span class="mi">0016</span><span class="p">]</span> <span class="n">CoreArea</span><span class="p">:</span> <span class="mi">234294707200</span>
+<span class="p">[</span><span class="n">INFO</span> <span class="n">GPL</span><span class="o">-</span><span class="mi">0017</span><span class="p">]</span> <span class="n">NonPlaceInstsArea</span><span class="p">:</span> <span class="mi">124707104000</span>
+<span class="p">[</span><span class="n">INFO</span> <span class="n">GPL</span><span class="o">-</span><span class="mi">0018</span><span class="p">]</span> <span class="n">PlaceInstsArea</span><span class="p">:</span> <span class="mi">117229672450</span>
+<span class="p">[</span><span class="n">INFO</span> <span class="n">GPL</span><span class="o">-</span><span class="mi">0019</span><span class="p">]</span> <span class="n">Util</span><span class="p">(</span><span class="o">%</span><span class="p">):</span> <span class="mf">106.97</span>
+<span class="p">[</span><span class="n">INFO</span> <span class="n">GPL</span><span class="o">-</span><span class="mi">0020</span><span class="p">]</span> <span class="n">StdInstsArea</span><span class="p">:</span> <span class="mi">454185600</span>
+<span class="p">[</span><span class="n">INFO</span> <span class="n">GPL</span><span class="o">-</span><span class="mi">0021</span><span class="p">]</span> <span class="n">MacroInstsArea</span><span class="p">:</span> <span class="mi">116775486850</span>
+<span class="p">[</span><span class="n">ERROR</span> <span class="n">GPL</span><span class="o">-</span><span class="mi">0301</span><span class="p">]</span> <span class="n">Utilization</span> <span class="n">exceeds</span> <span class="mi">100</span><span class="o">%.</span>
+<span class="n">Error</span><span class="p">:</span> <span class="n">replace</span><span class="o">.</span><span class="n">tcl</span><span class="p">,</span> <span class="mi">91</span> <span class="n">GPL</span><span class="o">-</span><span class="mi">0301</span>
+<span class="n">child</span> <span class="n">process</span> <span class="n">exited</span> <span class="n">abnormally</span>
+</pre></div>
+</div>
+<p>To debug this issue, open the OpenROAD GUI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="n">regfile_2r1w</span> <span class="o">-</span><span class="n">interactive</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide_broken_aspect_ratio</span>
+<span class="n">package</span> <span class="n">require</span>  <span class="n">openlane</span>
+<span class="n">or_gui</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/broken_aspect_ratio.png" src="../_images/broken_aspect_ratio.png" />
+</figure>
+<p>As can be observed in the image, the placement of the mem_1r1w instances failed.
+It was unable to place the macroblocks inside the <code class="docutils literal notranslate"><span class="pre">DIE_AREA</span></code>.
+While the area is enough, there is no combination of placement for these cells that fits.
+All of the possible placements of these cells overlap.</p>
+<p>Change the <code class="docutils literal notranslate"><span class="pre">FP_ASPECT_RATIO</span></code> value to <code class="docutils literal notranslate"><span class="pre">2</span></code>.
+This will make the floorplan a rectangle instead of a square and the rectangle will be double in height compared to width.</p>
+<p>More information regarding floorplanning is available <a class="reference internal" href="../usage/hardening_macros.html"><span class="std std-doc">Hardening Macros guide</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">config.json</span></code> should look like this:</p>
+<p>There is no need to change the default PDN configuration.
+It is going to create power straps on <code class="docutils literal notranslate"><span class="pre">met5</span></code> and connect the macro
+that has power straps on <code class="docutils literal notranslate"><span class="pre">met4</span></code> using vias.</p>
+</section>
+<section id="run-the-flow-again">
+<h3>Run the flow again<a class="headerlink" href="#run-the-flow-again" title="Link to this heading">¶</a></h3>
+<p>Run the flow again. This time it should no longer fail.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="n">regfile_2r1w</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide</span> <span class="o">-</span><span class="n">overwrite</span>
+</pre></div>
+</div>
+</section>
+<section id="analyzing-the-results">
+<h3>Analyzing the results<a class="headerlink" href="#analyzing-the-results" title="Link to this heading">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">set_def</span></code> currently overwrites the DEF file instead of temporarily changing it.
+This guide will be updated with another command that does not overwrite the DEF.</p>
+</div>
+<p>Open OpenROAD GUI to view the results of the flow.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="n">regfile_2r1w</span> <span class="o">-</span><span class="n">interactive</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide</span>
+
+<span class="c1"># in interactive session:</span>
+<span class="n">package</span> <span class="n">require</span> <span class="n">openlane</span>
+<span class="n">set_def</span> <span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">regfile_2r1w</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">full_guide</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">final</span><span class="o">/</span><span class="n">def</span><span class="o">/</span><span class="n">regfile_2r1w</span><span class="o">.</span><span class="k">def</span>
+<span class="nf">or_gui</span>
+<span class="c1"># Empty newline to force above line to execute</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id2">
+<img alt="../_images/final_def.png" src="../_images/final_def.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">OpenROAD GUI with loaded final DEF file</span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>If you want to load different DEF file use <code class="docutils literal notranslate"><span class="pre">set_def</span></code> command. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="n">regfile_2r1w</span> <span class="o">-</span><span class="n">interactive</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide</span>
+<span class="n">package</span> <span class="n">require</span> <span class="n">openlane</span>
+<span class="n">set_def</span> <span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">regfile_2r1w</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">full_guide</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">floorplan</span><span class="o">/</span><span class="n">regfile_2r1w</span><span class="o">.</span><span class="k">def</span>
+<span class="nf">or_gui</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/floorplan_def_loaded.png" src="../_images/floorplan_def_loaded.png" />
+</figure>
+<p>Each run has following structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>├── logs OR reports OR results OR tmp
+│   ├── cts
+│   ├── floorplan
+│   ├── placement
+│   ├── routing
+│   ├── signoff
+│   └── synthesis
+├── runtime.yaml
+└── warnings.log
+</pre></div>
+</div>
+<p>There are 4 directories <code class="docutils literal notranslate"><span class="pre">logs</span></code> <code class="docutils literal notranslate"><span class="pre">reports</span></code> <code class="docutils literal notranslate"><span class="pre">results</span></code> and <code class="docutils literal notranslate"><span class="pre">tmp</span></code>.
+In each of these directories, there are multiple directories. Directories are named according to the stage they belong to.</p>
+<p>Directory <code class="docutils literal notranslate"><span class="pre">results</span></code> contain the results (outputs) of each step. For example content of the <code class="docutils literal notranslate"><span class="pre">results/cts</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>designs/ci/regfile_2r1w/runs/full_guide/results/cts
+├── regfile_2r1w.def
+├── regfile_2r1w.resized.v
+├── regfile_2r1w.sdc
+└── regfile_2r1w.v
+</pre></div>
+</div>
+<p>DEF files can be loaded using the steps provided above.</p>
+<p>Finally output of OpenLane can be found in <code class="docutils literal notranslate"><span class="pre">designs/ci/regfile_2r1w/runs/full_guide/results/final</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>designs/ci/regfile_2r1w/runs/full_guide/results/final
+├── def
+│   └── regfile_2r1w.def
+├── gds
+│   └── regfile_2r1w.gds
+├── lef
+│   └── regfile_2r1w.lef
+├── mag
+│   └── regfile_2r1w.mag
+├── maglef
+│   └── regfile_2r1w.mag
+├── sdc
+│   └── regfile_2r1w.sdc
+├── sdf
+│   └── regfile_2r1w.sdf
+├── spef
+│   └── regfile_2r1w.spef
+├── spi
+│   └── lvs
+│       └── regfile_2r1w.spice
+└── verilog
+    └── gl
+        └── regfile_2r1w.v
+</pre></div>
+</div>
+<p>Directory <code class="docutils literal notranslate"><span class="pre">logs</span></code> contain log files of each step. Steps are enumerated. For example content of the <code class="docutils literal notranslate"><span class="pre">logs/</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>designs/ci/regfile_2r1w/runs/full_guide/logs
+├── cts
+│   ├── 14-cts.log
+│   ├── 15-write_verilog.log
+│   ├── 16-resizer.log
+│   └── 17-write_verilog.log
+├── floorplan
+│   ├── 3-initial_fp.log
+│   ├── 4-io.log
+│   ├── 7-tap.log
+│   └── 8-pdn.log
+├── placement
+│   ├── 10-resizer.log
+│   ├── 11-write_verilog.log
+│   ├── 12-remove_buffers_from_ports.log
+│   ├── 13-detailed.log
+│   ├── 5-global.log
+│   ├── 6-basic_mp.log
+│   └── 9-global.log
+├── routing
+│   ├── 18-resizer.log
+│   ├── 19-write_verilog.log
+│   ├── 20-diode_legalization.log
+│   ├── 21-global.log
+│   ├── 22-fill.log
+│   ├── 23-write_verilog_global.log
+│   ├── 24-detailed.log
+│   └── 25-write_verilog_detailed.log
+├── signoff
+│   ├── 26-parasitics_extraction.min.log
+│   ├── 27-parasitics_multi_corner_sta.min.log
+│   ├── 28-parasitics_extraction.max.log
+│   ├── 29-parasitics_multi_corner_sta.max.log
+│   ├── 30-parasitics_extraction.nom.log
+│   ├── 31-parasitics_sta.log
+│   ├── 32-parasitics_multi_corner_sta.log
+│   ├── 33-irdrop.log
+│   ├── 34-gdsii.log
+│   ├── 34-gds_ptrs.log
+│   ├── 34-lef.log
+│   ├── 34-maglef.log
+│   ├── 35-gdsii-klayout.log
+│   ├── 36-xor.log
+│   ├── 37-spice.log
+│   ├── 38-write_powered_def.log
+│   ├── 40-lef.log
+│   ├── 40-regfile_2r1w.lef.json
+│   ├── 40-regfile_2r1w.lef.log
+│   ├── 40-regfile_2r1w.lvs.lef.log
+│   ├── 41-drc.log
+│   └── 42-antenna.log
+└── synthesis
+    ├── 1-synthesis.log
+    └── 2-sta.log
+</pre></div>
+</div>
+<p>Directory <code class="docutils literal notranslate"><span class="pre">reports</span></code> contains all of the reports from the corresponding stage.</p>
+<p>It is recommended to check the reports for power, timings, etc. This allows getting a better understanding of the underlying flow.</p>
+<p>Finally, open the final layout.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>klayout -e -nn $PDK_ROOT/sky130A/libs.tech/klayout/tech/sky130A.lyt \
+   -l $PDK_ROOT/sky130A/libs.tech/klayout/tech/sky130A.lyp \
+   ./designs/ci/regfile_2r1w/runs/full_guide/results/final/gds/regfile_2r1w.gds
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/final_gds.png" src="../_images/final_gds.png" />
+</figure>
+</section>
+<section id="exploring-your-designs">
+<h3>Exploring your designs<a class="headerlink" href="#exploring-your-designs" title="Link to this heading">¶</a></h3>
+<p>Take a look at some reports.</p>
+<p>Here’s an excerpt from <code class="docutils literal notranslate"><span class="pre">designs/ci/mem_1r1w_00/runs/full_guide/reports/signoff/##-rcx_sta.summary.rpt</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">===========================================================================</span>
+<span class="n">report_worst_slack</span> <span class="o">-</span><span class="nb">max</span> <span class="p">(</span><span class="n">Setup</span><span class="p">)</span>
+<span class="o">============================================================================</span>
+<span class="n">worst</span> <span class="n">slack</span> <span class="mf">4.66</span>
+
+<span class="o">===========================================================================</span>
+<span class="n">report_worst_slack</span> <span class="o">-</span><span class="nb">min</span> <span class="p">(</span><span class="n">Hold</span><span class="p">)</span>
+<span class="o">============================================================================</span>
+<span class="n">worst</span> <span class="n">slack</span> <span class="mf">0.03</span>
+</pre></div>
+</div>
+<p>Detailed setup (max) timing path reports. Content of <code class="docutils literal notranslate"><span class="pre">designs/ci/mem_1r1w/runs/full_guide/reports/signoff/##-rcx_sta.max.rpt</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">===========================================================================</span>
+<span class="n">report_checks</span> <span class="o">-</span><span class="n">path_delay</span> <span class="nb">max</span> <span class="p">(</span><span class="n">Setup</span><span class="p">)</span>
+<span class="o">============================================================================</span>
+
+<span class="o">=======================</span> <span class="n">Slowest</span> <span class="n">Corner</span> <span class="o">===================================</span>
+
+<span class="n">Startpoint</span><span class="p">:</span> <span class="n">write_addr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">(</span><span class="nb">input</span> <span class="n">port</span> <span class="n">clocked</span> <span class="n">by</span> <span class="n">clk</span><span class="p">)</span>
+<span class="n">Endpoint</span><span class="p">:</span> <span class="n">_3436_</span> <span class="p">(</span><span class="n">rising</span> <span class="n">edge</span><span class="o">-</span><span class="n">triggered</span> <span class="n">flip</span><span class="o">-</span><span class="n">flop</span> <span class="n">clocked</span> <span class="n">by</span> <span class="n">clk</span><span class="p">)</span>
+<span class="n">Path</span> <span class="n">Group</span><span class="p">:</span> <span class="n">clk</span>
+<span class="n">Path</span> <span class="n">Type</span><span class="p">:</span> <span class="nb">max</span>
+<span class="n">Corner</span><span class="p">:</span> <span class="n">Slowest</span>
+
+<span class="n">Fanout</span>     <span class="n">Cap</span>    <span class="n">Slew</span>   <span class="n">Delay</span>    <span class="n">Time</span>   <span class="n">Description</span>
+<span class="o">-----------------------------------------------------------------------------</span>
+                        <span class="mf">0.00</span>    <span class="mf">0.00</span>   <span class="n">clock</span> <span class="n">clk</span> <span class="p">(</span><span class="n">rise</span> <span class="n">edge</span><span class="p">)</span>
+                        <span class="mf">0.00</span>    <span class="mf">0.00</span>   <span class="n">clock</span> <span class="n">network</span> <span class="n">delay</span> <span class="p">(</span><span class="n">propagated</span><span class="p">)</span>
+                        <span class="mf">2.00</span>    <span class="mf">2.00</span> <span class="n">v</span> <span class="nb">input</span> <span class="n">external</span> <span class="n">delay</span>
+                <span class="mf">0.02</span>    <span class="mf">0.01</span>    <span class="mf">2.01</span> <span class="n">v</span> <span class="n">write_addr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">(</span><span class="ow">in</span><span class="p">)</span>
+<span class="mi">1</span>    <span class="mf">0.00</span>                           <span class="n">write_addr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.02</span>    <span class="mf">0.00</span>    <span class="mf">2.01</span> <span class="n">v</span> <span class="n">input8</span><span class="o">/</span><span class="n">A</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__dlymetal6s2s_1</span><span class="p">)</span>
+                <span class="mf">0.18</span>    <span class="mf">0.37</span>    <span class="mf">2.38</span> <span class="n">v</span> <span class="n">input8</span><span class="o">/</span><span class="n">X</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__dlymetal6s2s_1</span><span class="p">)</span>
+<span class="mi">4</span>    <span class="mf">0.02</span>                           <span class="n">net8</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.18</span>    <span class="mf">0.00</span>    <span class="mf">2.38</span> <span class="n">v</span> <span class="n">_2019_</span><span class="o">/</span><span class="n">A</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__or3b_2</span><span class="p">)</span>
+                <span class="mf">0.23</span>    <span class="mf">1.29</span>    <span class="mf">3.67</span> <span class="n">v</span> <span class="n">_2019_</span><span class="o">/</span><span class="n">X</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__or3b_2</span><span class="p">)</span>
+<span class="mi">2</span>    <span class="mf">0.01</span>                           <span class="n">_0833_</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.23</span>    <span class="mf">0.00</span>    <span class="mf">3.67</span> <span class="n">v</span> <span class="n">_2020_</span><span class="o">/</span><span class="n">A</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__inv_2</span><span class="p">)</span>
+                <span class="mf">0.09</span>    <span class="mf">0.17</span>    <span class="mf">3.84</span> <span class="o">^</span> <span class="n">_2020_</span><span class="o">/</span><span class="n">Y</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__inv_2</span><span class="p">)</span>
+<span class="mi">3</span>    <span class="mf">0.01</span>                           <span class="n">_0834_</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.09</span>    <span class="mf">0.00</span>    <span class="mf">3.84</span> <span class="o">^</span> <span class="n">_2432_</span><span class="o">/</span><span class="n">C</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__and3_2</span><span class="p">)</span>
+                <span class="mf">0.24</span>    <span class="mf">0.56</span>    <span class="mf">4.39</span> <span class="o">^</span> <span class="n">_2432_</span><span class="o">/</span><span class="n">X</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__and3_2</span><span class="p">)</span>
+<span class="mi">5</span>    <span class="mf">0.03</span>                           <span class="n">_1054_</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.24</span>    <span class="mf">0.00</span>    <span class="mf">4.39</span> <span class="o">^</span> <span class="n">_2433_</span><span class="o">/</span><span class="n">A</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__buf_4</span><span class="p">)</span>
+                <span class="mf">0.26</span>    <span class="mf">0.44</span>    <span class="mf">4.84</span> <span class="o">^</span> <span class="n">_2433_</span><span class="o">/</span><span class="n">X</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__buf_4</span><span class="p">)</span>
+<span class="mi">10</span>    <span class="mf">0.06</span>                           <span class="n">_1055_</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.26</span>    <span class="mf">0.01</span>    <span class="mf">4.85</span> <span class="o">^</span> <span class="n">_2450_</span><span class="o">/</span><span class="n">S</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__mux2_1</span><span class="p">)</span>
+                <span class="mf">0.11</span>    <span class="mf">0.81</span>    <span class="mf">5.66</span> <span class="n">v</span> <span class="n">_2450_</span><span class="o">/</span><span class="n">X</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__mux2_1</span><span class="p">)</span>
+<span class="mi">1</span>    <span class="mf">0.00</span>                           <span class="n">_1064_</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.11</span>    <span class="mf">0.00</span>    <span class="mf">5.66</span> <span class="n">v</span> <span class="n">_2451_</span><span class="o">/</span><span class="n">A</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__clkbuf_1</span><span class="p">)</span>
+                <span class="mf">0.05</span>    <span class="mf">0.18</span>    <span class="mf">5.84</span> <span class="n">v</span> <span class="n">_2451_</span><span class="o">/</span><span class="n">X</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__clkbuf_1</span><span class="p">)</span>
+<span class="mi">1</span>    <span class="mf">0.00</span>                           <span class="n">_0424_</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.05</span>    <span class="mf">0.00</span>    <span class="mf">5.84</span> <span class="n">v</span> <span class="n">_3436_</span><span class="o">/</span><span class="n">D</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__dfxtp_1</span><span class="p">)</span>
+                                <span class="mf">5.84</span>   <span class="n">data</span> <span class="n">arrival</span> <span class="n">time</span>
+
+                        <span class="mf">10.00</span>   <span class="mf">10.00</span>   <span class="n">clock</span> <span class="n">clk</span> <span class="p">(</span><span class="n">rise</span> <span class="n">edge</span><span class="p">)</span>
+                        <span class="mf">0.00</span>   <span class="mf">10.00</span>   <span class="n">clock</span> <span class="n">source</span> <span class="n">latency</span>
+                <span class="mf">0.18</span>    <span class="mf">0.12</span>   <span class="mf">10.12</span> <span class="o">^</span> <span class="n">clk</span> <span class="p">(</span><span class="ow">in</span><span class="p">)</span>
+<span class="mi">1</span>    <span class="mf">0.02</span>                           <span class="n">clk</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.18</span>    <span class="mf">0.00</span>   <span class="mf">10.12</span> <span class="o">^</span> <span class="n">clkbuf_0_clk</span><span class="o">/</span><span class="n">A</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__clkbuf_16</span><span class="p">)</span>
+                <span class="mf">0.12</span>    <span class="mf">0.31</span>   <span class="mf">10.43</span> <span class="o">^</span> <span class="n">clkbuf_0_clk</span><span class="o">/</span><span class="n">X</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__clkbuf_16</span><span class="p">)</span>
+<span class="mi">4</span>    <span class="mf">0.06</span>                           <span class="n">clknet_0_clk</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.12</span>    <span class="mf">0.00</span>   <span class="mf">10.43</span> <span class="o">^</span> <span class="n">clkbuf_2_3__f_clk</span><span class="o">/</span><span class="n">A</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__clkbuf_16</span><span class="p">)</span>
+                <span class="mf">0.18</span>    <span class="mf">0.33</span>   <span class="mf">10.76</span> <span class="o">^</span> <span class="n">clkbuf_2_3__f_clk</span><span class="o">/</span><span class="n">X</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__clkbuf_16</span><span class="p">)</span>
+<span class="mi">10</span>    <span class="mf">0.11</span>                           <span class="n">clknet_2_3__leaf_clk</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.18</span>    <span class="mf">0.00</span>   <span class="mf">10.76</span> <span class="o">^</span> <span class="n">clkbuf_leaf_17_clk</span><span class="o">/</span><span class="n">A</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__clkbuf_16</span><span class="p">)</span>
+                <span class="mf">0.08</span>    <span class="mf">0.27</span>   <span class="mf">11.03</span> <span class="o">^</span> <span class="n">clkbuf_leaf_17_clk</span><span class="o">/</span><span class="n">X</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__clkbuf_16</span><span class="p">)</span>
+<span class="mi">11</span>    <span class="mf">0.03</span>                           <span class="n">clknet_leaf_17_clk</span> <span class="p">(</span><span class="n">net</span><span class="p">)</span>
+                <span class="mf">0.08</span>    <span class="mf">0.00</span>   <span class="mf">11.03</span> <span class="o">^</span> <span class="n">_3436_</span><span class="o">/</span><span class="n">CLK</span> <span class="p">(</span><span class="n">sky130_fd_sc_hd__dfxtp_1</span><span class="p">)</span>
+                        <span class="o">-</span><span class="mf">0.25</span>   <span class="mf">10.78</span>   <span class="n">clock</span> <span class="n">uncertainty</span>
+                        <span class="mf">0.00</span>   <span class="mf">10.78</span>   <span class="n">clock</span> <span class="n">reconvergence</span> <span class="n">pessimism</span>
+                        <span class="o">-</span><span class="mf">0.26</span>   <span class="mf">10.52</span>   <span class="n">library</span> <span class="n">setup</span> <span class="n">time</span>
+                                <span class="mf">10.52</span>   <span class="n">data</span> <span class="n">required</span> <span class="n">time</span>
+<span class="o">-----------------------------------------------------------------------------</span>
+                                <span class="mf">10.52</span>   <span class="n">data</span> <span class="n">required</span> <span class="n">time</span>
+                                <span class="o">-</span><span class="mf">5.84</span>   <span class="n">data</span> <span class="n">arrival</span> <span class="n">time</span>
+<span class="o">-----------------------------------------------------------------------------</span>
+                                <span class="mf">4.68</span>   <span class="n">slack</span> <span class="p">(</span><span class="n">MET</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="demo-debugging-lvs-issues-due-to-pdn-issues">
+<h3>Demo: Debugging LVS issues due to PDN issues<a class="headerlink" href="#demo-debugging-lvs-issues-due-to-pdn-issues" title="Link to this heading">¶</a></h3>
+<p>Copy the original <code class="docutils literal notranslate"><span class="pre">regfile_2r1w</span></code> as <code class="docutils literal notranslate"><span class="pre">regfile_2r1w_design_not_core</span></code>. Change <code class="docutils literal notranslate"><span class="pre">FP_PDN_MULTILAYER</span></code> to <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;DESIGN_NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;regfile_2r1w&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;VERILOG_FILES&quot;</span><span class="p">:</span> <span class="s2">&quot;dir::src/*.v&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CLOCK_PORT&quot;</span><span class="p">:</span> <span class="s2">&quot;clk&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CLOCK_PERIOD&quot;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
+    <span class="s2">&quot;FP_PDN_MULTILAYER&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+
+    <span class="s2">&quot;FP_ASPECT_RATIO&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">&quot;EXTRA_LEFS&quot;</span><span class="p">:</span>      <span class="s2">&quot;/openlane/designs/ci/mem_1r1w/runs/full_guide/results/final/lef/mem_1r1w.lef&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EXTRA_GDS_FILES&quot;</span><span class="p">:</span> <span class="s2">&quot;/openlane/designs/ci/mem_1r1w/runs/full_guide/results/final/gds/mem_1r1w.gds&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;VERILOG_FILES_BLACKBOX&quot;</span><span class="p">:</span> <span class="s2">&quot;dir::bb/*.v&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then run the flow:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="n">regfile_2r1w_design_not_core</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide</span> <span class="o">-</span><span class="n">overwrite</span>
+</pre></div>
+</div>
+<p>The following error is expected:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">STEP</span> <span class="mi">39</span><span class="p">]</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Running</span> <span class="n">Magic</span> <span class="n">Spice</span> <span class="n">Export</span> <span class="kn">from</span> <span class="nn">LEF</span> <span class="p">(</span><span class="n">log</span><span class="p">:</span> <span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">regfile_2r1w_design_not_core</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">full_guide</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">signoff</span><span class="o">/</span><span class="mi">39</span><span class="o">-</span><span class="n">spice</span><span class="o">.</span><span class="n">log</span><span class="p">)</span><span class="o">...</span>
+<span class="p">[</span><span class="n">STEP</span> <span class="mi">40</span><span class="p">]</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Writing</span> <span class="n">Powered</span> <span class="n">Verilog</span> <span class="p">(</span><span class="n">log</span><span class="p">:</span> <span class="o">../</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span><span class="p">)</span><span class="o">...</span>
+<span class="p">[</span><span class="n">STEP</span> <span class="mi">41</span><span class="p">]</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Writing</span> <span class="n">Verilog</span><span class="o">...</span>
+<span class="p">[</span><span class="n">STEP</span> <span class="mi">42</span><span class="p">]</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Running</span> <span class="n">LEF</span> <span class="n">LVS</span><span class="o">...</span>
+<span class="p">[</span><span class="n">ERROR</span><span class="p">]:</span> <span class="n">There</span> <span class="n">are</span> <span class="n">LVS</span> <span class="n">errors</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">design</span><span class="p">:</span> <span class="n">See</span> <span class="s1">&#39;designs/ci/regfile_2r1w_design_not_core/runs/full_guide/logs/signoff/42-regfile_2r1w.lvs.lef.log&#39;</span> <span class="k">for</span> <span class="n">details</span><span class="o">.</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Saving</span> <span class="n">current</span> <span class="nb">set</span> <span class="n">of</span> <span class="n">views</span> <span class="ow">in</span> <span class="s1">&#39;designs/ci/regfile_2r1w_design_not_core/runs/full_guide/results/final&#39;</span><span class="o">...</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Generating</span> <span class="n">final</span> <span class="nb">set</span> <span class="n">of</span> <span class="n">reports</span><span class="o">...</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Created</span> <span class="n">manufacturability</span> <span class="n">report</span> <span class="n">at</span> <span class="s1">&#39;designs/ci/regfile_2r1w_design_not_core/runs/full_guide/reports/manufacturability.rpt&#39;</span><span class="o">.</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Created</span> <span class="n">metrics</span> <span class="n">report</span> <span class="n">at</span> <span class="s1">&#39;designs/ci/regfile_2r1w_design_not_core/runs/full_guide/reports/metrics.csv&#39;</span><span class="o">.</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Saving</span> <span class="n">runtime</span> <span class="n">environment</span><span class="o">...</span>
+<span class="p">[</span><span class="n">ERROR</span><span class="p">]:</span> <span class="n">Flow</span> <span class="n">failed</span><span class="o">.</span>
+
+    <span class="k">while</span> <span class="n">executing</span>
+<span class="s2">&quot;flow_fail&quot;</span>
+    <span class="p">(</span><span class="n">procedure</span> <span class="s2">&quot;quit_on_lvs_error&quot;</span> <span class="n">line</span> <span class="mi">12</span><span class="p">)</span>
+    <span class="n">invoked</span> <span class="kn">from</span> <span class="nn">within</span>
+<span class="s2">&quot;quit_on_lvs_error -log $count_lvs_log&quot;</span>
+    <span class="p">(</span><span class="n">procedure</span> <span class="s2">&quot;run_lvs&quot;</span> <span class="n">line</span> <span class="mi">79</span><span class="p">)</span>
+    <span class="n">invoked</span> <span class="kn">from</span> <span class="nn">within</span>
+<span class="s2">&quot;run_lvs&quot;</span>
+    <span class="p">(</span><span class="n">procedure</span> <span class="s2">&quot;run_lvs_step&quot;</span> <span class="n">line</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">invoked</span> <span class="kn">from</span> <span class="nn">within</span>
+<span class="s2">&quot;[lindex $step_exe 0] [lindex $step_exe 1] &quot;</span>
+    <span class="p">(</span><span class="n">procedure</span> <span class="s2">&quot;run_non_interactive_mode&quot;</span> <span class="n">line</span> <span class="mi">52</span><span class="p">)</span>
+    <span class="n">invoked</span> <span class="kn">from</span> <span class="nn">within</span>
+<span class="s2">&quot;run_non_interactive_mode {*}$argv&quot;</span>
+    <span class="n">invoked</span> <span class="kn">from</span> <span class="nn">within</span>
+<span class="s2">&quot;if { [info exists flags_map(-interactive)] || [info exists flags_map(-it)] } {</span>
+    <span class="k">if</span> <span class="p">{</span> <span class="p">[</span><span class="n">info</span> <span class="n">exists</span> <span class="n">arg_values</span><span class="p">(</span><span class="o">-</span><span class="n">file</span><span class="p">)]</span> <span class="p">}</span> <span class="p">{</span>
+        <span class="n">run_file</span> <span class="p">[</span><span class="n">file</span> <span class="n">nor</span><span class="o">...</span><span class="s2">&quot;</span>
+    <span class="p">(</span><span class="n">file</span> <span class="s2">&quot;./flow.tcl&quot;</span> <span class="n">line</span> <span class="mi">401</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Check the log <code class="docutils literal notranslate"><span class="pre">designs/ci/regfile_2r1w_design_not_core/runs/full_guide/logs/signoff/42-regfile_2r1w.lvs.lef.log</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LVS</span> <span class="n">reports</span><span class="p">:</span>
+    <span class="n">net</span> <span class="n">count</span> <span class="n">difference</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">device</span> <span class="n">count</span> <span class="n">difference</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">unmatched</span> <span class="n">nets</span> <span class="o">=</span> <span class="mi">11</span>
+    <span class="n">unmatched</span> <span class="n">devices</span> <span class="o">=</span> <span class="mi">22</span>
+    <span class="n">unmatched</span> <span class="n">pins</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="nb">property</span> <span class="n">failures</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">Total</span> <span class="n">errors</span> <span class="o">=</span> <span class="mi">37</span>
+</pre></div>
+</div>
+<p>The router will fail if it is unable to route the signals.
+Therefore the issue is in the PDN stage.
+Use <code class="docutils literal notranslate"><span class="pre">or_gui</span></code> to help debug this issue.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="n">regfile_2r1w_design_not_core</span> <span class="o">-</span><span class="n">interactive</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide</span>
+<span class="n">package</span> <span class="n">require</span> <span class="n">openlane</span>
+<span class="n">set_def</span> <span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">regfile_2r1w_design_not_core</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">full_guide</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">final</span><span class="o">/</span><span class="n">def</span><span class="o">/</span><span class="n">regfile_2r1w</span><span class="o">.</span><span class="k">def</span>
+<span class="nf">or_gui</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id3">
+<img alt="../_images/lvs_issue_comparison.png" src="../_images/lvs_issue_comparison.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Left picture is for working case. Right picture is the case with PDN issues</span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The submacros are by default logically connected to <code class="docutils literal notranslate"><span class="pre">VPWR/VGND</span></code> power domain.
+As can be seen, the PDN is missing the power straps in layer <code class="docutils literal notranslate"><span class="pre">met5</span></code>.
+Therefore the layout, does not have connections to the submacro, while the net is logically connected.</p>
+<p>This is expected as it was disabled by setting <code class="docutils literal notranslate"><span class="pre">FP_PDN_MULTILAYER</span></code> to <code class="docutils literal notranslate"><span class="pre">false</span></code> above.
+Of course, reverting the change fixes this issue.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the future, OpenDB will be used instead of DEF/LEF flow.</p>
+</div>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="openram.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Designing a chip with an OpenRAM (sky130)</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Tutorials</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2020-2022 Efabless Corporation and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/The-OpenROAD-Project/OpenLane" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Hierarchical chip design (with macros)</a><ul>
+<li><a class="reference internal" href="#hardening-the-mem-1r1w-macroblock">Hardening the mem_1r1w macroblock</a><ul>
+<li><a class="reference internal" href="#create-the-memory-macro-design">Create the memory macro design</a></li>
+<li><a class="reference internal" href="#create-the-rtl-files">Create the RTL files</a></li>
+<li><a class="reference internal" href="#configure-mem-1r1w">Configure mem_1r1w</a></li>
+<li><a class="reference internal" href="#run-the-flow-on-the-macroblock">Run the flow on the macroblock</a></li>
+<li><a class="reference internal" href="#analyzing-the-flow-generated-files">Analyzing the flow-generated files</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#chip-level-integration">Chip level integration</a><ul>
+<li><a class="reference internal" href="#create-chip-level">Create chip level</a></li>
+<li><a class="reference internal" href="#integrate-the-macros">Integrate the macros</a></li>
+<li><a class="reference internal" href="#verilog-files">Verilog files</a></li>
+<li><a class="reference internal" href="#run-the-flow">Run the flow</a></li>
+<li><a class="reference internal" href="#first-issue">First issue</a></li>
+<li><a class="reference internal" href="#run-the-flow-again">Run the flow again</a></li>
+<li><a class="reference internal" href="#analyzing-the-results">Analyzing the results</a></li>
+<li><a class="reference internal" href="#exploring-your-designs">Exploring your designs</a></li>
+<li><a class="reference internal" href="#demo-debugging-lvs-issues-due-to-pdn-issues">Demo: Debugging LVS issues due to PDN issues</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

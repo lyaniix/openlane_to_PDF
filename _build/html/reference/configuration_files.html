@@ -1,0 +1,613 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Flow Configuration Variables" href="configuration.html" /><link rel="prev" title="Command-Line Arguments" href="cli.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.07.18 -->
+        <title>Design Configuration Files - OpenLane Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=613ab9ff" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">OpenLane Documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">OpenLane Documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting_started/installation/index.html">Installation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_ubuntu.html">Ubuntu 20.04+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_macos.html">macOS 11+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_win.html">Windows 10+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_linux.html">Other Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/updating.html">Updating OpenLane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/quickstart.html">Quick-Start Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../flow_overview.html">OpenLane Architecture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../usage/index.html">Usage guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Usage guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../usage/designs.html">Adding Your Designs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/exploration_script.html">Regression &amp; Exploration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/hardening_macros.html">Hardening Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/chip_integration.html">Chip Level Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/advanced_power_grid_control.html">Power Grid/Power Distribution Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/custom_pdk_builds.html">Custom-Building PDKs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/digital_guide.html">Hierarchical chip design (with macros)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/openram.html">Designing a chip with an OpenRAM (sky130)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Reference Manual</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Reference Manual</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command-Line Arguments</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Design Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Flow Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdk_configuration.html">PDK Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openlane_commands.html">Tcl Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive_mode.html">Interactive Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datapoint_definitions.html">Datapoint Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html">Viewing layouts graphically</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../additional_material.html">Additional Material</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../for_developers/index.html">Developer’s Guide</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Developer’s Guide</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/docs_contribution.html">Contributing Docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/pdk_structure.html">Porting a PDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/using_or_issue.html"><code class="docutils literal notranslate"><span class="pre">or_issue.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/gha_workflow.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/issue_regression_tests.html">Issue regression tests</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/blob/master/docs/source/reference/configuration_files.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/edit/master/docs/source/reference/configuration_files.md" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="design-configuration-files">
+<h1>Design Configuration Files<a class="headerlink" href="#design-configuration-files" title="Link to this heading">¶</a></h1>
+<p>Each OpenLane-compatible design must come with a configuration file. These configuration files can be written in one of two grammars: JSON or Tcl.</p>
+<p>Tcl offers more flexibility at the detriment of security, while JSON is more straightforward at the cost of flexbility. While Tcl allows you to do all manners of computation on your variables, JSON has a limited expression engine that will be detailed later in this document. Nevertheless, for security (and future-proofing), we recommend you use the JSON format.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">config.tcl</span></code> is used. If <code class="docutils literal notranslate"><span class="pre">config.tcl</span></code> is <em><strong>not</strong></em> found, <code class="docutils literal notranslate"><span class="pre">config.json</span></code> is looked for as a fallback. If neither is found, OpenLane will throw an error and quit.</p>
+<p>The folder containing your <code class="docutils literal notranslate"><span class="pre">config.tcl</span></code>/<code class="docutils literal notranslate"><span class="pre">config.json</span></code> is known  as the <strong>Design Directory</strong>. The design directory is special in that paths in the JSON configuration files can be resolved relative to this directory and that in TCL configuration files, it can be referenced via the environment variable <code class="docutils literal notranslate"><span class="pre">DESIGN_DIR</span></code>. This will be explained in detail in later sections.</p>
+<section id="initializing-a-design-for-use-with-openlane">
+<h2>Initializing a design for use with OpenLane<a class="headerlink" href="#initializing-a-design-for-use-with-openlane" title="Link to this heading">¶</a></h2>
+<p>There are two ways to use a design with OpenLane: by adding it to the <code class="docutils literal notranslate"><span class="pre">designs</span></code> folder in the OpenLane root directory, or by adding an OpenLane configuration folder to your existing design.</p>
+<blockquote>
+<div><p>Adding a design to the root folder is covered inside the <code class="docutils literal notranslate"><span class="pre">README.md</span></code> of the <code class="docutils literal notranslate"><span class="pre">designs</span></code> folder, so it won’t be covered in this document. It is, however, the most straightforward of the two options if you’re using a dockerized setup, so it is recommended for beginners.</p>
+</div></blockquote>
+<p>Let’s assume you have a simple SuccessiveApproximationRegister with set of two Verilog files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>project/
+├── src
+│   ├── sar.v
+│   ├── edge_detector.v
+</pre></div>
+</div>
+<p>You can initialize a configuration file as follows:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;openlane-root&gt;/flow.tcl<span class="w"> </span>-design<span class="w"> </span>SuccessiveApproximationRegister<span class="w"> </span>-init_design_config<span class="w"> </span>-src<span class="w"> </span><span class="s2">&quot;src/*.v&quot;</span>
+</pre></div>
+</div>
+<p>New files will be created, resulting in the following project structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>project/
+├── src/
+│   ├── sar.v
+│   ├── edge_detector.v
+├── openlane/SuccessiveApproximationRegister/
+│   ├── .gitignore
+│   ├── config.json
+</pre></div>
+</div>
+<p>You can also initialize a <code class="docutils literal notranslate"><span class="pre">config.tcl</span></code> file instead:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&lt;openlane-root&gt;/flow.tcl<span class="w"> </span>-design<span class="w"> </span>SuccessiveApproximationRegister<span class="w"> </span>-init_design_config<span class="w"> </span>-src<span class="w"> </span><span class="s2">&quot;src/*.v&quot;</span><span class="w"> </span>-config_file<span class="w"> </span>config.tcl
+</pre></div>
+</div>
+<p>You can then run the designs by moving into the directory <code class="docutils literal notranslate"><span class="pre">openlane/SuccessiveApproximationRegister</span></code> and running <code class="docutils literal notranslate"><span class="pre">flow.tcl</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>./openlane/SuccessiveApproximationRegister
+&lt;openlane-root&gt;/flow.tcl
+</pre></div>
+</div>
+</section>
+<section id="json">
+<h2>JSON<a class="headerlink" href="#json" title="Link to this heading">¶</a></h2>
+<p>The JSON files are simple key-value pairs.</p>
+<p><a id="scalars"></a></p>
+<p>The values can be scalars (strings, numbers, booleans, and <code class="docutils literal notranslate"><span class="pre">null</span></code>s), <em>one-dimensional lists of scalars</em>, and, in special cases, a dictionary.</p>
+<p>All files must be ECMA404-compliant, i.e., pure JSON with no extensions such as comments or the new elements introduced in <a class="reference external" href="https://json5.org/">JSON5</a>.</p>
+<p>An minimal demonstrative configuration file would look as follows:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;DESIGN_NAME&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;spm&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;VERILOG_FILES&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dir::src/*.v&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;CLOCK_PORT&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;clk&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;CLOCK_PERIOD&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;pdk::sky130A&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;MAX_FANOUT_CONSTRAINT&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;FP_CORE_UTIL&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;PL_TARGET_DENSITY&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;expr::($FP_CORE_UTIL + 5.0) / 100.0&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;scl::sky130_fd_sc_hd&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;CLOCK_PERIOD&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<section id="processing">
+<h3>Processing<a class="headerlink" href="#processing" title="Link to this heading">¶</a></h3>
+<p>The JSON files are processed at runtime to conditional execution, a way to reference the design directory, other variables, and a basic <em><strong>mathematical</strong></em> expression engine.</p>
+<section id="conditional-execution">
+<h4>Conditional Execution<a class="headerlink" href="#conditional-execution" title="Link to this heading">¶</a></h4>
+<p>The JSON configuration files support conditional execution based on PDK or standard cell library (or, by nesting as shown above, a combination thereof.) You can do this using the <code class="docutils literal notranslate"><span class="pre">pdk::</span></code> or <code class="docutils literal notranslate"><span class="pre">scl::</span></code> key prefixes.</p>
+<p>The value for this key would be a <code class="docutils literal notranslate"><span class="pre">dict</span></code> that is only evaluated if the PDK or SCL matches those in the key, i.e., for <code class="docutils literal notranslate"><span class="pre">pdk::sky130A</span></code> as shown above, this particular <code class="docutils literal notranslate"><span class="pre">dict</span></code> will be evaluated and its values used if and only if the PDK is set to <code class="docutils literal notranslate"><span class="pre">sky130A</span></code>, meanwhile with say, <code class="docutils literal notranslate"><span class="pre">asap7</span></code>, it will not be evaluated.</p>
+<p>The match is evaluated using <a class="reference external" href="https://docs.python.org/3.6/library/fnmatch.html"><code class="docutils literal notranslate"><span class="pre">fnmatch</span></code></a>, giving it limited wildcard support: meaning that <code class="docutils literal notranslate"><span class="pre">pdk::sky130*</span></code> would match both <code class="docutils literal notranslate"><span class="pre">sky130A</span></code> and <code class="docutils literal notranslate"><span class="pre">sky130B</span></code>.</p>
+<p>Note that <em><strong>the order of declarations matter here</strong></em>: as seen in the following example, despite a more specific value for a PDK existing, the unconditionally declared value later in the code would end up overwriting it:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;pdk::sky130A&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;A&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;A&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;A&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;pdk::sky130A&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;A&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">40</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>In the first example, the final value for A would always be 4 given the order of declarations. In the second example, it would be 40 is the PDK is sky130A and 4 otherwise.</p>
+</div></blockquote>
+</section>
+<section id="variable-reference">
+<h4>Variable Reference<a class="headerlink" href="#variable-reference" title="Link to this heading">¶</a></h4>
+<p>If a string’s value starts with <code class="docutils literal notranslate"><span class="pre">ref::</span></code>, you can interpolate exactly one <strong>string</strong> variable at the beginning of your string.</p>
+<p>Like conditional execution, the order of declarations matter: i.e., you cannot reference a variable that is declared after the current expression.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;A&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ref::$B&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;B&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vdd gnd&quot;</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;B&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vdd gnd&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;A&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ref::$B&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>In this example, the first configuration is invalid, as B is referenced before it is declared, but the latter is OK, where the value will be “vdd gnd” as well.</p>
+</div></blockquote>
+<p>Unlike Tcl config files, environment variables (other than <code class="docutils literal notranslate"><span class="pre">DESIGN_DIR</span></code>, <code class="docutils literal notranslate"><span class="pre">PDK</span></code>, <code class="docutils literal notranslate"><span class="pre">PDKPATH</span></code>, <code class="docutils literal notranslate"><span class="pre">STD_CELL_LIBRARY</span></code> and <code class="docutils literal notranslate"><span class="pre">SCLPATH</span></code>) are not exposed to <code class="docutils literal notranslate"><span class="pre">config.json</span></code> by default. You can expose an environment variable to <code class="docutils literal notranslate"><span class="pre">config.json</span></code> files by adding a <code class="docutils literal notranslate"><span class="pre">-expose_env</span></code> flag to your <code class="docutils literal notranslate"><span class="pre">flow.tcl</span></code> invocation, e.g.:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">CARAVEL_ROOT</span><span class="o">=</span>/caravel
+./flow.tcl<span class="w"> </span>-design<span class="w"> </span>user_project_wrapper<span class="w"> </span>-expose_env<span class="w"> </span>CARAVEL_ROOT
+</pre></div>
+</div>
+<p>Which you can then use as follows:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;DEFINES_FILE&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ref::$CARAVEL_ROOT/verilog/rtl/defines.v&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>…which then would evaluate to <code class="docutils literal notranslate"><span class="pre">/caravel/verilog/rtl/defines.v</span></code>.</p>
+<p>Another feature this has is if the files you choose lie <strong>inside</strong> an exposed directory, this prefix supports non-recursive globs, i.e., you can use an asterisk as a wildcard to pick multiple files in a specific folder. Outside the design directory, this is disabled for security reasons, and the final path will continue to include the asterisk. As shown below, <code class="docutils literal notranslate"><span class="pre">ref::$DESIGN_DIR/src/*.v</span></code> would find all files ending with <code class="docutils literal notranslate"><span class="pre">.v</span></code> in the <code class="docutils literal notranslate"><span class="pre">src</span></code> folder inside the design directory.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;VERILOG_FILES&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ref::$DESIGN_DIR/src/*.v&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>There are some shorthands for the exposed default variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dir::</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">ref::$DESIGN_DIR/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pdk_dir::</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">ref::$PDKPATH/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scl_dir::</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">ref::$SCLPATH/</span></code></p></li>
+</ul>
+</section>
+<section id="expression-engine">
+<h4>Expression Engine<a class="headerlink" href="#expression-engine" title="Link to this heading">¶</a></h4>
+<p>By adding <code class="docutils literal notranslate"><span class="pre">expr::</span></code> to the beginning of a string, you can write basic infix mathematical expressions. Binary operators supported are <code class="docutils literal notranslate"><span class="pre">**</span></code>, <code class="docutils literal notranslate"><span class="pre">*</span></code>, <code class="docutils literal notranslate"><span class="pre">/</span></code>, <code class="docutils literal notranslate"><span class="pre">+</span></code>, and <code class="docutils literal notranslate"><span class="pre">-</span></code>, while operands can be any floating-point value, and previously evaluated numeric variables prefixed with a dollar sign. Unary operators are not supported, though negative numbers with the - sign stuck to them are. Parentheses (<code class="docutils literal notranslate"><span class="pre">()</span></code>) are also supported to prioritize certain operations.</p>
+<p>Your expressions must return exactly one value: multiple expressions in the same <code class="docutils literal notranslate"><span class="pre">expr::</span></code>-prefixed value are considered invalid and so are empty expressions.</p>
+<p>It is important to note that, like variable referencing and conditional execution, the order of declarations matter: i.e., you cannot reference a variable that is declared after the current expression.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;A&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;expr::$B * 2&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;B&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="p">}</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;B&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;A&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;expr::$B * 2&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>In this example, the first configuration is invalid, as B is used in a mathematical expression before declaration, but the latter is OK, evaluating to 8.</p>
+</div></blockquote>
+<p>You can also simply reference another number using this prefix:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;A&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;B&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;expr::$A&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>In this example, B will simply hold the value of A.</p>
+</div></blockquote>
+</section>
+</section>
+</section>
+<section id="tcl">
+<h2>Tcl<a class="headerlink" href="#tcl" title="Link to this heading">¶</a></h2>
+<p>These configuration files are simple Tcl scripts with environment variables that are sourced by the OpenLane flow. Again, Tcl config files are not recommended for newer designs, but is still maintained and supported at the moment.</p>
+<p>Each design using the Tcl format has a global config.tcl and other config files one for each PDK:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>designs/&lt;design_name&gt;
+├── config.tcl
+├── sky130A_sky130_fd_sc_hs_config.tcl
+├── sky130A_sky130_fd_sc_hd_config.tcl
+├── src
+│   ├── design.v
+</pre></div>
+</div>
+<p>You can see <code class="docutils literal notranslate"><span class="pre">designs/xtea</span></code> for an example of a design that still uses the Tcl format.</p>
+<p>To support the technology-specific config files, the global <code class="docutils literal notranslate"><span class="pre">config.tcl</span></code> files, including ones generated by <code class="docutils literal notranslate"><span class="pre">-init_design_config</span></code>, should end with these lines:</p>
+<div class="highlight-tcl notranslate"><div class="highlight"><pre><span></span><span class="k">set</span><span class="w"> </span>filename<span class="w"> </span><span class="nv">$::env</span><span class="k">(</span><span class="nv">DESIGN_DIR</span><span class="k">)</span><span class="o">/</span><span class="nv">$::env</span><span class="k">(</span><span class="nv">PDK</span><span class="k">)</span>_<span class="nv">$::env</span><span class="k">(</span><span class="nv">STD_CELL_LIBRARY</span><span class="k">)</span>_config.tcl
+<span class="k">if</span><span class="w"> </span><span class="k">{</span><span class="w"> </span><span class="k">[</span><span class="nb">file</span><span class="w"> </span>exists<span class="w"> </span><span class="nv">$filename</span><span class="k">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nv">1</span><span class="k">}</span><span class="w"> </span><span class="k">{</span>
+<span class="w">	</span><span class="nb">source</span><span class="w"> </span><span class="nv">$filename</span>
+<span class="k">}</span>
+</pre></div>
+</div>
+<p>This implies that if the <code class="docutils literal notranslate"><span class="pre">{PDK}_{STD_CELL_LIBRARY}_config.tcl</span></code> doesn’t exist for a specific technology combination the flow would resume normally with only the global config.tcl.</p>
+<p>This structure allows for storing the best configurations for a given design on all different PDKs and their STD_CELL_LIBRARYs. The best configuration for a given design differ from one PDK and STD_CELL_LIBRARY to another.
+For this reason, upon installing a new PDK/STD_CELL_LIBRARY or a new design, an exploration should be run on different configuration parameters to reach the best configuration. The script that enables this is documented <a class="reference internal" href="../usage/exploration_script.html"><span class="std std-doc">here</span></a>.
+After running the exploration, you will find in the logs two .csv newly generated files: <code class="docutils literal notranslate"><span class="pre">{tag}_{timestamp}.csv</span></code> and <code class="docutils literal notranslate"><span class="pre">{tag}_{timestamp}_best.csv</span></code>. The configuration name reported in the _best.csv file contains the best added configurations to the current run of the given design using the specified PDK/STD_CELL_LIBRARY.</p>
+<p>Two scripts were created for this purpose:</p>
+<ul class="simple">
+<li><p>A script to create a new configuration file for a given (PDK, STD_CELL_LIBRARY) pair, or replicate the configuration of a (PDK, STD_CELL_LIBRARY) to another (PDK, STD_CELL_LIBRARY).</p></li>
+<li><p>A script to update the configuration of a given (PDK, STD_CELL_LIBRARY) according to an exploration result provided by a {tag}_best.csv file.</p></li>
+</ul>
+<section id="replicate-create-design-configs-for-a-pdk-std-cell-library-pair">
+<h3>Replicate/Create Design Configs for a (PDK,STD_CELL_LIBRARY) Pair:<a class="headerlink" href="#replicate-create-design-configs-for-a-pdk-std-cell-library-pair" title="Link to this heading">¶</a></h3>
+<p>To run the script to create new (empty) configurations for a (PDK,STD_CELL_LIBRARY) pair:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w">    </span>python3<span class="w"> </span>./scripts/config/replicate.py<span class="w"> </span>--to-pdk<span class="w"> </span>PDK<span class="w"> </span>--to-std-cell-lib<span class="w"> </span>STD_CELL_LIBRARY
+</pre></div>
+</div>
+<p>To run the script to replicate configurations from one (PDK,STD_CELL_LIBRARY) pair to another:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w">    </span>python3<span class="w"> </span>./scripts/config/replicate.py<span class="w"> </span>--from-pdk<span class="w"> </span>PDK_FROM<span class="w"> </span>--from-std-cell-lib<span class="w"> </span>STD_CELL_LIBRARY_FROM<span class="w"> </span>--to-pdk<span class="w"> </span>PDK<span class="w"> </span>--to-std-cell-lib<span class="w"> </span>STD_CELL_LIBRARY
+</pre></div>
+</div>
+<p>For more detailed information, run <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">./scripts/config/replicate.py</span> <span class="pre">--help</span></code>.</p>
+</section>
+<section id="update-design-configs-for-a-pdk-std-cell-library-pair-after-an-exploration">
+<h3>Update Design Configs for a (PDK,STD_CELL_LIBRARY) Pair after an Exploration:<a class="headerlink" href="#update-design-configs-for-a-pdk-std-cell-library-pair-after-an-exploration" title="Link to this heading">¶</a></h3>
+<p>To run the script to update configurations for a (PDK,STD_CELL_LIBRARY) pair after an exploration:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w">    </span>python3<span class="w"> </span>./scripts/config/update.py<span class="w"> </span>--pdk<span class="w"> </span>PDK<span class="w"> </span>--std-cell-lib<span class="w"> </span>STD_CELL_LIBRARY<span class="w"> </span>--best_results<span class="w"> </span>SW_exploration_best.csv
+</pre></div>
+</div>
+<p>You can invoke <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">./scripts/config/update.py</span></code> for a full list of options.</p>
+<p>Check <a class="reference internal" href="../usage/exploration_script.html"><span class="std std-doc">this</span></a> for more details on the log files.</p>
+<blockquote>
+<div><p><strong>Note 1:</strong> <code class="docutils literal notranslate"><span class="pre">update.py</span></code> skips designs that fail during the exploration, which means their <code class="docutils literal notranslate"><span class="pre">flow_status</span></code> is not <code class="docutils literal notranslate"><span class="pre">flow_completed</span></code>.</p>
+<p><strong>Note 2:</strong> The <code class="docutils literal notranslate"><span class="pre">update.py</span></code> script only copies new configuration to the file. The new configurations are marked with a preceeding <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">Regression</span></code> comment that is automatically written before them by the exploration script. However, the <code class="docutils literal notranslate"><span class="pre">replicate.py</span></code> script copies the whole file.</p>
+</div></blockquote>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="configuration.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Flow Configuration Variables</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="cli.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Command-Line Arguments</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2020-2022 Efabless Corporation and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/The-OpenROAD-Project/OpenLane" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Design Configuration Files</a><ul>
+<li><a class="reference internal" href="#initializing-a-design-for-use-with-openlane">Initializing a design for use with OpenLane</a></li>
+<li><a class="reference internal" href="#json">JSON</a><ul>
+<li><a class="reference internal" href="#processing">Processing</a><ul>
+<li><a class="reference internal" href="#conditional-execution">Conditional Execution</a></li>
+<li><a class="reference internal" href="#variable-reference">Variable Reference</a></li>
+<li><a class="reference internal" href="#expression-engine">Expression Engine</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tcl">Tcl</a><ul>
+<li><a class="reference internal" href="#replicate-create-design-configs-for-a-pdk-std-cell-library-pair">Replicate/Create Design Configs for a (PDK,STD_CELL_LIBRARY) Pair:</a></li>
+<li><a class="reference internal" href="#update-design-configs-for-a-pdk-std-cell-library-pair-after-an-exploration">Update Design Configs for a (PDK,STD_CELL_LIBRARY) Pair after an Exploration:</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

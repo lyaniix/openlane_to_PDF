@@ -1,0 +1,756 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Reference Manual" href="../reference/index.html" /><link rel="prev" title="Hierarchical chip design (with macros)" href="digital_guide.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.07.18 -->
+        <title>Designing a chip with an OpenRAM (sky130) - OpenLane Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=613ab9ff" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">OpenLane Documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">OpenLane Documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting_started/installation/index.html">Installation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_ubuntu.html">Ubuntu 20.04+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_macos.html">macOS 11+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_win.html">Windows 10+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_linux.html">Other Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/updating.html">Updating OpenLane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/quickstart.html">Quick-Start Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../flow_overview.html">OpenLane Architecture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../usage/index.html">Usage guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Usage guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../usage/designs.html">Adding Your Designs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/exploration_script.html">Regression &amp; Exploration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/hardening_macros.html">Hardening Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/chip_integration.html">Chip Level Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/advanced_power_grid_control.html">Power Grid/Power Distribution Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/custom_pdk_builds.html">Custom-Building PDKs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Tutorials</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="digital_guide.html">Hierarchical chip design (with macros)</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Designing a chip with an OpenRAM (sky130)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../reference/index.html">Reference Manual</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Reference Manual</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/cli.html">Command-Line Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/configuration_files.html">Design Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/configuration.html">Flow Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/pdk_configuration.html">PDK Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/openlane_commands.html">Tcl Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/interactive_mode.html">Interactive Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/datapoint_definitions.html">Datapoint Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/gui.html">Viewing layouts graphically</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../additional_material.html">Additional Material</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../for_developers/index.html">Developer’s Guide</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Developer’s Guide</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/docs_contribution.html">Contributing Docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/pdk_structure.html">Porting a PDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/using_or_issue.html"><code class="docutils literal notranslate"><span class="pre">or_issue.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/gha_workflow.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/issue_regression_tests.html">Issue regression tests</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/blob/master/docs/source/tutorials/openram.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/edit/master/docs/source/tutorials/openram.md" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="designing-a-chip-with-an-openram-sky130">
+<h1>Designing a chip with an OpenRAM (sky130)<a class="headerlink" href="#designing-a-chip-with-an-openram-sky130" title="Link to this heading">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>This guide covers the RTL-to-GDS flow using <a class="reference external" href="https://openram.org/">OpenRAM</a> cells and many macro-related features from the OpenLane flow for full chip integration.</p>
+</section>
+<section id="create-a-new-design">
+<h2>Create a new design<a class="headerlink" href="#create-a-new-design" title="Link to this heading">¶</a></h2>
+<p>Create a new design using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span> <span class="o">-</span><span class="n">init_design_config</span> <span class="o">-</span><span class="n">add_to_designs</span>
+</pre></div>
+</div>
+</section>
+<section id="create-the-verilog-files">
+<h2>Create the Verilog files<a class="headerlink" href="#create-the-verilog-files" title="Link to this heading">¶</a></h2>
+<p>Create or add Verilog files. In this case create file <code class="docutils literal notranslate"><span class="pre">designs/ci/test_sram_macro/src/test_sram_macro.v</span></code> with following content:</p>
+</section>
+<section id="connect-the-layout-files-and-abstracts">
+<h2>Connect the layout files and abstracts<a class="headerlink" href="#connect-the-layout-files-and-abstracts" title="Link to this heading">¶</a></h2>
+<p>LEF files are abstract representations of hard macroblocks, such as OpenRAM macros.
+These files contain a lightweight abstract representation of the cell.
+LEF contains only metal layers and layers that can connect between cells (<code class="docutils literal notranslate"><span class="pre">met1</span></code>, <code class="docutils literal notranslate"><span class="pre">via2</span></code>, <code class="docutils literal notranslate"><span class="pre">nwell</span></code>, <code class="docutils literal notranslate"><span class="pre">pwell</span></code>, etc).</p>
+<p>OpenLane configuration of LEF files is done using <code class="docutils literal notranslate"><span class="pre">EXTRA_LEFS</span></code>.
+In this case the absolute path is used, if the PDK location is different then the path needs to be changed.</p>
+<p>Next, configure the GDS files of the hard macro. OpenLane configuration of GDS is <code class="docutils literal notranslate"><span class="pre">EXTRA_GDS_FILES</span></code>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is the responsibility of the user to make sure that GDS matches LEF files.</p>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;EXTRA_LEFS&quot;</span><span class="p">:</span><span class="w">      </span><span class="s2">&quot;/openlane/pdks/sky130B/libs.ref/sky130_sram_macros/lef/sky130_sram_1kbyte_1rw1r_32x256_8.lef&quot;</span><span class="p">,</span>
+<span class="nt">&quot;EXTRA_GDS_FILES&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/openlane/pdks/sky130B/libs.ref/sky130_sram_macros/gds/sky130_sram_1kbyte_1rw1r_32x256_8.gds&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you run the design without this configuration you will get the following error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Running</span> <span class="n">Initial</span> <span class="n">Floorplanning</span> <span class="p">(</span><span class="n">log</span><span class="p">:</span> <span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">full_guide_nomacros</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">floorplan</span><span class="o">/</span><span class="mi">3</span><span class="o">-</span><span class="n">initial_fp</span><span class="o">.</span><span class="n">log</span><span class="p">)</span><span class="o">...</span>
+<span class="p">[</span><span class="n">ERROR</span><span class="p">]:</span> <span class="n">Floorplanning</span> <span class="n">failed</span>
+<span class="p">[</span><span class="n">ERROR</span><span class="p">]:</span> <span class="n">module</span> <span class="n">sky130_sram_1kbyte_1rw1r_32x256_8</span> <span class="ow">not</span> <span class="n">found</span> <span class="ow">in</span> <span class="o">/</span><span class="n">openlane</span><span class="o">/</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">full_guide_nomacros</span><span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">merged</span><span class="o">.</span><span class="n">nom</span><span class="o">.</span><span class="n">lef</span>
+<span class="p">[</span><span class="n">ERROR</span><span class="p">]:</span> <span class="n">Check</span> <span class="n">whether</span> <span class="n">EXTRA_LEFS</span> <span class="ow">is</span> <span class="nb">set</span> <span class="n">appropriately</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="connect-the-blackbox-information-and-timing-data">
+<h2>Connect the blackbox information and timing data<a class="headerlink" href="#connect-the-blackbox-information-and-timing-data" title="Link to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference external" href="https://github.com/The-OpenROAD-Project/OpenLane/issues/1343">Multiple scenario Liberty files are not supported yet</a>.</p>
+</div>
+<p>Liberty flow contains the timings and description of I/O of the macro.
+It is used in Timing analysis and in synthesis.
+The liberty file is supplied to flow using <code class="docutils literal notranslate"><span class="pre">EXTRA_LIBS</span></code> configuration. Add it to the configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;EXTRA_LIBS&quot;</span><span class="p">:</span>      <span class="s2">&quot;/openlane/pdks/sky130B/libs.ref/sky130_sram_macros/lib/sky130_sram_1kbyte_1rw1r_32x256_8_TT_1p8V_25C.lib&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you skip this configuration you will get the following error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ERROR: Module `\sky130_sram_1kbyte_1rw1r_32x256_8&#39; referenced in module `\test_sram_macro_unwrapped&#39; in cell `\sram1&#39; is not part of the design.
+child process exited abnormally
+</pre></div>
+</div>
+</div>
+</section>
+<section id="power-ground-nets">
+<h2>Power/Ground nets<a class="headerlink" href="#power-ground-nets" title="Link to this heading">¶</a></h2>
+<p>Create the power/ground nets.
+The first net in the list will be used for standard cell power connections.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;VDD_NETS&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vccd1&quot;</span><span class="p">,</span>
+<span class="nt">&quot;GND_NETS&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vssd1&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>If you need more power/ground nets add the nets to the list:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;VDD_NETS&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vccd1 vccd2&quot;</span><span class="p">,</span>
+<span class="nt">&quot;GND_NETS&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vssd1 vssd2&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+</section>
+<section id="power-ground-pdn-connections">
+<h2>Power/Ground PDN connections<a class="headerlink" href="#power-ground-pdn-connections" title="Link to this heading">¶</a></h2>
+<p>Add the PDN connections between SRAM cells and the power/ground nets.</p>
+<p>Syntax: <code class="docutils literal notranslate"><span class="pre">&lt;instance_name&gt;</span> <span class="pre">&lt;vdd_net&gt;</span> <span class="pre">&lt;gnd_net&gt;</span> <span class="pre">&lt;vdd_pin&gt;</span> <span class="pre">&lt;gnd_pin&gt;</span></code>.</p>
+<p>More information is available in <a class="reference internal" href="../reference/configuration.html"><span class="std std-doc">configuration variables documentation</span></a>.
+Each macro hook is separated using a comma, for example:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;FP_PDN_MACRO_HOOKS&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;submodule.sram0 vccd1 vssd1 vccd1 vssd1, submodule.sram1 vccd1 vssd1 vccd1 vssd1&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>The instance names need to be fetched from the synthesis netlist.
+For this purpose run the design until the synthesis stage using the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span> <span class="o">-</span><span class="n">tag</span> <span class="n">synthesis_only</span> <span class="o">-</span><span class="n">to</span> <span class="n">synthesis</span> <span class="o">-</span><span class="n">overwrite</span>
+</pre></div>
+</div>
+<p>Open the following file <code class="docutils literal notranslate"><span class="pre">designs/ci/test_sram_macro/runs/synthesis_only/results/synthesis/test_sram_macro.v</span></code>.</p>
+<div class="highlight-verilog notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Generated by Yosys 0.12+45 (git sha1 UNKNOWN, gcc 8.3.1 -fPIC -Os) */</span>
+
+<span class="k">module</span><span class="w"> </span><span class="n">test_sram_macro</span><span class="p">(</span><span class="n">rst_n</span><span class="p">,</span><span class="w"> </span><span class="n">clk</span><span class="p">,</span><span class="w"> </span><span class="n">cs</span><span class="p">,</span><span class="w"> </span><span class="n">we</span><span class="p">,</span><span class="w"> </span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="n">write_allow</span><span class="p">,</span><span class="w"> </span><span class="n">datain</span><span class="p">,</span><span class="w"> </span><span class="n">dataout</span><span class="p">);</span>
+<span class="kt">wire</span><span class="w"> </span><span class="n">_000_</span><span class="p">;</span>
+<span class="kt">wire</span><span class="w"> </span><span class="n">_001_</span><span class="p">;</span>
+<span class="kt">wire</span><span class="w"> </span><span class="n">_002_</span><span class="p">;</span>
+<span class="p">...</span>
+<span class="n">sky130_sram_1kbyte_1rw1r_32x256_8</span><span class="w"> </span><span class="n">\submodule.sram0</span><span class="w">  </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">addr0</span><span class="p">(</span><span class="n">addr</span><span class="p">),</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="p">.</span><span class="n">wmask0</span><span class="p">(</span><span class="n">write_allow</span><span class="p">[</span><span class="mh">3</span><span class="o">:</span><span class="mh">0</span><span class="p">])</span>
+<span class="p">);</span>
+<span class="n">sky130_sram_1kbyte_1rw1r_32x256_8</span><span class="w"> </span><span class="n">\submodule.sram1</span><span class="w">  </span><span class="p">(</span>
+<span class="w">    </span><span class="p">.</span><span class="n">addr0</span><span class="p">(</span><span class="n">addr</span><span class="p">),</span>
+<span class="w">    </span><span class="p">...</span>
+<span class="w">    </span><span class="p">.</span><span class="n">wmask0</span><span class="p">(</span><span class="n">write_allow</span><span class="p">[</span><span class="mh">7</span><span class="o">:</span><span class="mh">4</span><span class="p">])</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note that there are two cells <code class="docutils literal notranslate"><span class="pre">sky130_sram_1kbyte_1rw1r_32x256_8</span></code> with instance names <code class="docutils literal notranslate"><span class="pre">\submodule.sram0</span></code>, <code class="docutils literal notranslate"><span class="pre">\submodule.sram1</span></code>.
+Both contain backslashes according to Verilog syntax.
+In <code class="docutils literal notranslate"><span class="pre">FP_PDN_MACRO_HOOKS</span></code> you need to use the name without the escape slash. Therefore it turns into <code class="docutils literal notranslate"><span class="pre">submodule.sram0</span></code>, <code class="docutils literal notranslate"><span class="pre">submodule.sram1</span></code>.</p>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;FP_PDN_MACRO_HOOKS&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;submodule.sram0 vccd1 vssd1 vccd1 vssd1, submodule.sram1 vccd1 vssd1 vccd1 vssd1&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">FP_PDN_MACRO_HOOKS</span></code> forces connection between these pins and power/ground nets.
+If these configuration is missing then power/ground will not be connected.
+Try removing the parameter and running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide_pdn_macrohooks</span> <span class="o">-</span><span class="n">overwrite</span>
+</pre></div>
+</div>
+<p>Open an interactive session:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide_pdn_macrohooks</span> <span class="o">-</span><span class="n">interactive</span>
+<span class="n">package</span> <span class="n">require</span> <span class="n">openlane</span>
+<span class="n">set_def</span> <span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">full_guide_pdn_macrohooks</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">final</span><span class="o">/</span><span class="n">def</span><span class="o">/</span><span class="n">test_sram_macro</span><span class="o">.</span><span class="k">def</span>
+<span class="nf">or_gui</span>
+
+<span class="c1"># empty new line to force the command to run</span>
+</pre></div>
+</div>
+<p>Notice that the PDN straps are not connected to ring of SRAM:</p>
+<figure class="align-default">
+<img alt="../_images/pdn_macro_hooks_missing.png" src="../_images/pdn_macro_hooks_missing.png" />
+</figure>
+</section>
+<section id="floorplanning">
+<h2>Floorplanning<a class="headerlink" href="#floorplanning" title="Link to this heading">¶</a></h2>
+<p>Run the flow until the floorplanning stage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span> <span class="o">-</span><span class="n">tag</span> <span class="n">floorplan</span> <span class="o">-</span><span class="n">overwrite</span> <span class="o">-</span><span class="n">to</span> <span class="n">floorplan</span>
+</pre></div>
+</div>
+<p>You will get the following output:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">STEP</span> <span class="mi">3</span><span class="p">]</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Running</span> <span class="n">Initial</span> <span class="n">Floorplanning</span> <span class="p">(</span><span class="n">log</span><span class="p">:</span> <span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">floorplan</span><span class="o">/</span><span class="n">logs</span><span class="o">/</span><span class="n">floorplan</span><span class="o">/</span><span class="mi">3</span><span class="o">-</span><span class="n">initial_fp</span><span class="o">.</span><span class="n">log</span><span class="p">)</span><span class="o">...</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Extracting</span> <span class="n">core</span> <span class="n">dimensions</span><span class="o">...</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Set</span> <span class="n">CORE_WIDTH</span> <span class="n">to</span> <span class="mf">877.22</span><span class="p">,</span> <span class="n">CORE_HEIGHT</span> <span class="n">to</span> <span class="mf">875.84</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>To view the output of the floorplan stage, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span> <span class="o">-</span><span class="n">tag</span> <span class="n">floorplan</span> <span class="o">-</span><span class="n">interactive</span>
+<span class="n">package</span> <span class="n">require</span> <span class="n">openlane</span>
+<span class="n">set_def</span> <span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">floorplan</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">floorplan</span><span class="o">/</span><span class="n">test_sram_macro</span><span class="o">.</span><span class="k">def</span>
+<span class="nf">or_gui</span>
+
+<span class="c1"># empty new line to force the command to run</span>
+</pre></div>
+</div>
+<p>It will look like this:</p>
+<figure class="align-default">
+<img alt="../_images/basic_fp.png" src="../_images/basic_fp.png" />
+</figure>
+<p>Looking at the floorplan, it would be better if the macros were centered, so the buffers can be placed near I/O.
+In order to achieve this, keep the area almost the same,
+but resize the <code class="docutils literal notranslate"><span class="pre">DIE_AREA</span></code> to a rectangle that allows <code class="docutils literal notranslate"><span class="pre">100um</span></code> all around each macro for standard cells.
+In the next step, the location of macroblocks will be selected.</p>
+<p>Set the following floorplan parameters:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;FP_SIZING&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;absolute&quot;</span><span class="p">,</span>
+<span class="nt">&quot;DIE_AREA&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0 0 750 1250&quot;</span><span class="p">,</span>
+<span class="nt">&quot;PL_TARGET_DENSITY&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">FP_SIZING</span></code> is set to <code class="docutils literal notranslate"><span class="pre">absolute</span></code> and it will tell the floorplan to use <code class="docutils literal notranslate"><span class="pre">DIE_AREA</span></code> as the size of the macroblock.
+Next, set the <code class="docutils literal notranslate"><span class="pre">DIE_AREA</span></code>. This value is carefully constructed.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">DIE_AREA</span></code> is set a to big value then you are going to have routing/placement/timing issues.
+On the other hand, setting the value too low will cause placement and routing congestion issues.</p>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">PL_TARGET_DENSITY</span></code> is set to 0.5 to reflect the target final density of 50%.</p>
+<p>I/O placement can be defined using the process described in the <a class="reference internal" href="../usage/hardening_macros.html"><span class="std std-doc">Hardening Macros guide</span></a>.</p>
+</section>
+<section id="macrocell-placement">
+<h2>Macrocell placement<a class="headerlink" href="#macrocell-placement" title="Link to this heading">¶</a></h2>
+<p>In this section, we will use manual macro placement to do the placement.
+Automatic macro placement does not account for I/O pin placement causing the SRAMs to be placed at the edge of the DIE
+which results in sub-optimal I/O power usage due to long nets.</p>
+<p>The size of the cells can be taken from the LEF file <code class="docutils literal notranslate"><span class="pre">pdks/sky130B/libs.ref/sky130_sram_macros/lef/sky130_sram_1kbyte_1rw1r_32x256_8.lef</span></code>.
+While it is not required to know the size of the cell,
+it is useful for the purpose of making sure that the subcomponents do not overlap.</p>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">UNITS</span>
+<span class="n">DATABASE</span> <span class="n">MICRONS</span> <span class="mi">1000</span> <span class="p">;</span>
+<span class="n">END</span> <span class="n">UNITS</span>
+<span class="n">MACRO</span> <span class="n">sky130_sram_1kbyte_1rw1r_32x256_8</span>
+<span class="n">CLASS</span> <span class="n">BLOCK</span> <span class="p">;</span>
+<span class="n">SIZE</span> <span class="mf">479.78</span> <span class="n">BY</span> <span class="mf">397.5</span> <span class="p">;</span>
+<span class="n">SYMMETRY</span> <span class="n">X</span> <span class="n">Y</span> <span class="n">R90</span> <span class="p">;</span>
+</pre></div>
+</div>
+<p>To specify the cell placement create the file <code class="docutils literal notranslate"><span class="pre">designs/ci/test_sram_macro/macro_placement.cfg</span></code>:</p>
+<p>The syntax is <code class="docutils literal notranslate"><span class="pre">&lt;instance</span> <span class="pre">name&gt;</span> <span class="pre">&lt;x&gt;</span> <span class="pre">&lt;y&gt;</span> <span class="pre">&lt;direction&gt;</span></code>. Each new line contains configuration for one macro block</p>
+<p>The instance name needs to be taken directly from the synthesis netlist without an escape symbol at the beginning.</p>
+<p>Next, modify the <code class="docutils literal notranslate"><span class="pre">config.json</span></code> to reference this file.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;MACRO_PLACEMENT_CFG&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dir::macro_placement.cfg&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span> <span class="o">-</span><span class="n">tag</span> <span class="n">floorplan_v2</span> <span class="o">-</span><span class="n">overwrite</span> <span class="o">-</span><span class="n">to</span> <span class="n">floorplan</span>
+</pre></div>
+</div>
+<p>To view the output of the floorplan stage, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span> <span class="o">-</span><span class="n">tag</span> <span class="n">floorplan_v2</span> <span class="o">-</span><span class="n">interactive</span>
+<span class="n">package</span> <span class="n">require</span> <span class="n">openlane</span>
+<span class="n">set_def</span> <span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">floorplan_v2</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">floorplan</span><span class="o">/</span><span class="n">test_sram_macro</span><span class="o">.</span><span class="k">def</span>
+<span class="nf">or_gui</span>
+
+<span class="c1"># empty new line to force the command to run</span>
+</pre></div>
+</div>
+<p>It will look like this:</p>
+<figure class="align-default">
+<img alt="../_images/floorplan_v2.png" src="../_images/floorplan_v2.png" />
+</figure>
+</section>
+<section id="common-problems-to-avoid">
+<h2>Common problems to avoid<a class="headerlink" href="#common-problems-to-avoid" title="Link to this heading">¶</a></h2>
+<section id="drcs-inside-sram-macros">
+<h3>DRCs inside SRAM macros<a class="headerlink" href="#drcs-inside-sram-macros" title="Link to this heading">¶</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>SRAM cells in sky130 have a special set of DRC rules.
+OpenRAM uses these optimized SRAM cells but the current DRC deck is missing these rules, causing false issues.</p>
+<p>Currently, use the workaround presented below.</p>
+</div>
+<p>The sky130 uses optical proximity to reduce the size of the SRAM transistors.
+The SRAM blocks in sky130 generated by OpenRAM use different DRC ruleset to accommodate for this size reduction.
+Therefore when running the Magic VLSI it is expected to have many DRC violations.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">MAGIC_DRC_USE_GDS</span></code> can be set to false, forcing the Magic VLSI to run DRC on DEF/LEF instead of GDS.
+However, you will still get <code class="docutils literal notranslate"><span class="pre">This</span> <span class="pre">layer</span> <span class="pre">can't</span> <span class="pre">abut</span> <span class="pre">or</span> <span class="pre">partially</span> <span class="pre">overlap</span> <span class="pre">between</span> <span class="pre">subcells</span></code> DRCs.
+These DRCs are not critical.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;MAGIC_DRC_USE_GDS&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+</pre></div>
+</div>
+<p>If you open <code class="docutils literal notranslate"><span class="pre">designs/ci/test_sram_macro/runs/full_guide/reports/signoff/drc.rpt</span></code>
+you can see following error: <code class="docutils literal notranslate"><span class="pre">This</span> <span class="pre">layer</span> <span class="pre">can't</span> <span class="pre">abut</span> <span class="pre">or</span> <span class="pre">partially</span> <span class="pre">overlap</span> <span class="pre">between</span> <span class="pre">subcells</span></code>.</p>
+<p>This error is caused by the issue in Open_PDKs. It is a warning, therefore it can be ignored.</p>
+<p>For this example, we can just disable the DRC stopping the flow.
+After the run is done, check the DRC report manually and make sure the issues are not critical.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;QUIT_ON_MAGIC_DRC&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you do not manually check the DRC,
+then in the submission process to the foundry DRC errors will be checked anyway,
+but the turnaround is too long to rely on this.</p>
+</div>
+</section>
+<section id="drc-because-of-pdn-being-too-close-to-the-met4-inside-sram">
+<h3>DRC because of PDN being too close to the met4 inside SRAM<a class="headerlink" href="#drc-because-of-pdn-being-too-close-to-the-met4-inside-sram" title="Link to this heading">¶</a></h3>
+<p>The selected placement can cause DRC.
+In this guide, the selected location of Y=700 causes met4 of the SRAM to be too close to power straps.
+To mitigate this, the SRAM instance was moved down.</p>
+</section>
+<section id="setup-violations">
+<h3>Setup violations<a class="headerlink" href="#setup-violations" title="Link to this heading">¶</a></h3>
+<p>During the run it was clear that the clock period of <code class="docutils literal notranslate"><span class="pre">10.0</span></code> was too low:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">WARNING</span><span class="p">]:</span> <span class="n">There</span> <span class="n">are</span> <span class="nb">max</span> <span class="n">slew</span> <span class="n">violations</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">design</span> <span class="n">at</span> <span class="n">the</span> <span class="n">typical</span> <span class="n">corner</span><span class="o">.</span> <span class="n">Please</span> <span class="n">refer</span> <span class="n">to</span> <span class="s1">&#39;designs/ci/test_sram_macro/runs/full_guide_libs_3/reports/signoff/32-rcx_sta.checks.rpt&#39;</span><span class="o">.</span>
+<span class="p">[</span><span class="n">WARNING</span><span class="p">]:</span> <span class="n">There</span> <span class="n">are</span> <span class="nb">max</span> <span class="n">fanout</span> <span class="n">violations</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">design</span> <span class="n">at</span> <span class="n">the</span> <span class="n">typical</span> <span class="n">corner</span><span class="o">.</span> <span class="n">Please</span> <span class="n">refer</span> <span class="n">to</span> <span class="s1">&#39;designs/ci/test_sram_macro/runs/full_guide_libs_3/reports/signoff/32-rcx_sta.checks.rpt&#39;</span><span class="o">.</span>
+<span class="p">[</span><span class="n">WARNING</span><span class="p">]:</span> <span class="n">There</span> <span class="n">are</span> <span class="nb">max</span> <span class="n">capacitance</span> <span class="n">violations</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">design</span> <span class="n">at</span> <span class="n">the</span> <span class="n">typical</span> <span class="n">corner</span><span class="o">.</span> <span class="n">Please</span> <span class="n">refer</span> <span class="n">to</span> <span class="s1">&#39;designs/ci/test_sram_macro/runs/full_guide_libs_3/reports/signoff/32-rcx_sta.checks.rpt&#39;</span><span class="o">.</span>
+<span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">There</span> <span class="n">are</span> <span class="n">no</span> <span class="n">hold</span> <span class="n">violations</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">design</span> <span class="n">at</span> <span class="n">the</span> <span class="n">typical</span> <span class="n">corner</span><span class="o">.</span>
+<span class="p">[</span><span class="n">ERROR</span><span class="p">]:</span> <span class="n">There</span> <span class="n">are</span> <span class="n">setup</span> <span class="n">violations</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">design</span> <span class="n">at</span> <span class="n">the</span> <span class="n">typical</span> <span class="n">corner</span><span class="o">.</span> <span class="n">Please</span> <span class="n">refer</span> <span class="n">to</span> <span class="s1">&#39;designs/ci/test_sram_macro/runs/full_guide_libs_3/reports/signoff/32-rcx_sta.max.rpt&#39;</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>As a solution the period was increased to <code class="docutils literal notranslate"><span class="pre">25.0</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;CLOCK_PERIOD&quot;</span><span class="p">:</span> <span class="mf">25.0</span><span class="p">,</span>
+</pre></div>
+</div>
+</section>
+<section id="json-syntax-error-regarding-the-comma">
+<h3>JSON syntax error regarding the comma<a class="headerlink" href="#json-syntax-error-regarding-the-comma" title="Link to this heading">¶</a></h3>
+<p>The last field of the object in JSON must not have any commas, otherwise, you will have a syntax issue:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">INFO</span><span class="p">]:</span> <span class="n">Using</span> <span class="n">configuration</span> <span class="ow">in</span> <span class="s1">&#39;designs/ci/test_sram_macro/config.json&#39;</span><span class="o">...</span>
+<span class="p">[</span><span class="n">ERROR</span><span class="p">]:</span> <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+<span class="n">File</span> <span class="s2">&quot;/openlane/scripts/config/to_tcl.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">351</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="n">cli</span><span class="p">()</span>
+<span class="n">File</span> <span class="s2">&quot;/usr/local/lib/python3.6/site-packages/click/core.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1128</span><span class="p">,</span> <span class="ow">in</span> <span class="fm">__call__</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">File</span> <span class="s2">&quot;/usr/local/lib/python3.6/site-packages/click/core.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1053</span><span class="p">,</span> <span class="ow">in</span> <span class="n">main</span>
+    <span class="n">rv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+<span class="n">File</span> <span class="s2">&quot;/usr/local/lib/python3.6/site-packages/click/core.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1659</span><span class="p">,</span> <span class="ow">in</span> <span class="n">invoke</span>
+    <span class="k">return</span> <span class="n">_process_result</span><span class="p">(</span><span class="n">sub_ctx</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">sub_ctx</span><span class="p">))</span>
+<span class="n">File</span> <span class="s2">&quot;/usr/local/lib/python3.6/site-packages/click/core.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1395</span><span class="p">,</span> <span class="ow">in</span> <span class="n">invoke</span>
+    <span class="k">return</span> <span class="n">ctx</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="o">**</span><span class="n">ctx</span><span class="o">.</span><span class="n">params</span><span class="p">)</span>
+<span class="n">File</span> <span class="s2">&quot;/usr/local/lib/python3.6/site-packages/click/core.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">754</span><span class="p">,</span> <span class="ow">in</span> <span class="n">invoke</span>
+    <span class="k">return</span> <span class="n">__callback</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="n">File</span> <span class="s2">&quot;/openlane/scripts/config/to_tcl.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">337</span><span class="p">,</span> <span class="ow">in</span> <span class="n">config_json_to_tcl</span>
+    <span class="n">config_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">config_json_str</span><span class="p">)</span>
+<span class="n">File</span> <span class="s2">&quot;/usr/lib64/python3.6/json/__init__.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">354</span><span class="p">,</span> <span class="ow">in</span> <span class="n">loads</span>
+    <span class="k">return</span> <span class="n">_default_decoder</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="n">File</span> <span class="s2">&quot;/usr/lib64/python3.6/json/decoder.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">339</span><span class="p">,</span> <span class="ow">in</span> <span class="n">decode</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">raw_decode</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="n">_w</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">())</span>
+<span class="n">File</span> <span class="s2">&quot;/usr/lib64/python3.6/json/decoder.py&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">355</span><span class="p">,</span> <span class="ow">in</span> <span class="n">raw_decode</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_once</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+<span class="n">json</span><span class="o">.</span><span class="n">decoder</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span> <span class="n">Expecting</span> <span class="nb">property</span> <span class="n">name</span> <span class="n">enclosed</span> <span class="ow">in</span> <span class="n">double</span> <span class="n">quotes</span><span class="p">:</span> <span class="n">line</span> <span class="mi">27</span> <span class="n">column</span> <span class="mi">1</span> <span class="p">(</span><span class="n">char</span> <span class="mi">901</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The right way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="o">...</span>
+    <span class="s2">&quot;QUIT_ON_MAGIC_DRC&quot;</span><span class="p">:</span> <span class="n">false</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The wrong way:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="o">...</span>
+    <span class="s2">&quot;QUIT_ON_MAGIC_DRC&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="optional-memory-footprint">
+<h3>Optional: Memory footprint<a class="headerlink" href="#optional-memory-footprint" title="Link to this heading">¶</a></h3>
+<p>While running the flow it may use a significant amount of memory.
+You can temporarily disable KLayout XOR check to reduce the memory footprint while experimenting.
+But for the final GDS submission make sure that the XOR check is enabled.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;RUN_KLAYOUT_XOR&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-the-flow">
+<h2>Running the flow<a class="headerlink" href="#running-the-flow" title="Link to this heading">¶</a></h2>
+<p>Final <code class="docutils literal notranslate"><span class="pre">config.json</span></code> looks like this:</p>
+<p>Finally, harden the macroblock by running the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide</span> <span class="o">-</span><span class="n">overwrite</span>
+</pre></div>
+</div>
+<p>To view the output of the floorplan stage, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">flow</span><span class="o">.</span><span class="n">tcl</span> <span class="o">-</span><span class="n">design</span> <span class="o">./</span><span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span> <span class="o">-</span><span class="n">tag</span> <span class="n">full_guide</span> <span class="o">-</span><span class="n">interactive</span>
+<span class="n">package</span> <span class="n">require</span> <span class="n">openlane</span>
+<span class="n">set_def</span> <span class="n">designs</span><span class="o">/</span><span class="n">ci</span><span class="o">/</span><span class="n">test_sram_macro</span><span class="o">/</span><span class="n">runs</span><span class="o">/</span><span class="n">full_guide</span><span class="o">/</span><span class="n">results</span><span class="o">/</span><span class="n">final</span><span class="o">/</span><span class="n">def</span><span class="o">/</span><span class="n">test_sram_macro</span><span class="o">.</span><span class="k">def</span>
+<span class="nf">or_gui</span>
+
+<span class="c1"># empty new line to force the command to run</span>
+</pre></div>
+</div>
+<p>It will look like this:</p>
+<figure class="align-default">
+<img alt="../_images/final.png" src="../_images/final.png" />
+</figure>
+<p>Reports can be found in <code class="docutils literal notranslate"><span class="pre">designs/ci/test_sram_macro/runs/full_guide/reports</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the future, OpenDB will be used instead of DEF/LEF flow.</p>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../reference/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Reference Manual</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="digital_guide.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Hierarchical chip design (with macros)</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2020-2022 Efabless Corporation and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/The-OpenROAD-Project/OpenLane" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Designing a chip with an OpenRAM (sky130)</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#create-a-new-design">Create a new design</a></li>
+<li><a class="reference internal" href="#create-the-verilog-files">Create the Verilog files</a></li>
+<li><a class="reference internal" href="#connect-the-layout-files-and-abstracts">Connect the layout files and abstracts</a></li>
+<li><a class="reference internal" href="#connect-the-blackbox-information-and-timing-data">Connect the blackbox information and timing data</a></li>
+<li><a class="reference internal" href="#power-ground-nets">Power/Ground nets</a></li>
+<li><a class="reference internal" href="#power-ground-pdn-connections">Power/Ground PDN connections</a></li>
+<li><a class="reference internal" href="#floorplanning">Floorplanning</a></li>
+<li><a class="reference internal" href="#macrocell-placement">Macrocell placement</a></li>
+<li><a class="reference internal" href="#common-problems-to-avoid">Common problems to avoid</a><ul>
+<li><a class="reference internal" href="#drcs-inside-sram-macros">DRCs inside SRAM macros</a></li>
+<li><a class="reference internal" href="#drc-because-of-pdn-being-too-close-to-the-met4-inside-sram">DRC because of PDN being too close to the met4 inside SRAM</a></li>
+<li><a class="reference internal" href="#setup-violations">Setup violations</a></li>
+<li><a class="reference internal" href="#json-syntax-error-regarding-the-comma">JSON syntax error regarding the comma</a></li>
+<li><a class="reference internal" href="#optional-memory-footprint">Optional: Memory footprint</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-the-flow">Running the flow</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

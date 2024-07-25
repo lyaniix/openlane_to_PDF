@@ -1,0 +1,796 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tcl Commands" href="openlane_commands.html" /><link rel="prev" title="Flow Configuration Variables" href="configuration.html" />
+
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.07.18 -->
+        <title>PDK Configuration Variables - OpenLane Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=613ab9ff" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">OpenLane Documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">OpenLane Documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting_started/index.html">Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../getting_started/installation/index.html">Installation</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Installation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_ubuntu.html">Ubuntu 20.04+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_macos.html">macOS 11+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_win.html">Windows 10+</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting_started/installation/installation_linux.html">Other Linux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/updating.html">Updating OpenLane</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/quickstart.html">Quick-Start Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../flow_overview.html">OpenLane Architecture</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../usage/index.html">Usage guides</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Usage guides</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../usage/designs.html">Adding Your Designs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/exploration_script.html">Regression &amp; Exploration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/hardening_macros.html">Hardening Macros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/chip_integration.html">Chip Level Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/advanced_power_grid_control.html">Power Grid/Power Distribution Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../usage/custom_pdk_builds.html">Custom-Building PDKs</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../tutorials/index.html">Tutorials</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Tutorials</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/digital_guide.html">Hierarchical chip design (with macros)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorials/openram.html">Designing a chip with an OpenRAM (sky130)</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="index.html">Reference Manual</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Reference Manual</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cli.html">Command-Line Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration_files.html">Design Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html">Flow Configuration Variables</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">PDK Configuration Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openlane_commands.html">Tcl Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive_mode.html">Interactive Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datapoint_definitions.html">Datapoint Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html">Viewing layouts graphically</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../additional_material.html">Additional Material</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../for_developers/index.html">Developer’s Guide</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Developer’s Guide</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/docs_contribution.html">Contributing Docs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/pdk_structure.html">Porting a PDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/using_or_issue.html"><code class="docutils literal notranslate"><span class="pre">or_issue.py</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/gha_workflow.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../for_developers/issue_regression_tests.html">Issue regression tests</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/blob/master/docs/source/reference/pdk_configuration.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/The-OpenROAD-Project/OpenLane/edit/master/docs/source/reference/pdk_configuration.md" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="pdk-configuration-variables">
+<h1>PDK Configuration Variables<a class="headerlink" href="#pdk-configuration-variables" title="Link to this heading">¶</a></h1>
+<p>These variables are defined by PDK configuration files to support the OpenLane
+flow and its steps.</p>
+<p>All these variables (unless marked optional) are defined by the PDK, but some may
+also be overriden by a user configuration.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Any examples provided are for the <code class="docutils literal notranslate"><span class="pre">sky130A</span></code> PDK.</p>
+</div>
+<section id="user-modifiable">
+<h2>User-Modifiable<a class="headerlink" href="#user-modifiable" title="Link to this heading">¶</a></h2>
+<p>These values may be modified by the user configuration and the
+included values should be considered “defaults.”</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_RAIL_OFFSET</span></code></p></td>
+<td><p>Defines the rail offset for met1 used in PDN. <br> (Example: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_HSPACING</span></code></p></td>
+<td><p>The spacing between horizontal power/ground pair <br> (Default: <code class="docutils literal notranslate"><span class="pre">1.7</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_VSPACING</span></code></p></td>
+<td><p>The spacing between vertical power/ground pair <br> (Default: <code class="docutils literal notranslate"><span class="pre">1.7</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_VOFFSET</span></code></p></td>
+<td><p>The offset of the vertical power stripes on the metal layer 5 in the power distribution network <br> (Default: <code class="docutils literal notranslate"><span class="pre">16.32</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_VPITCH</span></code></p></td>
+<td><p>The pitch of the vertical power stripes on the metal layer 4 in the power distribution network <br> (Default: <code class="docutils literal notranslate"><span class="pre">153.6</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_HOFFSET</span></code></p></td>
+<td><p>The offset of the horizontal power stripes on the metal layer 5 in the power distribution network <br> (Default: <code class="docutils literal notranslate"><span class="pre">16.65</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_HPITCH</span></code></p></td>
+<td><p>The pitch of the horizontal power stripes on the metal layer 5 in the power distribution network <br> (Default: <code class="docutils literal notranslate"><span class="pre">153.18</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_VWIDTH</span></code></p></td>
+<td><p>Defines the strap width for the vertical layer used in PDN. <br> (Example: <code class="docutils literal notranslate"><span class="pre">1.6</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_HWIDTH</span></code></p></td>
+<td><p>Defines the strap width for the horizontal layer used in PDN. <br> (Example: <code class="docutils literal notranslate"><span class="pre">1.6</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_CORE_RING_VWIDTH</span></code></p></td>
+<td><p>Defines the vertical width for the vertical layer used to create the core ring in the PDN. <br> (Example: <code class="docutils literal notranslate"><span class="pre">20</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_CORE_RING_HWIDTH</span></code></p></td>
+<td><p>Defines the horizontal width for the horizontal layer used to create the core ring in the PDN. <br> (Example: <code class="docutils literal notranslate"><span class="pre">20</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_CORE_RING_VSPACING</span></code></p></td>
+<td><p>Defines the spacing for the vertical layer used to create the core ring in the PDN. <br> (Example: <code class="docutils literal notranslate"><span class="pre">5</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_CORE_RING_HSPACING</span></code></p></td>
+<td><p>Defines the spacing for the horizontal layer used to create the core ring in the PDN. <br> (Example: <code class="docutils literal notranslate"><span class="pre">5</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_CORE_RING_VOFFSET</span></code></p></td>
+<td><p>Defines the offset for the vertical layer used to create the core ring in the PDN. <br> (Example: <code class="docutils literal notranslate"><span class="pre">20</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_CORE_RING_HOFFSET</span></code></p></td>
+<td><p>Defines the offset for the horizontal layer used to create the core ring in the PDN. <br> (Example: <code class="docutils literal notranslate"><span class="pre">20</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GRT_LAYER_ADJUSTMENTS</span></code></p></td>
+<td><p>Layer-specific reductions in the routing capacity of the edges between the cells in the global routing graph, delimited by commas. Values range from 0 to 1. <br> (Example: <code class="docutils literal notranslate"><span class="pre">0.99,0,0,0,0,0</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RT_MIN_LAYER</span></code></p></td>
+<td><p>The lowest metal layer to route on. <br>(Example: <code class="docutils literal notranslate"><span class="pre">met1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RT_MAX_LAYER</span></code></p></td>
+<td><p>The highest metal layer to route on. <br> (Example: <code class="docutils literal notranslate"><span class="pre">met5</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">WIRE_LENGTH_THRESHOLD</span></code></p></td>
+<td><p>A value in microns above which wire lengths generate warnings, and, if <code class="docutils literal notranslate"><span class="pre">QUIT_ON_LONG_WIRE</span></code> is set, the flow will error out. If a PDK does not set this value, the value is considered to be infinite. (Optional)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="static">
+<h2>Static<a class="headerlink" href="#static" title="Link to this heading">¶</a></h2>
+<p>These variables should really not be modified unless you absolutely know what
+you’re doing.</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DEF_UNITS_PER_MICRON</span></code></p></td>
+<td><p>Defines the unit distance microns. Used during floorplanning for proper def file generation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VDD_PIN</span></code></p></td>
+<td><p>Defines the power pin of the cells.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GND_PIN</span></code></p></td>
+<td><p>Defines the ground pin of the cells.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TRACKS_INFO_FILE</span></code></p></td>
+<td><p>Points to the path of the tracks file. Used by the floorplanner to generate tracks</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TECH_LEF_MIN</span></code></p></td>
+<td><p>Points to the path of the tech lef used for minimum corner extraction. (Optional)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TECH_LEF</span></code></p></td>
+<td><p>Points to the path of the tech lef used for nominal corner extraction.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TECH_LEF_MAX</span></code></p></td>
+<td><p>Points to the path of the tech lef used for maximum corner extraction. (Optional)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CELLS_LEF</span></code></p></td>
+<td><p>A list of paths to the cells lef views. Recommended to use wild card to catch all the files as follows: <code class="docutils literal notranslate"><span class="pre">[glob</span> <span class="pre">&quot;$::env(PDK_ROOT)/sky130A/libs.ref/$::env(STD_CELL_LIBRARY)/lef/*.lef&quot;]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GDS_FILES</span></code></p></td>
+<td><p>A list of paths to the cells GDSII views. Recommended to use wild card to catch all the files as follows: <code class="docutils literal notranslate"><span class="pre">[glob</span> <span class="pre">&quot;$::env(PDK_ROOT)/sky130A/libs.ref/$::env(STD_CELL_LIBRARY)/gds/*.gds&quot;]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_TECH_FILE</span></code></p></td>
+<td><p>Points to the magic tech file which mainly has drc rules.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">KLAYOUT_TECH</span></code></p></td>
+<td><p>Points to the klayout tech file (.lyt).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">KLAYOUT_PROPERTIES</span></code></p></td>
+<td><p>Points to the klayout properties file (.lyp).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">KLAYOUT_DEF_LAYER_MAP</span></code></p></td>
+<td><p>Points to klayout deflef layer map file (.map).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">KLAYOUT_XOR_IGNORE_LAYERS</span></code></p></td>
+<td><p>A space separated layers list to ignore during klayout xor check.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">KLAYOUT_DRC_RUNSET</span></code></p></td>
+<td><p>A path to KLayout DRC runset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">KLAYOUT_DRC_OPTIONS</span></code></p></td>
+<td><p>Options availble to KLayout DRC runset. They vary from one PDK to another.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAGIC_MAGICRC</span></code></p></td>
+<td><p>Points to the magicrc file that is sourced while running magic in the flow.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GPIO_PADS_LEF</span></code></p></td>
+<td><p>A list of the pads lef views. For example:<code class="docutils literal notranslate"><span class="pre">[glob</span> <span class="pre">&quot;$::env(PDK_ROOT)/sky130A/libs.ref/sky130_fd_io/lef/sky130_fd_io.lef&quot;]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GPIO_PADS_PREFIX</span></code></p></td>
+<td><p>A list of pad cells name prefixes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NETGEN_SETUP_FILE</span></code></p></td>
+<td><p>Points to the setup file for netgen(lvs), that can exclude certain cells etc..</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_TAPCELL_DIST</span></code></p></td>
+<td><p>The distance between tapcell columns. Used in floorplanning in tapcell insertion.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CLOCK_WIRE_RC_LAYER</span></code></p></td>
+<td><p>The metal layer used in estimate parastics for clock signals. <br> (Example: <code class="docutils literal notranslate"><span class="pre">met1</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DATA_WIRE_RC_LAYER</span></code></p></td>
+<td><p>The metal layer used in estimate parastics for data (non-clock) signals. <br> (Example: <code class="docutils literal notranslate"><span class="pre">met1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_HLAYER</span></code></p></td>
+<td><p>The metal layer on which to place the io pins horizontally (top and bottom of the die). <br>(Example: <code class="docutils literal notranslate"><span class="pre">met3</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_IO_VLAYER</span></code></p></td>
+<td><p>The metal layer on which to place the io pins vertically (sides of the die) <br> (Example: <code class="docutils literal notranslate"><span class="pre">met2</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_TAPCELL_DIST</span></code></p></td>
+<td><p>The horizontal distance between two tapcell columns <br> (Default: <code class="docutils literal notranslate"><span class="pre">14</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RCX_RULES_MIN</span></code></p></td>
+<td><p>OpenRCX rules at the minimum corner. (Optional)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RCX_RULES</span></code></p></td>
+<td><p>OpenRCX rules at the nominal corner.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RCX_RULES_MAX</span></code></p></td>
+<td><p>OpenRCX rules at the maximum corner. (Optional)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">WIRE_RC_LAYER</span></code></p></td>
+<td><p>**Deprecated: Use <code class="docutils literal notranslate"><span class="pre">DATA_WIRE_RC_LAYER</span></code> and <code class="docutils literal notranslate"><span class="pre">CLOCK_WIRE_RC_LAYER</span></code> **: The metal layer used in estimate parastics <code class="docutils literal notranslate"><span class="pre">set_wire_rc</span></code>. <br> (Example: <code class="docutils literal notranslate"><span class="pre">met1</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="scl-specific-variables">
+<h2>SCL-specific variables<a class="headerlink" href="#scl-specific-variables" title="Link to this heading">¶</a></h2>
+<p>This section defines the necessary variables to configure a standard cell library for use with OpenLane.</p>
+<section id="modifiable">
+<h3>Modifiable<a class="headerlink" href="#modifiable" title="Link to this heading">¶</a></h3>
+<p>These values may be modified by the user configuration and the
+included values should be considered “defaults.”</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MAX_TRANSITION_CONSTRAINT</span></code></p></td>
+<td><p>Defines the maximum slew (transition) value in ns.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MAX_FANOUT_CONSTRAINT</span></code></p></td>
+<td><p>Defines the maximum fanout for a single output in the design.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">OUTPUT_CAP_LOAD</span></code></p></td>
+<td><p>Defines the capacitive load on the output ports in fF.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_MAX_CAP</span></code></p></td>
+<td><p>Defines the maximum capacitance for clock tree synthesis in the design in pF.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GPL_CELL_PADDING</span></code></p></td>
+<td><p>Cell padding value (in sites) for global placement. <br> (Example: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DPL_CELL_PADDING</span></code></p></td>
+<td><p>Defines the number of sites to pad the cells with during detailed placement. This value should not be higher than <code class="docutils literal notranslate"><span class="pre">GPL_CELL_PADDING</span></code> unless you know what you’re doing. <br> (Example: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CELL_PAD_EXCLUDE</span></code></p></td>
+<td><p>Defines the cells to exclude from padding for both detailed placement.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NO_SYNTH_CELL_LIST</span></code></p></td>
+<td><p>Specifies the file that contains the don’t-use-cell-list to be excluded from the liberty file during synthesis. See <a class="reference internal" href="#no-synthesis-cells-file">this section</a> for more information.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DRC_EXCLUDE_CELL_LIST</span></code></p></td>
+<td><p>Specifies the file that contains the don’t-use-cell-list to be excluded from the liberty file during synthesis and timing optimizations. See <a class="reference internal" href="#drc-exclude-cells-file">this section</a> for more information.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_HORIZONTAL_LAYER</span></code></p></td>
+<td><p>Defines the upper layer used in PDN.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_VERTICAL_LAYER</span></code></p></td>
+<td><p>Defines the lower layer used in PDN.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_RAIL_LAYER</span></code></p></td>
+<td><p>Defines the rail layer used in PDN.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_PDN_RAIL_WIDTH</span></code></p></td>
+<td><p>Defines the rail width for the rail layer used in PDN.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_LATCH_MAP</span></code></p></td>
+<td><p>A pointer for the file containing the latch mapping for yosys. (Optional)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TRISTATE_BUFFER_MAP</span></code></p></td>
+<td><p>A pointer for the file containing the tri-state buffer mapping for yosys. (Optional)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CARRY_SELECT_ADDER_MAP</span></code></p></td>
+<td><p>A pointer for the file containing the carry-select adder mapping for Yosys. (Optional)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RIPPLE_CARRY_ADDER_MAP</span></code></p></td>
+<td><p>A pointer for the file containing the ripple-carry adder mapping for Yosys. (Optional)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FULL_ADDER_MAP</span></code></p></td>
+<td><p>A pointer for the file containing the full adder mapping for Yosys. (Optional)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_CAP_LOAD</span></code></p></td>
+<td><p><strong>Deprecated: Use <code class="docutils literal notranslate"><span class="pre">OUTPUT_CAP_LOAD</span></code></strong>: Defines the capacitive load on the output ports in fF.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DEFAULT_MAX_TRAN</span></code></p></td>
+<td><p><strong>Removed: Use <code class="docutils literal notranslate"><span class="pre">MAX_TRANSITION_CONSTRAINT</span></code></strong>: Defines the maximum slew (transition) value in ns.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="id1">
+<h3>Static<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
+<p>These variables should really not be modified unless you absolutely know what
+you’re doing.</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Variable</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LIB_SYNTH</span></code></p></td>
+<td><p>Points to the lib file used during synthesis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LIB_SLOWEST</span></code></p></td>
+<td><p>Points to the lib file, corresponding to the slowest corner, for max delay calculation during STA.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LIB_FASTEST</span></code></p></td>
+<td><p>Points to the lib file, corresponding to the fastest corner, for min delay calculation during STA.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LIB_TYPICAL</span></code></p></td>
+<td><p>Points to the lib file for typical delay calculation during STA.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DFF_LIB_SYNTH</span></code></p></td>
+<td><p>Points to the lib file for used for dff mapping. If not specified, <code class="docutils literal notranslate"><span class="pre">LIB_SYNTH</span></code> is used. (Optional)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PLACE_SITE</span></code></p></td>
+<td><p>Defines the main site used by the cells. Used during floorplanning to generate the rows.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PLACE_SITE_WIDTH</span></code></p></td>
+<td><p>Defines the main site width. Used during floorplanning to generate the rows.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PLACE_SITE_HEIGHT</span></code></p></td>
+<td><p>Defines the main site height. Used during floorplanning to generate the rows.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FP_WELLTAP_CELL</span></code></p></td>
+<td><p>Defines the tapcell to be used in tapcell insertion. <br> If this is not defined then tapcell insertion will be skipped but the flow will resume normally</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">FP_ENDCAP_CELL</span></code></p></td>
+<td><p>Defines the decapcell. Inserted during floorplanning at the sides of the design.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_DRIVING_CELL</span></code></p></td>
+<td><p>The cell to drive the input ports, used in synthesis and static timing analysis. <br>(Example: <code class="docutils literal notranslate"><span class="pre">sky130_fd_sc_hd__inv_1</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_DRIVING_CELL_PIN</span></code></p></td>
+<td><p>The name of the <code class="docutils literal notranslate"><span class="pre">SYNTH_DRIVING_CELL</span></code>’s output pin. <br>(Default: <code class="docutils literal notranslate"><span class="pre">Y</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_CLK_DRIVING_CELL</span></code></p></td>
+<td><p>An alternative cell with which to drive clock inputs. Can be left empty, where the SDC script will use <code class="docutils literal notranslate"><span class="pre">SYNTH_DRIVING_CELL</span></code> for clock inputs as well.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_CLK_DRIVING_CELL_PIN</span></code></p></td>
+<td><p>The name of the SYNTH_CLK_DRIVING_CELL output pin. Can be left empty, where the SDC script will use <code class="docutils literal notranslate"><span class="pre">SYNTH_DRIVING_CELL_PIN</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_MIN_BUF_PORT</span></code></p></td>
+<td><p>Defines the buffer, followed by its input port and output port to be used by <code class="docutils literal notranslate"><span class="pre">ins_buf</span></code> statements by yosys. It inserts buffer cells into the design for directly connected wires. <br> (Example: <code class="docutils literal notranslate"><span class="pre">sky130_fd_sc_hd__buf_2</span> <span class="pre">A</span> <span class="pre">X</span></code>  )</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_TIEHI_PORT</span></code></p></td>
+<td><p>Defines the tie high cell followed by the port that implements the tie high functionality. Used in synthesis. <br> (Example: <code class="docutils literal notranslate"><span class="pre">sky130_fd_sc_hd__conb_1</span> <span class="pre">HI</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SYNTH_TIELO_PORT</span></code></p></td>
+<td><p>Defines the tie low cell followed by the port that implements the tie high functionality. Used in synthesis. <br> (Example: <code class="docutils literal notranslate"><span class="pre">sky130_fd_sc_hd__conb_1</span> <span class="pre">LO</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TRISTATE_CELL_PREFIX</span></code></p></td>
+<td><p>Prefix of tristate cells. Used with SYNTH_CHECKS_ALLOW_TRISTATE. <br> Example <code class="docutils literal notranslate"><span class="pre">sky130_fd_sc_hd__ebuf</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FILL_CELL</span></code></p></td>
+<td><p>Defines the fill cell. Used in fill insertion. Can use a wild card to define a class of cells. Example <code class="docutils literal notranslate"><span class="pre">sky130_fd_sc_hd__fill_*</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DECAP_CELL</span></code></p></td>
+<td><p>Defines the decap cell used for fill insertion. Can use a wild card to define a class of cells. Example <code class="docutils literal notranslate"><span class="pre">sky130_fd_sc_hd__fill_*</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DIODE_CELL_PIN</span></code></p></td>
+<td><p>Defines the <code class="docutils literal notranslate"><span class="pre">DIODE_CELL</span></code> pin. This is required if <code class="docutils literal notranslate"><span class="pre">DIODE_CELL</span></code> is defined</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DIODE_CELL</span></code></p></td>
+<td><p>Defines the diode cell to be used during antenna violations fix step. <br> If this is not defined then the no antenna violations fixes will be attempted</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_ROOT_BUFFER</span></code></p></td>
+<td><p>Defines the cell inserted at the root of the clock tree. Used in CTS.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CTS_CLK_BUFFER_LIST</span></code></p></td>
+<td><p>Defines the list of clock buffers to be used in CTS.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">STD_CELL_POWER_PINS</span></code></p></td>
+<td><p>Defines power pins of stdcells. Used in PDN.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">STD_CELL_GROUND_PINS</span></code></p></td>
+<td><p>Defines ground pins of stdcells. Used in PDN.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CVC_SCRIPTS_DIR</span></code></p></td>
+<td><p>A directory of Circuit Validity Checker (CVC) scripts for the relevant PDK. Must contain the following set of files: <code class="docutils literal notranslate"><span class="pre">cvcrc</span></code>, an initialization file, <code class="docutils literal notranslate"><span class="pre">cdl.awk</span></code>, an awk script to remove black box definitions from SPICE files, <code class="docutils literal notranslate"><span class="pre">models</span></code>, cell models, and finally <code class="docutils literal notranslate"><span class="pre">power.awk</span></code>, an awk script that adds power information to the verilog netlists.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">STD_CELL_LIBRARY_CDL</span></code></p></td>
+<td><p>A pointer for the cdl view of the SCL.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LAYERS_RC</span></code></p></td>
+<td><p>A comma separated list specifying capacitance and resistance per layer. Variable should be provided in the following format. <code class="docutils literal notranslate"><span class="pre">&lt;layer_name&gt;</span> <span class="pre">&lt;capacitance&gt;</span> <span class="pre">&lt;resistance&gt;,</span> <span class="pre">&lt;layer_name&gt;</span> <span class="pre">...</span></code> In JSON, override it as an array of strings, and in Tcl, use commas as a delimiter. (Optional)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">VIAS_RC</span></code></p></td>
+<td><p>A comma separated list specifying capacitance -only- of vias. Variable should be provided in the following format. <code class="docutils literal notranslate"><span class="pre">&lt;layer_name&gt;</span> <span class="pre">&lt;capacitance&gt;</span> <span class="pre">,</span> <span class="pre">&lt;layer_name&gt;</span> <span class="pre">...</span></code> In JSON, override it as an array of strings, and in Tcl, use commas as a delimiter. (Optional)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="tracks-info-file">
+<h2>Tracks Info File<a class="headerlink" href="#tracks-info-file" title="Link to this heading">¶</a></h2>
+<p>The tracks files defines the metal layers pitches and offsets. This information
+should be extracted from the PDK’s tech lef. The file should be an EOL-delimited
+set of lines formatted as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">layer</span> <span class="n">name</span><span class="o">&gt;</span> <span class="n">X</span><span class="o">|</span><span class="n">Y</span> <span class="o">&lt;</span><span class="n">offset</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">pitch</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="drc-exclude-cells-file">
+<h2>DRC Exclude Cells File<a class="headerlink" href="#drc-exclude-cells-file" title="Link to this heading">¶</a></h2>
+<p>Some cells may be excluded from PnR entirely- due to hard-to-access pin shapes
+and/or the cells simply being invalid (DRC violations.)</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For sky130, the “lpflow” cells were also excluded because the flow is unable
+to handle them properly and create a keep-alive power (KAPWR) supply.</p>
+</div>
+<p>The file is formatted as an EOL-delimited list of cell names (wildcards and
+the like not supported.)</p>
+</section>
+<section id="no-synthesis-cells-file">
+<h2>No Synthesis Cells File<a class="headerlink" href="#no-synthesis-cells-file" title="Link to this heading">¶</a></h2>
+<p>Some cells may be furtherexcluded from synthesis, for reasons including but not
+limited to the following:</p>
+<ul class="simple">
+<li><p>Excluded from PnR, i.e., part of the DRC Exclude Cells.</p></li>
+<li><p>Clock Buffers: They are balanced and may introduce too much of a delay when
+not used for clock trees as part of CTS.</p></li>
+<li><p>Cells without default mapping: Cannot be used by Yosys.</p></li>
+<li><p>Smaller cell sizes: Prevents under-estimating the required floorplan.
+The resizer may later choose to use them.</p></li>
+</ul>
+<p>The file is formatted as an EOL-delimited list of cell names (wildcards and
+the like not supported.)</p>
+<p>All cells excluded from PnR are also excluded from Synthesis.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="openlane_commands.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Tcl Commands</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="configuration.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Flow Configuration Variables</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2020-2022 Efabless Corporation and contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/The-OpenROAD-Project/OpenLane" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">PDK Configuration Variables</a><ul>
+<li><a class="reference internal" href="#user-modifiable">User-Modifiable</a></li>
+<li><a class="reference internal" href="#static">Static</a></li>
+<li><a class="reference internal" href="#scl-specific-variables">SCL-specific variables</a><ul>
+<li><a class="reference internal" href="#modifiable">Modifiable</a></li>
+<li><a class="reference internal" href="#id1">Static</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tracks-info-file">Tracks Info File</a></li>
+<li><a class="reference internal" href="#drc-exclude-cells-file">DRC Exclude Cells File</a></li>
+<li><a class="reference internal" href="#no-synthesis-cells-file">No Synthesis Cells File</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
+    </body>
+</html>

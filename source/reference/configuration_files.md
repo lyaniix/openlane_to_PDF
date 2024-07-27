@@ -232,7 +232,8 @@ To run the script to create new (empty) configurations for a (PDK,STD_CELL_LIBRA
 
 To run the script to replicate configurations from one (PDK,STD_CELL_LIBRARY) pair to another:
 ```bash
-    python3 ./scripts/config/replicate.py --from-pdk PDK_FROM --from-std-cell-lib STD_CELL_LIBRARY_FROM --to-pdk PDK --to-std-cell-lib STD_CELL_LIBRARY
+    python3 ./scripts/config/replicate.py --from-pdk PDK_FROM --from-std-cell-lib \
+		STD_CELL_LIBRARY_FROM --to-pdk PDK --to-std-cell-lib STD_CELL_LIBRARY
 ```
 
 For more detailed information, run `python3 ./scripts/config/replicate.py --help`.

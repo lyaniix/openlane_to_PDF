@@ -23,7 +23,8 @@ Finally, you can chose to open `def` view instead of `odb` view:
 
 ```bash
 make mount
-python3 gui.py --format def --viewer openroad --stage floorplan ./designs/spm/runs/RUN_2023.05.28_13.36.45
+python3 gui.py --format def --viewer openroad --stage floorplan \
+          ./designs/spm/runs/RUN_2023.05.28_13.36.45
 ```
 
 :::{note}

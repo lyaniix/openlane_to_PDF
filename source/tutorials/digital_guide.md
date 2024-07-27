@@ -520,7 +520,8 @@ The following error is expected:
 
 ```
 [STEP 39]
-[INFO]: Running Magic Spice Export from LEF (log: designs/ci/regfile_2r1w_design_not_core/runs/full_guide/logs/signoff/39-spice.log)...
+[INFO]: Running Magic Spice Export from LEF (log: designs/ci/regfile_2r1w_design_not_core
+          /runs/full_guide/logs/signoff/39-spice.log)...
 [STEP 40]
 [INFO]: Writing Powered Verilog (log: ../dev/null)...
 [STEP 41]

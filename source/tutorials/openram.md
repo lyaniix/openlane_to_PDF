@@ -44,9 +44,11 @@ It is the responsibility of the user to make sure that GDS matches LEF files.
 If you run the design without this configuration you will get the following error:
 
 ```
-[INFO]: Running Initial Floorplanning (log: designs/ci/test_sram_macro/runs/full_guide_nomacros/logs/floorplan/3-initial_fp.log)...
+[INFO]: Running Initial Floorplanning (log: designs/ci/test_sram_macro/runs/full_guide_nomacros
+        /logs/floorplan/3-initial_fp.log)...
 [ERROR]: Floorplanning failed
-[ERROR]: module sky130_sram_1kbyte_1rw1r_32x256_8 not found in /openlane/designs/ci/test_sram_macro/runs/full_guide_nomacros/tmp/merged.nom.lef
+[ERROR]: module sky130_sram_1kbyte_1rw1r_32x256_8 not found in /openlane/designs/ci/test_sram_macro
+        /runs/full_guide_nomacros/tmp/merged.nom.lef
 [ERROR]: Check whether EXTRA_LEFS is set appropriately
 ```
 :::
@@ -69,7 +71,8 @@ The liberty file is supplied to flow using `EXTRA_LIBS` configuration. Add it to
 If you skip this configuration you will get the following error:
 
 ```
-ERROR: Module `\sky130_sram_1kbyte_1rw1r_32x256_8' referenced in module `\test_sram_macro_unwrapped' in cell `\sram1' is not part of the design.
+ERROR: Module `\sky130_sram_1kbyte_1rw1r_32x256_8' referenced in module `\test_sram_macro_unwrapped' in cell
+        `\sram1' is not part of the design.
 child process exited abnormally
 ```
 :::
@@ -338,7 +341,8 @@ During the run it was clear that the clock period of `10.0` was too low:
 [WARNING]: There are max fanout violations in the design at the typical corner. Please refer to 'designs/ci/test_sram_macro/runs/full_guide_libs_3/reports/signoff/32-rcx_sta.checks.rpt'.
 [WARNING]: There are max capacitance violations in the design at the typical corner. Please refer to 'designs/ci/test_sram_macro/runs/full_guide_libs_3/reports/signoff/32-rcx_sta.checks.rpt'.
 [INFO]: There are no hold violations in the design at the typical corner.
-[ERROR]: There are setup violations in the design at the typical corner. Please refer to 'designs/ci/test_sram_macro/runs/full_guide_libs_3/reports/signoff/32-rcx_sta.max.rpt'.
+[ERROR]: There are setup violations in the design at the typical corner. Please refer to
+        'designs/ci/test_sram_macro/runs/full_guide_libs_3/reports/signoff/32-rcx_sta.max.rpt'.
 ```
 
 As a solution the period was increased to `25.0`:

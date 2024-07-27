@@ -108,7 +108,7 @@ Most of the following commands' implementation exists in this [file][9]
 | Command      | Flags                   | Description                                           |
 |---------------|------------------------|-----------------------------------------|
 | `run_yosys` | | Runs yosys synthesis on the design processed in the flow (the design is set by the `prep` command). |
-|    | `[-output <output_file>]` | Sets the outputfile from yosys synthesis. <br> Defaults to `/<run_path>/results/synthesis/<design_name>.synthesis.v`  <br> Optional flag.       |
+|    | `[-output <output_file>]` | Sets the outputfile from yosys synthesis. <br> Defaults to `/<run_path>/results/synthesis /<design_name>.synthesis.v`  <br> Optional flag.       |
 | `run_synthesis` | | Runs yosys synthesis on the current design as well as OpenSTA timing analysis on the generated netlist. The logs are produced under `/<run_path>/logs/synthesis/`, the timing reports are under `/<run_path>/reports/synthesis/`, and the synthesized netlist under `/<run_path>/results/synthesis/`. |
 | `run_synth_exploration` | | Runs synthesis exploration, which will try out the available synthesis strategies against the input design. The output will be the four possible gate level netlists under `<run_path>/results/synthesis` and a summary report under `<run_path>/reports` that compares the 4 outputs. |
 | `verilog_elaborate <optional args>` | | Runs on structural verilog (top-level netlists) and elaborates it. The `<optional args>` are used to control what is passed to `run_yosys` |

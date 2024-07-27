@@ -21,7 +21,7 @@ export SHELL=/bin/bash
 # You can set these variables from the command line, and also
 # from the environment for the first two.
 SPHINXOPTS    ?=
-SPHINXBUILD   ?= source /home/ljy/Desktop/Ljy/venv/bin/activate && sphinx-build
+SPHINXBUILD   ?= source ../venv/bin/activate && sphinx-build
 SOURCEDIR     = source
 BUILDDIR      = _build
 
@@ -38,5 +38,3 @@ install:
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
 %: Makefile
 	$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-latexpdf:
-	@$(SPHINXBUILD) -M "latexpdf" "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)

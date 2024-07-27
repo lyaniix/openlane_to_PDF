@@ -497,16 +497,16 @@ Copy the original `regfile_2r1w` as `regfile_2r1w_design_not_core`. Change `FP_P
 
 ```
 {
-    "DESIGN_NAME": "regfile_2r1w",
-    "VERILOG_FILES": "dir::src/*.v",
-    "CLOCK_PORT": "clk",
-    "CLOCK_PERIOD": 10.0,
-    "FP_PDN_MULTILAYER": false,
+   "DESIGN_NAME": "regfile_2r1w",
+   "VERILOG_FILES": "dir::src/*.v",
+   "CLOCK_PORT": "clk",
+   "CLOCK_PERIOD": 10.0,
+   "FP_PDN_MULTILAYER": false,
 
-    "FP_ASPECT_RATIO": 2,
-    "EXTRA_LEFS":      "/openlane/designs/ci/mem_1r1w/runs/full_guide/results/final/lef/mem_1r1w.lef",
-    "EXTRA_GDS_FILES": "/openlane/designs/ci/mem_1r1w/runs/full_guide/results/final/gds/mem_1r1w.gds",
-    "VERILOG_FILES_BLACKBOX": "dir::bb/*.v"
+   "FP_ASPECT_RATIO": 2,
+   "EXTRA_LEFS":      "/openlane/designs/ci/mem_1r1w/runs/full_guide/results/final/lef/mem_1r1w.lef",
+   "EXTRA_GDS_FILES": "/openlane/designs/ci/mem_1r1w/runs/full_guide/results/final/gds/mem_1r1w.gds",
+   "VERILOG_FILES_BLACKBOX": "dir::bb/*.v"
 }
 ```
 

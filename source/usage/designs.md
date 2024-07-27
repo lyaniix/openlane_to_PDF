@@ -36,7 +36,8 @@ However, you can point to the src files (space-delimited) while initializing the
 Optionally, you can specify the configuration file name by using:
 
 ```bash
-./flow.tcl -design <design_name> -init_design_config -add_to_designs -config_file <custom_name.tcl/custom_name.json>
+./flow.tcl -design <design_name> -init_design_config -add_to_designs \
+    -config_file <custom_name.tcl/custom_name.json>
 ```
 
 After adding the design, you can run the design using a `-design` argument:

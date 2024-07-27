@@ -11,11 +11,6 @@ build:
     python: "3.10"
   commands:
     - git submodule update --init
-    - pip3 install -r ./requirements.txt
-    - python3 -m sphinx.cmd.build -M html "source" "_build"
-    - python3 -m sphinx.cmd.build -M latexpdf "source" "_build"
-    - mv _build/html _readthedocs
-    - mv _build/latexpdf _readthedocs_pdf
-formats:
-   - pdf
-   
+    - pip3 install -r ./docs/requirements.txt
+    - cd docs && python3 -m sphinx.cmd.build -M html "source" "_build"
+    - mv docs/_build _readthedocs

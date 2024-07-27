@@ -15,4 +15,7 @@ build:
     - python3 -m sphinx.cmd.build -M html "source" "_build"
     - python3 -m sphinx.cmd.build -M latexpdf "source" "_build"
     - mv _build/html _readthedocs
-    - mv _build/latexpdf _readthedocs_pdf
+    #- mv _build/latexpdf _readthedocs_pdf
+formats:
+   - pdf
+   

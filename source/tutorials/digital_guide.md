@@ -535,7 +535,8 @@ The following error is expected:
 [INFO]: Generating final set of reports...
 [INFO]: Created manufacturability report at 'designs/ci/regfile_2r1w_design_not_core/runs
           /full_guide/reports/manufacturability.rpt'.
-[INFO]: Created metrics report at 'designs/ci/regfile_2r1w_design_not_core/runs/full_guide/reports/metrics.csv'.
+[INFO]: Created metrics report at 'designs/ci/regfile_2r1w_design_not_core/runs/full_guide
+          /reports/metrics.csv'.
 [INFO]: Saving runtime environment...
 [ERROR]: Flow failed.
 

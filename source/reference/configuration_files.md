@@ -21,7 +21,8 @@ project/
 
 You can initialize a configuration file as follows:
 ```bash
-<openlane-root>/flow.tcl -design SuccessiveApproximationRegister -init_design_config -src "src/*.v"
+<openlane-root>/flow.tcl -design SuccessiveApproximationRegister \
+	-init_design_config -src "src/*.v"
 ```
 
 New files will be created, resulting in the following project structure:
@@ -242,7 +243,8 @@ For more detailed information, run `python3 ./scripts/config/replicate.py --help
 
 To run the script to update configurations for a (PDK,STD_CELL_LIBRARY) pair after an exploration:
 ```bash
-    python3 ./scripts/config/update.py --pdk PDK --std-cell-lib STD_CELL_LIBRARY --best_results SW_exploration_best.csv
+    python3 ./scripts/config/update.py --pdk PDK --std-cell-lib STD_CELL_LIBRARY \
+		--best_results SW_exploration_best.csv
 ```
 
 You can invoke `python3 ./scripts/config/update.py` for a full list of options.

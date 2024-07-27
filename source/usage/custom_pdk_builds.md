@@ -25,7 +25,8 @@ pip3 install --upgrade --no-cache-dir volare
 Then, build the PDK as follows: The `-l` options are the libraries you want to include. For example, to also include `sky130_fd_sc_hs`, you can add `-l sky130_fd_sc_hs` to the default set of libraries using the following command:
 
 ```bash
-volare build -j$(nproc) --pdk sky130 --clear-build-artifacts --sram -l sky130_fd_io -l sky130_fd_pr -l sky130_fd_sc_hvl -l sky130_fd_sc_hd -l sky130_fd_sc_hs
+volare build -j$(nproc) --pdk sky130 --clear-build-artifacts --sram -l sky130_fd_io \
+      -l sky130_fd_pr -l sky130_fd_sc_hvl -l sky130_fd_sc_hd -l sky130_fd_sc_hs
 ```
 
 You can also add `-l all` to just include all of them:

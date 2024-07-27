@@ -17,9 +17,6 @@ Additionally, we are also going to link to academic publications about OpenLane 
 - [Introduction to OpenMPW, VLSI.jp](https://vlsi.jp/Introduction_to_OpenMPW.html#introduction-to-openmpw)
 - [RgGen ✕ OpenMPW Walkthrough](https://vlsi.jp/RgGenxOpenMPW_eng.html#rggen--openmpw-walkthrough)
 
-#### 日本語
-- [OpenMPW入門 改訂版, VLSI.jp](https://vlsi.jp/OpenMPW.html)
-- [RgGen ✕ OpenMPWでLSIを焼こう！](https://vlsi.jp/RgGenxOpenMPW.html)
 
 #### Español
 - [Tutoriales de OpenLane/OpenROAD](https://lima-ucr.github.io/)

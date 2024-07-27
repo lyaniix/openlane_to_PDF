@@ -29,9 +29,7 @@ files you may be depending on, including headers, in `VERILOG_FILES`.
 |-|-|
 | `PDK` <a id="PDK"></a> | Specifies the process design kit (PDK). <br> (Default: `sky130A`)|
 | `DESIGN_NAME` <a id="DESIGN_NAME"></a>   | The name of the top level module of the design        |
-| `VERILOG_FILES` <a id="VERILOG_FILES"></a> | The path of the design's Verilog files, provided as an array of files in JSON or a 
-whitespace-delimited list of files in Tcl. The files are evaluated in order, 
-i.e., if file B depends on file A, file A must be listed first. |
+| `VERILOG_FILES` <a id="VERILOG_FILES"></a> | The path of the design's Verilog files, provided as an array of files in JSON or a whitespace-delimited list of files in Tcl. The files are evaluated in order, i.e., if file B depends on file A, file A must be listed first. |
 | `CLOCK_PERIOD` <a id="CLOCK_PERIOD"></a>  | The clock period used for clocks in the design, in nanoseconds.  |
 | `CLOCK_PORT` <a id="CLOCK_PORT"></a>    | The name of the design's clock port.   |
 | `CLOCK_NET` <a id="CLOCK_NET"></a> | The name of the net input to root clock buffer. <br> (Default: `CLOCK_PORT`) |

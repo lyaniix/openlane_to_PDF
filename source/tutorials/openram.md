@@ -36,8 +36,10 @@ It is the responsibility of the user to make sure that GDS matches LEF files.
 :::
 
 ```json
-"EXTRA_LEFS":      "/openlane/pdks/sky130B/libs.ref/sky130_sram_macros/lef/sky130_sram_1kbyte_1rw1r_32x256_8.lef",
-"EXTRA_GDS_FILES": "/openlane/pdks/sky130B/libs.ref/sky130_sram_macros/gds/sky130_sram_1kbyte_1rw1r_32x256_8.gds",
+"EXTRA_LEFS":      "/openlane/pdks/sky130B/libs.ref/sky130_sram_macros/lef
+                        /sky130_sram_1kbyte_1rw1r_32x256_8.lef",
+"EXTRA_GDS_FILES": "/openlane/pdks/sky130B/libs.ref/sky130_sram_macros/gds
+                        /sky130_sram_1kbyte_1rw1r_32x256_8.gds",
 ```
 
 :::{warning}
@@ -64,7 +66,8 @@ It is used in Timing analysis and in synthesis.
 The liberty file is supplied to flow using `EXTRA_LIBS` configuration. Add it to the configuration file:
 
 ```
-"EXTRA_LIBS":      "/openlane/pdks/sky130B/libs.ref/sky130_sram_macros/lib/sky130_sram_1kbyte_1rw1r_32x256_8_TT_1p8V_25C.lib",
+"EXTRA_LIBS":      "/openlane/pdks/sky130B/libs.ref/sky130_sram_macros/lib
+                        /sky130_sram_1kbyte_1rw1r_32x256_8_TT_1p8V_25C.lib",
 ```
 
 :::{warning}
@@ -104,7 +107,8 @@ More information is available in [configuration variables documentation](../refe
 Each macro hook is separated using a comma, for example:
 
 ```json
-"FP_PDN_MACRO_HOOKS": "submodule.sram0 vccd1 vssd1 vccd1 vssd1, submodule.sram1 vccd1 vssd1 vccd1 vssd1",
+"FP_PDN_MACRO_HOOKS": "submodule.sram0 vccd1 vssd1 vccd1 vssd1,
+                        submodule.sram1 vccd1 vssd1 vccd1 vssd1",
 ```
 
 The instance names need to be fetched from the synthesis netlist.
@@ -143,7 +147,8 @@ In `FP_PDN_MACRO_HOOKS` you need to use the name without the escape slash. There
 :::
 
 ```json
-"FP_PDN_MACRO_HOOKS": "submodule.sram0 vccd1 vssd1 vccd1 vssd1, submodule.sram1 vccd1 vssd1 vccd1 vssd1",
+"FP_PDN_MACRO_HOOKS": "submodule.sram0 vccd1 vssd1 vccd1 vssd1,
+                        submodule.sram1 vccd1 vssd1 vccd1 vssd1",
 ```
 
 `FP_PDN_MACRO_HOOKS` forces connection between these pins and power/ground nets.
@@ -159,7 +164,8 @@ Open an interactive session:
 ```
 ./flow.tcl -design ./designs/ci/test_sram_macro -tag full_guide_pdn_macrohooks -interactive
 package require openlane
-set_def designs/ci/test_sram_macro/runs/full_guide_pdn_macrohooks/results/final/def/test_sram_macro.def
+set_def designs/ci/test_sram_macro/runs/full_guide_pdn_macrohooks \
+        /results/final/def/test_sram_macro.def
 or_gui
 
 # empty new line to force the command to run
@@ -182,7 +188,8 @@ You will get the following output:
 
 ```
 [STEP 3]
-[INFO]: Running Initial Floorplanning (log: designs/ci/test_sram_macro/runs/floorplan/logs/floorplan/3-initial_fp.log)...
+[INFO]: Running Initial Floorplanning (log: designs/ci/test_sram_macro/runs
+        /floorplan/logs/floorplan/3-initial_fp.log)...
 [INFO]: Extracting core dimensions...
 [INFO]: Set CORE_WIDTH to 877.22, CORE_HEIGHT to 875.84.
 ```
@@ -381,7 +388,8 @@ File "/usr/lib64/python3.6/json/decoder.py", line 339, in decode
     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
 File "/usr/lib64/python3.6/json/decoder.py", line 355, in raw_decode
     obj, end = self.scan_once(s, idx)
-json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 27 column 1 (char 901)
+json.decoder.JSONDecodeError:
+        Expecting property name enclosed in double quotes: line 27 column 1 (char 901)
 ```
 
 The right way:

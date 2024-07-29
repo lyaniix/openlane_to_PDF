@@ -40,7 +40,8 @@ project/
 You can also initialize a `config.tcl` file instead:
 
 ```bash
-<openlane-root>/flow.tcl -design SuccessiveApproximationRegister -init_design_config -src "src/*.v" -config_file config.tcl
+<openlane-root>/flow.tcl -design SuccessiveApproximationRegister /
+	-init_design_config -src "src/*.v" -config_file config.tcl
 ```
 
 You can then run the designs by moving into the directory `openlane/SuccessiveApproximationRegister` and running `flow.tcl`:

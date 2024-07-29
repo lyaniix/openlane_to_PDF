@@ -210,8 +210,8 @@ Most of the following commands' implementation exists in this [file][8]
 |    | `[-odb <odb_file>]` | The input ODB file. <br> Defaults to `CURRENT_ODB`. |
 |    | `[-power <power_pin>]` | The name of the power pin. <br> Defaults to `VDD_PIN` |
 |    | `[-ground <ground_pin>]` | The name of the ground pin. <br> Defaults to `GND_PIN` |
-|    | `[-output_def <output_def_file>]` | The output DEF file path. <br> Defaults to `<run_path>/tmp/routing/$::env(DESIGN_NAME).power_routed.def` |
-|    | `[-output_odb <output_odb_file>]` | The output ODB file path. <br> Defaults to `<run_path>/tmp/routing/$::env(DESIGN_NAME).power_routed.odb` |
+|    | `[-output_def <output_def_file>]` | The output DEF file path. <br> Defaults to `<run_path>/tmp/routing/ $::env(DESIGN_NAME).power_routed.def` |
+|    | `[-output_odb <output_odb_file>]` | The output ODB file path. <br> Defaults to `<run_path>/tmp/routing/ $::env(DESIGN_NAME).power_routed.odb` |
 | `run_power_grid_generation` | | Runs power grid generation with the advanced control options, `VDD_NETS`, `GND_NETS`, etc... This proc is capable of generating multiple power grid. Check [this documentation][16] for more details about controlling this command.
 
 ## Routing Commands
